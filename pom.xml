@@ -88,4 +88,7 @@
 	</dependencies>
 	<modules>
 	</modules>
+	<scm>
+		<url>https://github.com/SocratesSid/reportNG</url>
+	</scm>
 </project>
