@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$messages.locale.language" lang="$messages.locale.language">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<meta name="description" content="TestNG unit test results." />
+	<link rel="stylesheet" href="css/reportng.css"/>
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
+  	<script type="text/javascript" src="js/jquery-1.12.0.min.js"></script> 
+  	<script type="text/javascript" src="js/jquery.tablesorter.min.js"></script>
+  	<script type="text/javascript" src="js/reportng.js"></script> 
+</head>
+<body onload="return false;" onkeypress="hidePass();">
+<div class="row">
+	<div class="col-xs-12">
+	<h3 class="normal">$messages.getString("totalResults")</h3>
+        <div class="text-right">
+            <button id="hideResults" type="button" class="btn btn-success" onclick="hidePass(this);" class="btn pull-right">$messages.getString("hidePass")</button>
+        </div>
+    </div>
+</div>
+<br>
+#foreach ($suite in $suites)
+	<div class="well well-large">
+		<div class="suite" id="${suite.name}">${suite.name} 
+		#if ($utils.hasGroups($suite))
+        #set ($suiteId = $velocityCount)
+		<a href="suite${suiteId}_groups.html"> / $messages.getString("groups")</a>
+        #end
+        </div>
+ 	<table class="table table-bordered">
+  		#set ($suiteId = $velocityCount)
+  		#set ($totalTests = 0)
+  		#set ($totalPassed = 0)
+  		#set ($totalSkipped = 0)
+  		#set ($totalFailed = 0)
+  		#set ($totalKnownDefects = 0)
+  		#set ($totalFixed = 0)
+  		#set ($totalDuration=0)
+ 		<thead>
+	  		<tr class="columnHeadings">
+	  		    <th class="header">$messages.getString("testTime")</th>
+	    		<th class="header">$messages.getString("testName")</th>
+	    		<th class="header">$messages.getString("regression")</th>
+	    		<th class="header">$messages.getString("duration")</th>
+	    		<th class="header">$messages.getString("passed")</th>
+	    		<th class="header">$messages.getString("skipped")</th>
+	    		<th class="header">$messages.getString("knownDefects")</th>
+	    		<th class="header">$messages.getString("fixed")</th>
+	    		<th class="header">$messages.getString("failed")</th>
+	    		<th class="header">$messages.getString("passRate")</th>
+  			</tr>
+ 		</thead>
+ 		<tbody>
+  			#foreach ($result in $suite.results)
+  			#set ($totalPassed = $totalPassed + $utils.getPassed($result.testContext).size())
+  			#set ($totalFailed = $totalFailed +  $utils.getFailed($result.testContext).size())
+  			#set ($totalSkipped = $totalSkipped + $utils.getSkip($result.testContext).size())
+  			#set ($totalKnownDefects = $totalKnownDefects + $utils.getKnownDefect($result.testContext).size())
+  			#set ($totalFixed = $totalFixed + $utils.getFixed($result.testContext).size())
+			#set ($thisResultPass = $utils.getPassed($result.testContext).size())
+			#set ($thisResultFail = $utils.getFailed($result.testContext).size())
+			#set ($thisResultSkip = $utils.getSkip($result.testContext).size())
+			#set ($thisResultKnownDefects = $utils.getFixed($result.testContext).size())
+			#set ($thisResultFixed = $utils.getKnownDefect($result.testContext).size())
+			#set ($thisResultTotal = $thisResultPass + $thisResultFail + $thisResultSkip + $thisResultKnownDefects + $thisResultFixed)
+			#set ($thisResultFailed =  $thisResultFail + $thisResultSkip)
+  			#set ($notPassedTests =  $totalFailed + $totalSkipped)
+		  	#set ($total = $totalPassed + $totalFailed + $totalSkipped + $totalKnownDefects + $totalFixed)
+		 	#set ($totalTests = $totalTests + $total)
+		  	#set ($failuresExist =$utils.getFailed($result.testContext).size()>0 || $result.testContext.failedConfigurations.size()>0)
+		  	#if (($onlyReportFailures && $failuresExist) || (!$onlyReportFailures))
+  			<tr class="test">
+  				<td width="100">$utils.getTime($result.testContext)</td>
+    			<td><a href="suite${suiteId}_test${velocityCount}_results.html">${result.testContext.name}</a></td>
+    			<td class="duration">$utils.isRegression($result.testContext)</td>
+    			<td class="duration">$utils.formatDuration($utils.getDuration($result.testContext))</td>
+    			#if ($utils.getPassed($result.testContext).size() > 0)
+    			<td class="passed number">$utils.getPassed($result.testContext).size()</td>
+    			#else
+    			<td class="zero number">0</td>
+    			#end
+    			#if ($result.testContext.skippedTests.size() > 0)
+    			<td class="skipped number">$result.testContext.skippedTests.size()</td>	
+    			#else
+    			<td class="zero number">0</td>
+    			#end
+				#if ($utils.getKnownDefect($result.testContext).size() > 0)
+    			<td class="knownDefects number">$utils.getKnownDefect($result.testContext).size()</td>
+    			#else
+    			<td class="zero number">0</td>
+    			#end
+    			#if ($utils.getFixed($result.testContext).size() > 0)
+    			<td class="fixed number">$utils.getFixed($result.testContext).size()</td>
+    			#else
+    			<td class="zero number">0</td>
+    			#end
+    			#if ($result.testContext.failedTests.size() > 0)
+    			<td class="failed number">$result.testContext.failedTests.size()</td>
+    			#else
+    			<td class="zero number">0</td>
+    			#end
+    			<td class="passRate">
+      				#if ($thisResultTotal > 0)
+      					#set ($passRate = (($thisResultTotal - $thisResultFailed) * 100 / $thisResultTotal))
+      					$passRate%
+      				#else
+      					$messages.getString("notApplicable")
+      				#end
+    			</td>
+  			</tr>
+  		#end
+  	#end
+	</tbody>
+    <tr class="suite">
+    <td colspan="1" class="totalLabel">$messages.getString("total")</td>
+    <td class="totalLabel"></td>
+    <td class="totalLabel"></td>
+	<td class="totalLabel">$utils.getTotalDuration()m</td>
+    #if ($totalPassed > 0)
+    <td class="passed number">$totalPassed</td>
+    #else
+    <td class="zero number">0</td>
+    #end
+    #if ($totalSkipped > 0)
+    <td class="skipped number">$totalSkipped</td>
+    #else
+    <td class="zero number">0</td>
+    #end
+ 	#if ($totalKnownDefects > 0)
+    <td class="knownDefects number">$totalKnownDefects</td>
+    #else
+    <td class="zero number">0</td>
+    #end
+    #if ($totalFixed > 0)
+    <td class="fixed number">$totalFixed</td>
+    #else
+    <td class="zero number">0</td>
+    #end
+    #if ($totalFailed > 0)
+    <td class="failed number">$totalFailed</td>
+    #else
+    <td class="zero number">0</td>
+    #end
+    <td class="passRate suite">
+      #if ($totalTests > 0)
+      #set ($passRate = (($totalTests - $totalSkipped - $totalFailed) * 100 / $totalTests))
+      $passRate%
+      #else
+      $messages.getString("notApplicable")
+      #end
+    </td>
+  </tr>
+ </table>
+</div>
+#end
+</body>
+</html>

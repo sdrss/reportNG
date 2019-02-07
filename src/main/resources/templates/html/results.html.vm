@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$messages.locale.language" lang="$messages.locale.language">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="description" content="TestNG unit test results." />
+  <link href="css/bootstrap.min.css" rel="stylesheet" />
+  <link href="css/reportngClass.css" rel="stylesheet" />
+  <script type="text/javascript" src="js/reportngClass.js"></script>
+  <script type="text/javascript" src="js/jquery-1.4.4.min.js"></script> 
+  <script type="text/javascript" src="js/jquery.tablesorter.min.js"></script>
+  <script type="text/javascript" src="js/json-min.js"></script>
+  <script type="text/javascript">
+	$(document).ready(function(){
+		$('.tablesorter').tablesorter({sortList: [[0,0]]});
+	});
+  </script>
+</head>
+<body onload="doParse(); return false;" onkeypress="expandAll();">
+<div class="well well-large">
+	<b>$messages.getString("testInfo")</>
+	<table class="table">
+	  <tr>
+	    <th>$messages.getString("testName") : </th>
+	    <th>$result.testContext.name</th> 
+	  </tr>
+	  <tr>
+	    <th>$messages.getString("testClass") : </th>
+	    <th>$utils.getClassName2($result)</th> 
+	  </tr>
+	  <tr>
+	    <th>$messages.getString("suiteName") : </th>
+	    <th>$utils.getSuiteName($result)</th> 
+	  </tr>
+	  <tr>
+	    <th>$messages.getString("suiteXML") : </th>
+	    <th>$utils.getSuiteXMLName($result)</th> 
+	  </tr>
+	  #if ($utils.hasDescription($result))
+	  <tr>
+	    <th>$messages.getString("featureDescription") : </th>
+	    <th>$utils.getDescription($result)</th> 
+	  </tr>
+	  #end
+	  <tr>
+	    <th>$messages.getString("totalTime") : </th>
+	    <th>$utils.getTotalTime($result)</th> 
+	  </tr>
+	  <tr>
+	    <th>$messages.getString("totalSteps") : </th>
+	    <th>$utils.getTotalSteps($result)</th> 
+	  </tr>
+	  <tr>
+	    <th>$messages.getString("status") : </th>
+	    <th>$utils.getTestStatus($result)</th> 
+	  </tr>
+	</table>
+</div>
+<div class="well well-large">
+	<div class="row">
+		<div class="col-xs-12">
+	        <div class="text-right">
+	            <button id="hideResults" type="button" class="btn btn-success" onclick="expandAll(this);" onkeypress="expandAll(this);" class="btn pull-right">$messages.getString("hidePass")</button>
+	        </div>
+	    </div>
+	</div>
+	<table class="tablesorter" border="1">
+		<thead>
+		<tr>
+		<th class="headerTime">Time</th>
+		<th class="headerTime" width="12%">Info</th>
+		<th class="headerTime" width="88%">Test</th>
+		</tr>
+		</thead>
+		<tbody>
+		
+		#if ($failedConfigurations.size() > 0)
+		#set ($id = 0)
+		#foreach ($testClass in $failedConfigurations.keySet())
+		#set ($classResults = $failedConfigurations.get($testClass))
+		#parse("org/uncommons/reportng/templates/html/classconfiguration-results.html.vm")
+		#end
+		#end
+		
+		#if ($skippedConfigurations.size() > 0)
+		#set ($id = 0)
+		#foreach ($testClass in $skippedConfigurations.keySet())
+	    #set ($classResults = $skippedConfigurations.get($testClass))
+	    #parse ("org/uncommons/reportng/templates/html/classconfiguration-results.html.vm")
+	    #end
+	    #end
+		
+		#if ($passedConfigurations.size() > 0)
+		#set ($id = 0)
+		#foreach ($testClass in $passedConfigurations.keySet())
+		#set ($classResults =  $utils.getPassedConfigurations($testClass,$passedConfigurations))
+		#parse("org/uncommons/reportng/templates/html/classconfiguration-results.html.vm")
+		#end
+		#end
+		
+		#if ($failedTests.size() > 0)
+		#foreach ($testClass in $failedTests.keySet())
+		#set ($classResults = $failedTests.get($testClass))
+		#parse ("org/uncommons/reportng/templates/html/class-results.html.vm")
+		#end
+		#end
+		
+		#if ($skippedTests.size() > 0)
+		#foreach ($testClass in $skippedTests.keySet())
+		#set ($classResults = $skippedTests.get($testClass))
+		#parse ("org/uncommons/reportng/templates/html/class-results.html.vm")
+		#end
+		#end
+		
+		#if ($passedTests.size() > 0)
+		#foreach ($testClass in $passedTests.keySet())
+		#set ($classResults = $passedTests.get($testClass))
+		#parse ("org/uncommons/reportng/templates/html/class-results.html.vm")
+		#end
+		#end
+	  
+	</tbody>
+	</table>
+</div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$messages.locale.language" lang="$messages.locale.language">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="description" content="TestNG unit test results." />
+  <link rel="stylesheet" href="css/reportng.css" />
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <script type="text/javascript" src="js/jquery-1.12.0.min.js"></script> 
+  <script type="text/javascript" src="js/reportng.js"></script>
+</head>
+<body onload="return false;" onkeypress="hidePassSuites();">
+<div class="row">
+	<div class="col-xs-12">
+	<h3 class="normal">$messages.getString("suiteResults")</h3>
+        <div class="text-right">
+            <button id="hideResults" type="button" class="btn btn-success" onclick="hidePassSuites(this);" class="btn pull-right">$messages.getString("hidePass")</button>
+        </div>
+    </div>
+</div>
+<br>
+<div class="well well-large">
+<table class="table table-bordered">
+	<thead>
+   		<tr class="columnHeadings">
+   			<th class="header">$messages.getString("testTime")</th>
+   		 	<th class="header" style="text-align:left">$messages.getString("parentSuite")</th>
+    		<th class="header" style="text-align:left">$messages.getString("suiteName")</th>
+    		<th class="header" style="text-align:left">$messages.getString("suiteArguments")</th>
+    		<th class="header">$messages.getString("duration")</th>
+	    	<th class="header">$messages.getString("passed")</th>
+	    	<th class="header">$messages.getString("skipped")</th>
+	    	<th class="header">$messages.getString("knownDefects")</th>
+	    	<th class="header">$messages.getString("fixed")</th>
+	    	<th class="header">$messages.getString("failed")</th>
+    		<th class="header">$messages.getString("status")</th>
+  		</tr>
+  	</thead>
+  	$utils.getSuites($suites)
+</table>
+</div>
+</body>
+</html>

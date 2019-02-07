@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$messages.locale.language" lang="$messages.locale.language">
+<head>
+	<script type="text/javascript" src="js/jquery-1.12.0.min.js"></script>
+	<script type="text/javascript" src="js/canvasjs.min.js"></script>
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
+	<link rel="stylesheet" href="css/reportng.css" />
+	<script>
+		window.onload = function () {
+			$utils.graphTime($suites)
+			chart.render();
+		}
+	</script>
+</head>
+<body>
+<div id="graphPerTime">
+	<h3 class="normal">$messages.getString("testsPerMinute")</h3>
+	<div id="chartContainer" style="height: 100%; max-width: 100%; margin: 0px auto;"></div>
+</div>			
+</body>
+</html>

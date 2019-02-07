@@ -1,0 +1,140 @@
+## This macro formats the results (whether passed, skipped or failed) of the test
+## methods in a single class for inclusion in the HTML report.  It assumes that the
+## the results for the class are in a variable called $classResults.  $id is a page
+## scope variable that is used to assign unique identifiers to divs.
+
+#set ($counter=0)
+#foreach ($testResult in $classResults)
+	#set ($testInstanceName="")
+	#if ($testResult.getStatus()==1 && $utils.hasKnownDefect($testResult))
+		<tr>
+			<td class="time">$testResult.startMillis+$counter</td>
+			<td class="header knownDefects">$testResult.name$testInstanceName</td>
+			<th colspan="3" class="header knownDefects"> <a href="javascript:toggleElement('$testResult.startMillis+$counter', 'block')" title="Click to expand/collapse">$messages.getString("knownDefects")</a></th>
+	    </tr>
+	#else
+		#if ($testResult.getStatus()==1 && $utils.hasFixed($testResult))
+			<tr>
+				<td class="time">$testResult.startMillis+$counter</td>
+				<td class="header fixed">$testResult.name$testInstanceName</td>
+				<th colspan="3" class="header fixed"> <a href="javascript:toggleElement('$testResult.startMillis+$counter', 'block')" title="Click to expand/collapse">$messages.getString("fixed")</a></th>
+		    </tr>
+	    #else
+	    	#if ($testResult.getStatus()==1)
+			    <tr>
+					<td class="time">$testResult.startMillis+$counter</td>
+					<td class="header passed">$testResult.name$testInstanceName</td>
+					<th colspan="3" class="header passed"> <a href="javascript:toggleElement('$testResult.startMillis+$counter', 'block')" title="Click to expand/collapse">$messages.getString("passedTests")</a></th>
+			    </tr>
+		    #end
+	    #end
+	#end
+	#if ($testResult.getStatus()==2)
+		<tr>
+			<td class="time">$testResult.startMillis+$counter</td>
+			<td class="header failed">$testResult.name$testInstanceName</td>
+			<th colspan="3" class="header failed">$messages.getString("failedTests")</th>
+	    </tr>
+	#end
+	#if ($testResult.getStatus()==3)
+		<tr>
+			<td class="time">$testResult.startMillis+$counter</td>
+			<td class="header skipped">$testResult.name$testInstanceName</td>
+			<th colspan="3" class="header skipped">$messages.getString("skippedTests")</th>
+	  	</tr>
+	#end
+	
+	<tr>
+		<td class="time">$testResult.startMillis+$counter</td>
+		  	<td class="methodTest">
+			    #if ($testResult.testName)
+			    	#set ($testInstanceName = "($testResult.testName)")
+			    #end
+			    #if ($testResult.testName)
+			    	#set ($testInstanceName = "($testResult.testName)")
+			    #end
+			    
+			    #if ($utils.hasDescription($testResult))
+			    	<span class="description"><b>Description: </b>$testResult.method.description</span><br>
+			    #end
+			    #if ($utils.hasPriority($testResult))
+			    	<span class="description"><b>Priority:</b><font color='blue'>$testResult.method.priority</font></span><br>
+			    #end
+			    #if ($utils.hasKnownDefectsDescription($testResult))
+			    	<span class="Description"><b>Known Issue: </b><font color='red'>$utils.getKnownDefectDescription($testResult)</font></span><br>
+			    #end
+			    #if ($utils.hasGroups($testResult))
+			    	<span class="description"><b>Groups:</b><font color='green'>$utils.getGroups($testResult)</font></span><br>
+			    #end
+			    <span class="duration"><b>Duration: </b>$utils.formatDuration($testResult.startMillis, $testResult.endMillis)s</span><br>
+		  	</td>
+	  		<td class="result">
+		  		#if ($testResult.getStatus()==1 && $utils.hasKnownDefects($testResult))
+		  			<div class="stackTrace" id="$testResult.startMillis+$counter">
+		  		#else
+		  			#if ($testResult.getStatus()==1 && $utils.hasFixed($testResult))
+		  				<div class="stackTrace" id="$testResult.startMillis+$counter">
+		  			#else
+		  				#if ($testResult.getStatus()==1)
+		  					<div class="stackTrace" id="$testResult.startMillis+$counter">
+		  				#end
+		  			#end
+				#end
+	    		## Display the dependencies for skipped test methods.
+	    		#if ($testResult.status == 3) ## 3 means skipped.
+		      		#if( $utils.hasDependentGroups($testResult) )
+		        		<i>$messages.getString("dependsOnGroups"): </i>
+		        		<span class="dependency">$utils.getDependentGroups($testResult)</span>
+		        		<br/>
+		      		#end
+			      	#if ($utils.hasDependentMethods($testResult))
+			        	<i>$messages.getString("dependsOnMethods"): </i>
+			        	<span class="dependency">$utils.getDependentMethods($testResult)</span>
+			      	#end
+		    	#end
+		
+			    #if ($utils.hasArguments($testResult))
+		      		<i>$messages.getString("methodArguments"): </i><span class="arguments">$utils.getArguments($testResult)</span><br />
+		    	#end
+		    	
+			    ## Show logger output for the test.
+		    	#set ($output = $utils.getTestOutput($testResult))
+		    	#if ($output.size() > 0)
+		    		<div class="testOutput">
+		      		#foreach( $line in $output )
+			        	#if ($meta.shouldEscapeOutput())
+			          		$utils.escapeHTMLString($line)<br />
+			        	#else
+			          		$line
+			        	#end
+		      		#end
+		    		</div>
+		    	#end
+		    	
+				#set ($id="1")
+		    	#if ($testResult.throwable && ( $testResult.status == 2 || $meta.shouldShowExpectedExceptions()) || $testResult.getStatus()==1 && $utils.hasKnownDefects($testResult))
+		    		<a href="javascript:toggleElement('exception-$testResult.startMillis', 'block')" title="$messages.getString("clickToExpandCollapse")"><b>$utils.escapeHTMLString( $testResult.throwable.toString() )</b></a><br/>
+		    		<div class="stackTrace" id="exception-$testResult.startMillis">
+			      		#foreach ($element in $testResult.throwable.stackTrace)
+			        		$utils.escapeHTMLString( $element.toString() )<br/>
+			      		#end
+			      		#set ($causes = $utils.getCauses($testResult.throwable))
+			      		#foreach ($throwable in $causes)
+			        		#set ($id = $id + 1)
+			        		<b>$messages.getString("causedBy"): </b> <a href="javascript:toggleElement('exception-$testResult.startMillis', 'block')" title="Click to expand/collapse">$utils.escapeHTMLString( $throwable.toString() )</a><br/>
+			        		<div class="stackTrace" id="exception-$testResult.startMillis">
+				          		#foreach ($element in $throwable.stackTrace)
+				            		$utils.escapeHTMLString($element.toString())<br/>
+				          		#end
+			        		</div>
+			      		#end
+		    		</div>
+		    	#end
+		    	#set ($id = $id + 1)
+	  		</td>
+	  		#if ($testResult.getStatus()==1)
+	  		</div>
+			#end
+		</tr>
+		#set ($counter = $counter + 1)
+#end

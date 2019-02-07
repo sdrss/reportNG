@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$messages.locale.language" lang="$messages.locale.language">
+<head>
+	<script type="text/javascript" src="js/jquery-1.12.0.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
+</head>
+<body>
+<div class="sidebar-header">
+	<img src="images/testng.png" style="width:150px;height:70px;">
+</div>
+<div class="list-group">
+	<a href="overview.html" target="overview" class="list-group-item"><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;$messages.getString("overview")</a>
+	<a href="#pageSubmenuResults" class="list-group-item" data-toggle="collapse" aria-expanded="false"><span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;$messages.getString("results")</a>
+		<ul class="collapse list-unstyled" id="pageSubmenuResults">
+			<a href="suites_overview.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("totalResults")</a>
+        	<a href="suites.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("suiteResults")</a>
+        </ul>
+    <a href="#pageSubmenuIssues" class="list-group-item" data-toggle="collapse" aria-expanded="false"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;$messages.getString("issues")</a>
+		<ul class="collapse list-unstyled" id="pageSubmenuIssues">
+			<a href="newIssues.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("newIssues")&nbsp;($utils.issues($suites).getNewIssuesAmount())</a>
+        	<a href="knownIssues.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("knownIssues")&nbsp; ($utils.issues($suites).getKnownIssuesAmount())</a>
+        	<a href="fixedIssues.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("fixedIssues")&nbsp; ($utils.issues($suites).getFixedIssuesAmount())</a>
+        </ul>
+	<a href="#pageSubmenuFeatures" class="list-group-item" data-toggle="collapse" aria-expanded="false"><span class="glyphicon glyphicon-th-large"></span>&nbsp;&nbsp;$messages.getString("features")</a>
+		<ul class="collapse list-unstyled" id="pageSubmenuFeatures">
+			<a href="featuresRegression.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("regression")($utils.issues($suites).getFeature().size())</a>
+        	<a href="featuresNew.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("newFeatures")($utils.issues($suites).getNewFeature().size())</a>
+        </ul>
+    <a href="runArguments.html" target="overview" class="list-group-item"><span class="glyphicon glyphicon-random"></span>&nbsp;&nbsp;$messages.getString("runArguments")</a>
+    <a href="#pageSubmenu" class="list-group-item" data-toggle="collapse" aria-expanded="false"><span class="glyphicon glyphicon-equalizer"></span>&nbsp;&nbsp;$messages.getString("graphs")</a>
+		<ul class="collapse list-unstyled" id="pageSubmenu">
+			<a href="graphsTime.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("testResults")</a>
+        	<a href="graphsRClass.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("classResults")</a>
+        	<a href="graphsRSuite.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("suiteResults")</a>
+        </ul>
+	<a href="output.html" target="overview" class="list-group-item"><span class="glyphicon glyphicon-file"></span>&nbsp;&nbsp;$messages.getString("reportOutputMenu")</a>
+	$utils.getExternalLinks();
+</div>
+</body>
+</html>

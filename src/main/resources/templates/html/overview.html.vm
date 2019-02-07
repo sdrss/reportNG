@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$messages.locale.language" lang="$messages.locale.language">
+<head>
+	<script type="text/javascript" src="js/jquery-1.12.0.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="css/reportng.css"/>
+</head>
+<body>
+	<div id="overview" class="menuItem" style="display:inline">
+		<h3 class="normal">$messages.getString("overview")</h3>
+		<div class="container">
+			<div class="well well-large">
+				<b>$messages.getString("tests")</b>
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th scope="col" width="300px;">#</th>
+						  	<th scope="col" width="300px;" style="text-align:center">$messages.getString("regression")</th>
+						  	<th scope="col" width="300px;" style="text-align:center">$messages.getString("newFeatures")</th>
+							<th scope="col" width="300px;" style="text-align:center">$messages.getString("total")</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="row" class="passTitle">$messages.getString("pass")</th>
+							<td align="center">$utils.checkAttribute($suites).getRegressionPass()</td>
+						  	<td align="center">$utils.checkAttribute($suites).getNewFeaturesPass()</td>
+						  	<td align="center">$utils.checkAttribute($suites).getTotalPass()</td>
+						</tr>
+						<tr>
+							<th scope="row" class="failTitle">$messages.getString("fail")</th>
+							<td align="center">$utils.checkAttribute($suites).getRegressionFail()</td>
+							<td align="center">$utils.checkAttribute($suites).getNewFeaturesFail()</td>
+							<td align="center">$utils.checkAttribute($suites).getTotalFail()</td>
+						</tr>
+						<tr>
+							<th scope="row" class="skipTitle">$messages.getString("skip")</th>
+							<td align="center">$utils.checkAttribute($suites).getRegressionSkip()</td>
+							<td align="center">$utils.checkAttribute($suites).getNewFeaturesSkip()</td>
+							<td align="center">$utils.checkAttribute($suites).getTotalSkip()</td>
+						</tr>
+						<tr>
+							<th scope="row" class="KnownDefectTitle">$messages.getString("known")</th>
+							<td align="center">$utils.checkAttribute($suites).getRegressionKnownDefect()</td>
+							<td align="center">$utils.checkAttribute($suites).getNewFeaturesKnownDefect()</td>
+							<td align="center">$utils.checkAttribute($suites).getTotalKnownDefect()</td>
+						</tr>
+						<tr>
+							<th scope="row" class="fixedTitle">$messages.getString("fixed")</th>
+							<td align="center">$utils.checkAttribute($suites).getRegressionFixed()</td>
+							<td align="center">$utils.checkAttribute($suites).getNewFeaturesFixed()</td>
+							<td align="center">$utils.checkAttribute($suites).getTotalFixed()</td>
+						</tr>
+						<tr>
+							<th scope="row" class="summary">$messages.getString("summary")</th>
+							<td align="center">$utils.checkAttribute($suites).getSummaryRegression()</td>
+							<td align="center">$utils.checkAttribute($suites).getSummaryNewFeature()</td>
+							<td align="center">$utils.checkAttribute($suites).getSummaryTotal()</td>
+						</tr>
+					</tbody>
+				</table>
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th scope="col" width="300px;">#</th>
+						  	<th scope="col" width="300px;" style="text-align:center">$messages.getString("regression")</th>
+						  	<th scope="col" width="300px;" style="text-align:center">$messages.getString("newFeatures")</th>
+							<th scope="col" width="300px;" style="text-align:center">$messages.getString("total")</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="row" class="summary">$messages.getString("successRate")</th>
+							<td align="center">$utils.getProgress($utils.checkAttribute($suites).getRegression())</td>
+							<td align="center">$utils.getProgress($utils.checkAttribute($suites).getNewFeatures())</td>
+							<td align="center">$utils.getProgress($utils.checkAttribute($suites).getTotal())</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="container">
+			<div class="well well-large">
+				<b>$messages.getString("issues")</b>
+				<table class="table table-bordered">
+				<thead>
+				<tr>
+					<th scope="col" width="300px;">#</th>
+				  	<th scope="col">Total</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th scope="row" class="failTitle">$messages.getString("newIssues")</th>
+						<td><a href="newIssues.html">$utils.issues($suites).getNewIssuesAmount()</a></td>
+					</tr>
+					<tr>
+						<th scope="row" class="KnownDefectTitle">$messages.getString("knownIssues")</th>
+						<td><a href="knownIssues.html">$utils.issues($suites).getKnownIssuesAmount()</a></td>
+					</tr>
+					<tr>
+						<th scope="row" class="fixedTitle">$messages.getString("fixedIssues")</th>
+						<td><a href="fixedIssues.html">$utils.issues($suites).getFixedIssuesAmount()</a></td>
+					</tr>
+				</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="container">
+			<div class="well well-large">
+				<b>$messages.getString("releaseStatus")</b>
+				<p>$utils.getReleaseStatus($suites)</p>
+			</div>
+		</div>
+		<div class="container">
+			<div class="well well-large">
+				<b>$messages.getString("reportTitleHeader")</b>
+				<p>$meta.reportTitle</p>
+			</div>
+		</div>
+		<div class="container">
+			<div class="well well-large">
+				<b>$messages.getString("reportExecutionHeader")</b>
+				<table class="table">
+				  <tr>
+				    <th>$messages.getString("startTime") : </th>
+				    <th>$utils.checkAttribute($suites).getStartDate()</th> 
+				  </tr>
+				  <tr>
+				    <th>$messages.getString("endTime") : </th>
+				    <th>$utils.checkAttribute($suites).getEndDate()</th> 
+				  </tr>
+				  <tr>
+				    <th>$messages.getString("totalTime") : </th>
+				    <th>$utils.checkAttribute($suites).getExecutionTime()</th> 
+				  </tr>
+				  <tr>
+				    <th>$messages.getString("reportOutput") : </th>
+				    <th>$utils.getReportOutput()</th> 
+				  </tr>
+				  <tr>
+				    <th>$messages.getString("host") : </th>
+				    <th>$meta.user&nbsp;/&nbsp;$meta.javaInfo&nbsp;/&nbsp;$meta.platform</th> 
+				  </tr>
+				</table>
+			</div>
+		</div>
+		<div class="container">
+			<div class="well well-large">
+				<b>$messages.getString("reportInfoHeader")</b>
+				<p>$messages.getString("generatedBy") $messages.getString("atTime") $meta.reportTime $messages.getString("onDate") $meta.reportDate<br/></p>
+			</div>	
+		</div>
+	</div>
+</body>
+</html>
