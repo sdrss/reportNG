@@ -5,6 +5,7 @@ ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framewor
  - HTML layout
  - annotations for known Defects, new and regression features
  - graphs of test execution
+ - various fixes
  
  ## Supported System Properties ##
  * org.uncommons.reportng.title : Used to over-ride the report title.
