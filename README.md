@@ -28,10 +28,10 @@ ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framewor
  ## Usage of @KnownDefect
  
   	@KnownDefect(description="Jira Ticket XXXX")
-	  @Test(description = "Test2")
+	  @Test(description = "Test1")
 	  public void test1() throws Exception {
-         /*Test Code that eventually will produce an Exception*/
-		     throw new Exception("Assert Error3");
+                /*Test Code that eventually will produce an Exception*/
+		throw new Exception("Assert Error");
 	  }
     
   By enabling the "org.uncommons.reportng.knownDefectsMode" the above test will be marked as Known Defect.
@@ -43,20 +43,20 @@ ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framewor
      public class Test1 {
 	   @Test(priority = 1, description = "Test1")
 	   public void test1() throws Exception {
-         /*Test Code*/
+               /*Test Code*/
 	   }
-	   }
+      }
      
    Test Classes with @Feature will be reported as Regression tests.
      
   ## Usage of @NewFeature
  
-     @NewFeature(description = "This is a Feature")
+     @NewFeature(description = "This is a new Feature")
      public class Test1 {
 	   @Test(priority = 1, description = "Test1")
 	   public void test1() throws Exception {
-         /*Test Code*/
+                /*Test Code*/
 	   }
-	   }
+      }
      
    Test Classes with @NewFeature will be reported as new Features tests.
