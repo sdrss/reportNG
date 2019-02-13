@@ -13,18 +13,14 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 	<distributionManagement>
-		<repository>
-			<id>sonatype-nexus-releases</id>
-			<name>OSS Sonatype Release Staging Repository</name>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-		</repository>
-
 		<snapshotRepository>
-			<id>sonatype-nexus-snapshots</id>
-			<name>OSS Sonatype Snapshot Repository</name>
+			<id>ossrh</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-			<uniqueVersion>false</uniqueVersion>
 		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
 	</distributionManagement>
 	<developers>
 		<developer>
