@@ -30,8 +30,8 @@ ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framewor
 		     throw new Exception("Assert Error3");
 	  }
     
-    By enabling the "org.uncommons.reportng.knownDefectsMode" the above test will be marked as Known Defect.
-    If test doesn't throw any Exception then the test will be marked as Fixed.
+  By enabling the "org.uncommons.reportng.knownDefectsMode" the above test will be marked as Known Defect.
+  If test doesn't throw any Exception then the test will be marked as Fixed.
     
  ## Usage of @Feature
  
@@ -43,7 +43,7 @@ ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framewor
 	   }
 	   }
      
-     Test Classes with @Feature will be reported as Regression Features
+   Test Classes with @Feature will be reported as Regression tests.
      
   ## Usage of @NewFeature
  
@@ -55,4 +55,4 @@ ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framewor
 	   }
 	   }
      
-     Test Classes with @NewFeature will be reported as new Features
+   Test Classes with @NewFeature will be reported as new Features tests.
