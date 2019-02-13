@@ -1,12 +1,16 @@
 ## reportNG ##
+
+![](https://github.com/sdrss/test/blob/master/SampleOverview.png)
 ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framework. It is intended as a replacement for the default TestNG HTML report. The default report is comprehensive but is not so easy to understand at-a-glance. ReportNG provides a simple, colour-coded view of the test results.
 
-## Based on ReportNG v1.1.4 this is a new ReportNG with new : ##
- - HTML layout
- - annotations for known Defects, new and regression features
- - graphs of test execution
+## Based on ReportNG v1.1.4 this is a new ReportNG with : ##
+ - new HTML layout
+ - new annotation for Known Defects (expected failures)
+ - new annotations for Regression and New Features Tests
+ - graphs of Test Execution
  - various fixes
  
+
  ## Supported System Properties ##
  * org.uncommons.reportng.title : Used to over-ride the report title.
  * org.uncommons.reportng.show-passed-configuration-methods : Set to "true" or "false" to specify whether the pass Configuration methods (@BeforeClass,@AfterClass etc.) should be included in test output. Failures are reported by default always.
@@ -24,10 +28,10 @@ ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framewor
  ## Usage of @KnownDefect
  
   	@KnownDefect(description="Jira Ticket XXXX")
-	  @Test(description = "Test2")
+	  @Test(description = "Test1")
 	  public void test1() throws Exception {
-         /*Test Code that eventually will produce an Exception*/
-		     throw new Exception("Assert Error3");
+                /*Test Code that eventually will produce an Exception*/
+		throw new Exception("Assert Error");
 	  }
     
   By enabling the "org.uncommons.reportng.knownDefectsMode" the above test will be marked as Known Defect.
@@ -37,22 +41,22 @@ ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framewor
  
      @Feature(description = "This is a Feature")
      public class Test1 {
-	   @Test(priority = 1, description = "Test1")
+	   @Test(description = "Test1")
 	   public void test1() throws Exception {
-         /*Test Code*/
+               /*Test Code*/
 	   }
-	   }
+      }
      
    Test Classes with @Feature will be reported as Regression tests.
      
   ## Usage of @NewFeature
  
-     @NewFeature(description = "This is a Feature")
+     @NewFeature(description = "This is a new Feature")
      public class Test1 {
-	   @Test(priority = 1, description = "Test1")
+	   @Test(description = "Test1")
 	   public void test1() throws Exception {
-         /*Test Code*/
+                /*Test Code*/
 	   }
-	   }
+      }
      
    Test Classes with @NewFeature will be reported as new Features tests.
