@@ -13,7 +13,14 @@ ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framewor
  * org.uncommons.reportng.knownDefectsMode : Set to "true" or "false" to specify if tests with @KnownDefect is marked as Known or Fixed Defect according to test Result.
  * org.uncommons.reportng.logOutputReport : Set to "true" or "false" to specify if a summary of log output is generated and linked in test report.
  
+ ## How to use ReportNG ##
  
+ To use the reporting plug-in, set the listeners attribute of the testng element. The class names for the ReportNG reporters are:
+
+    org.uncommons.reportng.HTMLReporter
+    org.uncommons.reportng.JUnitXMLReporter
+ You may also want to disable the default TestNG reporters by setting the useDefaultListeners attribute to "false".
+
  ## Usage of @KnownDefect
  
   	@KnownDefect(description="Jira Ticket XXXX")
