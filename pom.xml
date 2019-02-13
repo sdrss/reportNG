@@ -26,6 +26,18 @@
 			<uniqueVersion>false</uniqueVersion>
 		</snapshotRepository>
 	</distributionManagement>
+	<developers>
+		<developer>
+			<name>Socrates Sidereas</name>
+			<email>socrates.sidereas@gmail.com</email>
+		</developer>
+	</developers>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -102,4 +114,11 @@
 	</dependencies>
 	<modules>
 	</modules>
+	<description>An HTML/XML Reporting Plug-in for TestNG</description>
+	<scm>
+		<url>https://github.com/sdrss/reportNG</url>
+		<connection>https://github.com/sdrss/reportNG.git</connection>
+		<developerConnection>git@github.com:sdrss/reportNG.git</developerConnection>
+	</scm>
+	<url>https://github.com/sdrss/reportNG</url>
 </project>
