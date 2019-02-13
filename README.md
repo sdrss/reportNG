@@ -1,3 +1,4 @@
+ ![](https://github.com/sdrss/test/blob/master/SampleOverview.png)
 ## reportNG ##
 ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framework. It is intended as a replacement for the default TestNG HTML report. The default report is comprehensive but is not so easy to understand at-a-glance. ReportNG provides a simple, colour-coded view of the test results.
 
@@ -7,6 +8,7 @@ ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framewor
  - graphs of test execution
  - various fixes
  
+
  ## Supported System Properties ##
  * org.uncommons.reportng.title : Used to over-ride the report title.
  * org.uncommons.reportng.show-passed-configuration-methods : Set to "true" or "false" to specify whether the pass Configuration methods (@BeforeClass,@AfterClass etc.) should be included in test output. Failures are reported by default always.
