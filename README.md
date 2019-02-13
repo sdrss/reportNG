@@ -41,7 +41,7 @@ ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framewor
  
      @Feature(description = "This is a Feature")
      public class Test1 {
-	   @Test(priority = 1, description = "Test1")
+	   @Test(description = "Test1")
 	   public void test1() throws Exception {
                /*Test Code*/
 	   }
@@ -53,7 +53,7 @@ ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framewor
  
      @NewFeature(description = "This is a new Feature")
      public class Test1 {
-	   @Test(priority = 1, description = "Test1")
+	   @Test(description = "Test1")
 	   public void test1() throws Exception {
                 /*Test Code*/
 	   }
