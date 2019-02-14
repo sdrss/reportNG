@@ -59,8 +59,8 @@ public class HTMLReporter extends AbstractReporter {
 	public static final String ISSUES_KNOWN = "knownIssues.html";
 	public static final String ISSUES_FIXED = "fixedIssues.html";
 	public static final String RUN_ARGUMENTS = "runArguments.html";
-	public static final String FEATURES_REGRESSION = "featuresRegression.html";
-	public static final String FEATURES_NEW = "featuresNew.html";
+	public static final String REGRESSION = "regression.html";
+	public static final String FEATURES = "newFeatures.html";
 	// JS scripts
 	public static final String CANVAS_FILE = "canvas.js";
 	// Keys
@@ -157,8 +157,8 @@ public class HTMLReporter extends AbstractReporter {
 	private void createFeatures(List<ISuite> suites, File outputDirectory) throws Exception {
 		VelocityContext context = createContext();
 		context.put(SUITES_KEY, suites);
-		generateFile(new File(outputDirectory, FEATURES_REGRESSION), FEATURES_REGRESSION + TEMPLATE_EXTENSION, context);
-		generateFile(new File(outputDirectory, FEATURES_NEW), FEATURES_NEW + TEMPLATE_EXTENSION, context);
+		generateFile(new File(outputDirectory, REGRESSION), REGRESSION + TEMPLATE_EXTENSION, context);
+		generateFile(new File(outputDirectory, FEATURES), FEATURES + TEMPLATE_EXTENSION, context);
 	}
 
 	private void createIssues(List<ISuite> suites, File outputDirectory) throws Exception {

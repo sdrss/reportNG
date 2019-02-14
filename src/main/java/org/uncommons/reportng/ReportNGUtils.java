@@ -179,19 +179,20 @@ public class ReportNGUtils {
 						}
 					}
 					if (ResultStatus.PASS.equals(overAllStatus) || ResultStatus.PASS_WITH_FIXED_ISSUES.equals(overAllStatus)) {
-						responseNewFeatures += "<li>The new feature with description '<a href=\"featuresNew.html#" + pair.getKey()
+						responseNewFeatures += "<li>The new feature with description '<a href=\"" + HTMLReporter.FEATURES + "#" + pair.getKey()
 								+ "\" style=\"color:green\">" + pair.getKey()
 								+ "</a>' has no failures and can be announced !</li>";
 					} else if (ResultStatus.FAIL.equals(overAllStatus)) {
-						responseNewFeatures += "<li>The new feature with description '<a href=\"featuresNew.html#" + pair.getKey() + "\" style=\"color:red\">"
+						responseNewFeatures += "<li>The new feature with description '<a href=\"" + HTMLReporter.FEATURES + "#" + pair.getKey()
+								+ "\" style=\"color:red\">"
 								+ pair.getKey()
 								+ "</a>' has failures and should not be announced !</li>";
 					} else if (ResultStatus.PASS_WITH_KNOWN_ISSUES.equals(overAllStatus)) {
-						responseNewFeatures += "<li>The new feature with description '<a href=\"featuresNew.html#" + pair.getKey()
+						responseNewFeatures += "<li>The new feature with description '<a href=\"" + HTMLReporter.FEATURES + "#" + pair.getKey()
 								+ "\" style=\"color:orange\">" + pair.getKey()
 								+ "</a>' has Known issues and should not be announced !</li>";
 					} else if (ResultStatus.SKIP.equals(overAllStatus)) {
-						responseNewFeatures += "<li>The new feature with description '<a href=\"featuresNew.html#" + pair.getKey()
+						responseNewFeatures += "<li>The new feature with description '<a href=\"" + HTMLReporter.FEATURES + "#" + pair.getKey()
 								+ "\" style=\"color:yellow\">" + pair.getKey()
 								+ "</a>' has skip test cases and should not be announced !</li>";
 					}
