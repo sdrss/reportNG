@@ -64,3 +64,12 @@ Over-rides the default locale for localised messages in generated reports. If no
       }
      
    Test Classes with @NewFeature will be reported as new Features tests.
+
+
+Mvn dependency : 
+      
+      <dependency>
+	   <groupId>sdrss</groupId>
+	   <artifactId>reportng</artifactId>
+	   <version>2.0.1</version>
+      <dependency>
