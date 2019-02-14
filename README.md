@@ -10,7 +10,7 @@ ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framewor
  - graphs of Test Execution
  - various fixes
  
- [See a sample report](https://github.com/sdrss/test/blob/master/reportNG_sample/index.html)
+ [See a sample report](https://github.com/sdrss/test/blob/master/reportNG_sample)
 
  ## Supported System Properties ##
  * org.uncommons.reportng.escape-output : Used to turn off escaping for log output in the reports (not recommended). The default is for output to be escaped, since this prevents characters such as '<' and '&' from causing mark-up problems. If escaping is turned off, then log text is included as raw HTML/XML, which allows for the insertion of hyperlinks and other nasty hacks.
