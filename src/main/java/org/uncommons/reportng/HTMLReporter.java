@@ -39,7 +39,7 @@ public class HTMLReporter extends AbstractReporter {
 	public static final String LOG_OUTPUT_REPORT = "org.uncommons.reportng.logOutputReport";
 	public static final String KWOWNDEFECTSMODE = "org.uncommons.reportng.knownDefectsMode";
 	public static final String EXTERNAL_LINKS = "org.uncommons.reportng.externalLinks";
-
+	public static final String ESCAPE_OUTPUT = "org.uncommons.reportng.escape-output";
 	public static final String TEMPLATES_PATH = "org/uncommons/reportng/templates/html/";
 	public static final String SKIP_EXECUTION = "SKIP_EXECUTION";
 
