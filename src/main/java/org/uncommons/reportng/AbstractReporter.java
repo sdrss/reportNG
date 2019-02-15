@@ -77,10 +77,6 @@ public abstract class AbstractReporter extends TestListenerAdapter implements IR
 		return context;
 	}
 
-	/**
-	 * Generate the specified output file by merging the specified Velocity
-	 * template with the supplied context.
-	 */
 	protected void generateFile(File file, String templateName, VelocityContext context) throws Exception {
 		Writer writer = new BufferedWriter(new FileWriter(file));
 		try {

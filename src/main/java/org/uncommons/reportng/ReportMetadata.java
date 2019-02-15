@@ -92,28 +92,14 @@ public final class ReportMetadata {
 		return System.getProperty(OUTPUT_KEY, "true").equalsIgnoreCase("true");
 	}
 
-	/**
-	 * If the XML dialect has been set to "junit", we will render all skipped
-	 * tests as failed tests in the XML. Otherwise we use TestNG's extended
-	 * version of the XML format that allows for "<skipped>" elements.
-	 */
 	public boolean allowSkippedTestsInXML() {
 		return !System.getProperty(XML_DIALECT_KEY, "testng").equalsIgnoreCase("junit");
 	}
 
-	/**
-	 * @return True if Velocity should generate a log file, false otherwise.
-	 */
 	public boolean shouldGenerateVelocityLog() {
 		return System.getProperty(VELOCITY_LOG_KEY, "false").equalsIgnoreCase("true");
 	}
 
-	/**
-	 * @return The user account used to run the tests and the host name of the
-	 *         test machine.
-	 * @throws UnknownHostException
-	 *             If there is a problem accessing the machine's host name.
-	 */
 	public String getUser() throws UnknownHostException {
 		String user = System.getProperty("user.name");
 		String host = InetAddress.getLocalHost().getHostName();
@@ -128,10 +114,6 @@ public final class ReportMetadata {
 		return String.format("%s %s (%s)", System.getProperty("os.name"), System.getProperty("os.version"), System.getProperty("os.arch"));
 	}
 
-	/**
-	 * @return The locale specified by the System properties, or the platform
-	 *         default locale if none is specified.
-	 */
 	public Locale getLocale() {
 		if (System.getProperties().containsKey(LOCALE_KEY)) {
 			String locale = System.getProperty(LOCALE_KEY);

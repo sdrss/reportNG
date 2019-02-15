@@ -718,12 +718,6 @@ public class ReportNGUtils {
 		return "";
 	}
 
-	/**
-	 * Is there a Known Defect Description
-	 * 
-	 * @param result
-	 * @return
-	 */
 	public boolean hasKnownDefectsDescription(ITestResult result) {
 		if (result.getAttribute(TEST) != null) {
 			if (KNOWN.equalsIgnoreCase(result.getAttribute(TEST).toString()) || FIXED.equalsIgnoreCase(result.getAttribute(TEST).toString())) {
@@ -733,12 +727,6 @@ public class ReportNGUtils {
 		return false;
 	}
 
-	/**
-	 * Get Known Defect Description
-	 * 
-	 * @param result
-	 * @return
-	 */
 	public String getKnownDefectDescription(ITestResult result) {
 		Annotation[] annotation = getDeclaredAnnotations(result);
 		boolean contains = false;
@@ -774,12 +762,6 @@ public class ReportNGUtils {
 		return false;
 	}
 
-	/**
-	 * Parse Known Defect Description
-	 * 
-	 * @param text
-	 * @return
-	 */
 	private static String getDescription(String text) {
 		try {
 			String[] splitted = text.split("=");
@@ -853,28 +835,15 @@ public class ReportNGUtils {
 		return result.getMethod().getGroupsDependedUpon().length > 0;
 	}
 
-	/**
-	 * @return A comma-separated string listing all dependent groups. Returns an
-	 *         empty string it there are no dependent groups.
-	 */
 	public String getDependentGroups(ITestResult result) {
 		String[] groups = result.getMethod().getGroupsDependedUpon();
 		return commaSeparate(Arrays.asList(groups));
 	}
 
-	/**
-	 * @param result
-	 *            The test result to be checked for dependent methods.
-	 * @return True if this test was dependent on any methods, false otherwise.
-	 */
 	public boolean hasDependentMethods(ITestResult result) {
 		return result.getMethod().getMethodsDependedUpon().length > 0;
 	}
 
-	/**
-	 * @return A comma-separated string listing all dependent methods. Returns
-	 *         an empty string it there are no dependent methods.
-	 */
 	public String getDependentMethods(ITestResult result) {
 		String[] methods = result.getMethod().getMethodsDependedUpon();
 		return commaSeparate(Arrays.asList(methods));
@@ -1520,7 +1489,8 @@ public class ReportNGUtils {
 	 * Pass : Pass - Known
 	 * 
 	 * @param iTestContext
-	 * @return
+	 *            : textContext
+	 * @return IResultMap : Result Map
 	 */
 	public static IResultMap getPassed(ITestContext iTestContext) {
 		iTestContext = ReporterHelper.updateResults(iTestContext);
@@ -1541,12 +1511,6 @@ public class ReportNGUtils {
 		return temp;
 	}
 
-	/**
-	 * Fail : Failed - Known
-	 * 
-	 * @param iTestContext
-	 * @return
-	 */
 	public static IResultMap getFailed(ITestContext iTestContext) {
 		iTestContext = ReporterHelper.updateResults(iTestContext);
 		IResultMap temp = new ResultMap();
@@ -1570,12 +1534,6 @@ public class ReportNGUtils {
 		return iTestContext.getSkippedTests();
 	}
 
-	/**
-	 * Known : Fail with Known
-	 * 
-	 * @param iTestContext
-	 * @return
-	 */
 	public static IResultMap getKnownDefect(ITestContext iTestContext) {
 		iTestContext = ReporterHelper.updateResults(iTestContext);
 		IResultMap temp = new ResultMap();
@@ -1595,12 +1553,6 @@ public class ReportNGUtils {
 		return temp;
 	}
 
-	/**
-	 * Fixed : Pass with Known
-	 * 
-	 * @param iTestContext
-	 * @return
-	 */
 	public static IResultMap getFixed(ITestContext iTestContext) {
 		iTestContext = ReporterHelper.updateResults(iTestContext);
 		IResultMap temp = new ResultMap();
