@@ -3,8 +3,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<name>ReportNG</name>
-	<groupId>org.uncommons.reportng.reportng</groupId>
-	<artifactId>report</artifactId>
+	<groupId>com.github.sdrss</groupId>
+	<artifactId>reportng</artifactId>
 	<packaging>jar</packaging>
 	<version>2.0.1</version>
 	<properties>
