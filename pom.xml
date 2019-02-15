@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<name>ReportNG</name>
-	<groupId>org.uncommons</groupId>
+	<groupId>com.github.sdrss</groupId>
 	<artifactId>reportng</artifactId>
 	<packaging>jar</packaging>
 	<version>2.0.1</version>
@@ -12,25 +12,35 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
-	<scm>
-		<url>https://github.com/SocratesSid/reportNG.git</url>
-		<connection>scm:git:git@github.com:SocratesSid/reportNG.git</connection>
-		<developerConnection>scm:git:git@github.com:SocratesSid/reportNG.git</developerConnection>
-		<tag>HEAD</tag>
-	</scm>
 	<distributionManagement>
-		<repository>
-			<id>sonatype-nexus-releases</id>
-			<name>OSS Sonatype Release Staging Repository</name>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-		</repository>
 		<snapshotRepository>
-			<id>sonatype-nexus-snapshots</id>
-			<name>OSS Sonatype Snapshot Repository</name>
+			<id>ossrh</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-			<uniqueVersion>false</uniqueVersion>
 		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
 	</distributionManagement>
+	<developers>
+		<developer>
+			<name>Socrates Sidereas</name>
+			<email>socrates.sidereas@gmail.com</email>
+		</developer>
+	</developers>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+	<description>An HTML/XML Reporting Plug-in for TestNG</description>
+	<scm>
+		<url>https://github.com/sdrss/reportNG</url>
+		<connection>https://github.com/sdrss/reportNG.git</connection>
+		<developerConnection>git@github.com:sdrss/reportNG.git</developerConnection>
+	</scm>
+	<url>https://github.com/sdrss/reportNG</url>
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -58,6 +68,43 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-deploy-plugin</artifactId>
 					<version>2.7</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>2.2.1</version>
+					<executions>
+						<execution>
+							<id>attach-sources</id>
+							<goals>
+								<goal>jar-no-fork</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.sonatype.plugins</groupId>
+					<artifactId>nexus-staging-maven-plugin</artifactId>
+					<version>1.6.7</version>
+					<extensions>true</extensions>
+					<configuration>
+						<serverId>ossrh</serverId>
+						<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+						<autoReleaseAfterClose>false</autoReleaseAfterClose>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.9.1</version>
+					<executions>
+						<execution>
+							<id>attach-javadocs</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -105,6 +152,4 @@
 			<version>4.0</version>
 		</dependency>
 	</dependencies>
-	<modules>
-	</modules>
 </project>
