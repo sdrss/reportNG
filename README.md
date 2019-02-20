@@ -2,16 +2,16 @@
 
 ![](https://github.com/sdrss/test/blob/master/SampleOverview.png)
  
-ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framework. It is intended as a replacement for the default TestNG HTML report. The default report is comprehensive but is not so easy to understand at-a-glance. ReportNG provides a simple, colour-coded view of the test results.
+ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framework. It is intended as a replacement for the default TestNG HTML report.
 
-## Based on ReportNG v1.1.4 this is a new ReportNG with : ##
+## Based on ReportNG v1.1.4 this is a ReportNG with : ##
  - new HTML layout
  - new annotation for Known Defects (expected failures)
  - new annotations for Regression and New Features Tests
  - graphs of Test Execution
- - various fixes
+ - and various fixes
  
-  See a sample report [here](https://sdrss.github.io/test/)
+See a sample report [here](https://sdrss.github.io/test/)
   
  ## Supported System Properties ##
  * org.uncommons.reportng.escape-output : Used to turn off escaping for log output in the reports (not recommended). The default is for output to be escaped, since this prevents characters such as '<' and '&' from causing mark-up problems. If escaping is turned off, then log text is included as raw HTML/XML, which allows for the insertion of hyperlinks and other nasty hacks.
@@ -20,7 +20,7 @@ ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framewor
  * org.uncommons.reportng.knownDefectsMode : Set to "true" or "false" to specify if tests with @KnownDefect is marked as Known or Fixed Defect according to test Result.
  * org.uncommons.reportng.logOutputReport : Set to "true" or "false" to specify if a summary of log output is generated and linked in test report.
  * org.uncommons.reportng.locale
-Over-rides the default locale for localised messages in generated reports. If not specified, the JVM default locale is used. If there are no translations available for the selected locale the default English messages are used instead. This property should be set to an ISO language code (e.g. "en" or "fr") or to an ISO language code and an ISO country code separated by an underscore (e.g. "en_US" or "fr_CA"). ReportNG 1.1 includes translations for the following languages: English, French and Portuguese. If you would like to contribute translations for other languages, please open an issue in the issue tracker and attach a translated version of the properties file.
+Over-rides the default locale for localised messages in generated reports. If not specified, the JVM default locale is used. If there are no translations available for the selected locale the default English messages are used instead. This property should be set to an ISO language code (e.g. "en" or "fr") or to an ISO language code and an ISO country code separated by an underscore (e.g. "en_US" or "fr_CA").
  
  ## How to use ReportNG ##
  
