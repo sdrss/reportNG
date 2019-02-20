@@ -1,23 +1,13 @@
-<<<<<<< HEAD
+
 # Eclipse n IDE
-
 .project
-
 .classpath
-
 .buildpath
-
 .settings
-
 .iml
-
 *.tmp
-
 /target/
-
 /report/
-
 /test-output
-=======
 /target/
->>>>>>> refs/remotes/origin/develop
+
