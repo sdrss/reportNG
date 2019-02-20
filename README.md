@@ -6,8 +6,8 @@ ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framewor
 
 ## Based on ReportNG v1.1.4 this is a ReportNG with : ##
  - new HTML layout
- - new annotation for Known Defects (expected failures)
- - new annotations for Regression and New Features Tests
+ - new semantics for Known and Fixed issues
+ - summary report for Regression and New Features tests
  - graphs of Test Execution
  - and various fixes
  
