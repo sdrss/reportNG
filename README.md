@@ -31,19 +31,23 @@ Over-rides the default locale for localised messages in generated reports. If no
  You may also want to disable the default TestNG reporters by setting the useDefaultListeners attribute to "false".
 
  ## Usage of @KnownDefect
- 
-  	@KnownDefect(description="Jira Ticket XXXX")
-	  @Test(description = "Test1")
-	  public void test1() throws Exception {
-                /*Test Code that eventually will produce an Exception*/
-		throw new Exception("Assert Error");
-	  }
+
+    import org.uncommons.reportng.annotations.KnownDefect;
+    
+    @KnownDefect(description="Jira Ticket XXXX")
+    @Test(description = "Test1")
+    public void test1() throws Exception {
+    	/*Test Code that eventually will produce an Exception*/
+	new Exception("Assert Error");
+    }
     
   By enabling the "org.uncommons.reportng.knownDefectsMode" the above test will be marked as Known Defect.
   If test doesn't throw any Exception then the test will be marked as Fixed.
     
  ## Usage of @Feature
  
+     import org.uncommons.reportng.annotations.Feature;
+     
      @Feature(description = "This is a Feature")
      public class Test1 {
 	   @Test(description = "Test1")
@@ -56,6 +60,8 @@ Over-rides the default locale for localised messages in generated reports. If no
      
   ## Usage of @NewFeature
  
+     import org.uncommons.reportng.annotations.NewFeature;
+     
      @NewFeature(description = "This is a new Feature")
      public class Test1 {
 	   @Test(description = "Test1")
