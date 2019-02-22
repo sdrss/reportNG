@@ -37,8 +37,8 @@ Over-rides the default locale for localised messages in generated reports. If no
     @KnownDefect(description="Jira Ticket XXXX")
     @Test(description = "Test1")
     public void test1() throws Exception {
-    	/*Test Code that eventually will produce an Exception*/
-	new Exception("Assert Error");
+        /*Test Code that eventually will produce an Exception*/
+	     new Exception("Assert Error");
     }
     
   By enabling the "org.uncommons.reportng.knownDefectsMode" the above test will be marked as Known Defect.
@@ -46,29 +46,30 @@ Over-rides the default locale for localised messages in generated reports. If no
     
  ## Usage of @Feature
  
-     import org.uncommons.reportng.annotations.Feature;
-     
-     @Feature(description = "This is a Feature")
-     public class Test1 {
-	   @Test(description = "Test1")
-	   public void test1() throws Exception {
-               /*Test Code*/
-	   }
-      }
+    import org.uncommons.reportng.annotations.Feature;
+    
+    @Feature(description = "This is a Feature")
+    public class Test1 {
+    	@Test(description = "Test1")
+    	public void test1() throws Exception {
+		/*Test Code*/
+	}
+    }
      
    Test Classes with @Feature will be reported as Regression tests.
      
   ## Usage of @NewFeature
- 
-     import org.uncommons.reportng.annotations.NewFeature;
+    
+    import org.uncommons.reportng.annotations.NewFeature;
      
-     @NewFeature(description = "This is a new Feature")
-     public class Test1 {
-	   @Test(description = "Test1")
-	   public void test1() throws Exception {
-                /*Test Code*/
-	   }
-      }
+    @NewFeature(description = "This is a new Feature")
+    public class Test1 {
+    	
+	@Test(description = "Test1")
+	public void test1() throws Exception {
+        	/*Test Code*/
+	}
+    }
      
    Test Classes with @NewFeature will be reported as new Features tests.
 
