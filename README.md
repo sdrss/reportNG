@@ -80,4 +80,4 @@ Over-rides the default locale for localised messages in generated reports. If no
 	   <groupId>com.github.sdrss</groupId>
 	   <artifactId>reportng</artifactId>
 	   <version>2.0.1</version>
-      <dependency>
+      </dependency>
