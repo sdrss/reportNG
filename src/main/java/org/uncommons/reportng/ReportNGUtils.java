@@ -632,7 +632,7 @@ public class ReportNGUtils {
 		String classNames = "";
 		String separateLines = "";
 		if (list.size() > 1) {
-			separateLines = "\n";
+			separateLines = "<br>";
 		}
 		for (XmlClass temp : list) {
 			classNames += temp.getName() + separateLines;
