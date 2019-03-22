@@ -3,49 +3,48 @@
 ## the results for the class are in a variable called $classResults.  $id is a page
 ## scope variable that is used to assign unique identifiers to divs.
 
-#set ($counter=0)
 #foreach ($testResult in $classResults)
 	#set ($testInstanceName="")
 	#if ($testResult.getStatus()==1 && $utils.hasKnownDefect($testResult))
 		<tr>
-			<td class="time">$testResult.startMillis+$counter</td>
-			<td class="header knownDefects">$testResult.name$testInstanceName</td>
-			<th colspan="3" class="header knownDefects"> <a href="javascript:toggleElement('$testResult.startMillis+$counter', 'block')" title="Click to expand/collapse">$messages.getString("knownDefects")</a></th>
+			<td class="time">$testResult.startMillis</td>
+			<td class="header knownDefects"><a href="javascript:toggleElement('$testResult.startMillis', 'block')" title="Click to expand/collapse">$messages.getString("knownDefects")</a></td>
+			<td class="header knownDefects" colspan="3" >$messages.getString("class"):$testResult.InstanceName $messages.getString("method"):$testResult.name$testInstanceName</td>
 	    </tr>
 	#else
 		#if ($testResult.getStatus()==1 && $utils.hasFixed($testResult))
 			<tr>
-				<td class="time">$testResult.startMillis+$counter</td>
-				<td class="header fixed">$testResult.name$testInstanceName</td>
-				<th colspan="3" class="header fixed"> <a href="javascript:toggleElement('$testResult.startMillis+$counter', 'block')" title="Click to expand/collapse">$messages.getString("fixed")</a></th>
+				<td class="time">$testResult.startMillis</td>
+				<td class="header fixed"><a href="javascript:toggleElement('$testResult.startMillis', 'block')" title="Click to expand/collapse">$messages.getString("fixed")</a></td>
+				<td class="header fixed" colspan="3" >$messages.getString("class"):$testResult.InstanceName $messages.getString("method"):$testResult.name$testInstanceName</td>
 		    </tr>
 	    #else
 	    	#if ($testResult.getStatus()==1)
 			    <tr>
-					<td class="time">$testResult.startMillis+$counter</td>
-					<td class="header passed">$testResult.name$testInstanceName</td>
-					<th colspan="3" class="header passed"> <a href="javascript:toggleElement('$testResult.startMillis+$counter', 'block')" title="Click to expand/collapse">$messages.getString("passedTests")</a></th>
+					<td class="time">$testResult.startMillis</td>
+					<td class="header passed"><a href="javascript:toggleElement('$testResult.startMillis', 'block')" title="Click to expand/collapse">$messages.getString("passedTests")</a></td>
+					<td class="header passed" colspan="3" >$messages.getString("class"):$testResult.InstanceName $messages.getString("method"):$testResult.name$testInstanceName</td>
 			    </tr>
 		    #end
 	    #end
 	#end
 	#if ($testResult.getStatus()==2)
 		<tr>
-			<td class="time">$testResult.startMillis+$counter</td>
-			<td class="header failed">$testResult.name$testInstanceName</td>
-			<th colspan="3" class="header failed">$messages.getString("failedTests")</th>
+			<td class="time">$testResult.startMillis</td>
+			<td class="header failed">$messages.getString("failedTests")</td>
+			<td class="header failed" colspan="3">$messages.getString("class"):$testResult.InstanceName $messages.getString("method"):$testResult.name$testInstanceName</td>
 	    </tr>
 	#end
 	#if ($testResult.getStatus()==3)
 		<tr>
-			<td class="time">$testResult.startMillis+$counter</td>
-			<td class="header skipped">$testResult.name$testInstanceName</td>
-			<th colspan="3" class="header skipped">$messages.getString("skippedTests")</th>
+			<td class="time">$testResult.startMillis</td>
+			<td class="header skipped">$messages.getString("skippedTests")</td>
+			<td class="header skipped" colspan="3" >$messages.getString("class"):$testResult.InstanceName $messages.getString("method"):$testResult.name$testInstanceName</td>
 	  	</tr>
 	#end
 	
 	<tr>
-		<td class="time">$testResult.startMillis+$counter</td>
+		<td class="time">$testResult.startMillis</td>
 		  	<td class="methodTest">
 			    #if ($testResult.testName)
 			    	#set ($testInstanceName = "($testResult.testName)")
@@ -53,7 +52,6 @@
 			    #if ($testResult.testName)
 			    	#set ($testInstanceName = "($testResult.testName)")
 			    #end
-			    
 			    #if ($utils.hasDescription($testResult))
 			    	<span class="description"><b>Description: </b>$testResult.method.description</span><br>
 			    #end
@@ -70,13 +68,13 @@
 		  	</td>
 	  		<td class="result">
 		  		#if ($testResult.getStatus()==1 && $utils.hasKnownDefects($testResult))
-		  			<div class="stackTrace" id="$testResult.startMillis+$counter">
+		  			<div class="stackTrace" id="$testResult.startMillis">
 		  		#else
 		  			#if ($testResult.getStatus()==1 && $utils.hasFixed($testResult))
-		  				<div class="stackTrace" id="$testResult.startMillis+$counter">
+		  				<div class="stackTrace" id="$testResult.startMillis">
 		  			#else
 		  				#if ($testResult.getStatus()==1)
-		  					<div class="stackTrace" id="$testResult.startMillis+$counter">
+		  					<div class="stackTrace" id="$testResult.startMillis">
 		  				#end
 		  			#end
 				#end

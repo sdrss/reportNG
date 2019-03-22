@@ -26,8 +26,8 @@
         </ul>
 	<a href="#pageSubmenuFeatures" class="list-group-item" data-toggle="collapse" aria-expanded="false"><span class="glyphicon glyphicon-th-large"></span>&nbsp;&nbsp;$messages.getString("features")</a>
 		<ul class="collapse list-unstyled" id="pageSubmenuFeatures">
-			<a href="regression.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("regression")($utils.issues($suites).getFeature().size())</a>
-        	<a href="newFeatures.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("newFeatures")($utils.issues($suites).getNewFeature().size())</a>
+			<a href="regression.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("regression")&nbsp; ($utils.issues($suites).getFeature().size())</a>
+        	<a href="newFeatures.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("newFeatures")&nbsp; ($utils.issues($suites).getNewFeature().size())</a>
         </ul>
     <a href="runArguments.html" target="overview" class="list-group-item"><span class="glyphicon glyphicon-random"></span>&nbsp;&nbsp;$messages.getString("runArguments")</a>
     <a href="#pageSubmenu" class="list-group-item" data-toggle="collapse" aria-expanded="false"><span class="glyphicon glyphicon-equalizer"></span>&nbsp;&nbsp;$messages.getString("graphs")</a>

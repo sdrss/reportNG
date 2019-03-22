@@ -3,33 +3,32 @@
 ## the results for the class are in a variable called $classResults.  $id is a page
 ## scope variable that is used to assign unique identifiers to divs.
 
-#set ($counter=0)
 #foreach ($testResult in $classResults)
 		#set ($testInstanceName="")
 		#if ($testResult.getStatus()==1)
 			<tr>
-				<td class="time">$testResult.startMillis+$counter</td>
-				<td class="header passedConfig">$testResult.name$testInstanceName</td>
-				<th colspan="3" class="header passedConfig"><a href="javascript:toggleElement('passed-$testResult.startMillis+$counter', 'block')" title="Click to expand/collapse">$messages.getString("passedConfigurations")</a></th>
+				<td class="time">$testResult.startMillis</td>
+				<th colspan="3" class="header passedConfig"><a href="javascript:toggleElement('passed-$testResult.startMillis', 'block')" title="Click to expand/collapse">$messages.getString("passedConfigurations")</a></th>
+				<td class="header passedConfig">$messages.getString("class"):$testResult.InstanceName $messages.getString("method"):$testResult.name$testInstanceName</td>
 			</tr>
 		#end
 		#if ($testResult.getStatus()==2)
 			<tr>
-			    <td class="time">$testResult.startMillis+$counter</td>
-			    <td class="failedConfig">$testResult.name$testInstanceName</td>
-			    <th colspan="3" class="header failedConfig"><a href="javascript:toggleElement('passed-$testResult.startMillis+$counter', 'block')" title="Click to expand/collapse">$messages.getString("failedConfiguration")</a></th>
+			    <td class="time">$testResult.startMillis</td>
+			    <th colspan="3" class="header failedConfig"><a href="javascript:toggleElement('passed-$testResult.startMillis', 'block')" title="Click to expand/collapse">$messages.getString("failedConfiguration")</a></th>
+			    <td class="failedConfig">$messages.getString("class"):$testResult.InstanceName $messages.getString("method"):$testResult.name$testInstanceName</td>
 		    </tr>
 		#end
 		#if ($testResult.getStatus()==3)
 			<tr>
-			    <td class="time">$testResult.startMillis+$counter</td>
-			    <td class="skippedConfig">$testResult.name$testInstanceName</td>
-			    <th colspan="3" class="header skippedConfig"><a href="javascript:toggleElement('passed-$testResult.startMillis+$counter', 'block')" title="Click to expand/collapse">$messages.getString("skippedConfiguration")</a></th>
+			    <td class="time">$testResult.startMillis</td>
+			    <th colspan="3" class="header skippedConfig"><a href="javascript:toggleElement('passed-$testResult.startMillis', 'block')" title="Click to expand/collapse">$messages.getString("skippedConfiguration")</a></th>
+			    <td class="skippedConfig">$messages.getString("class"):$testResult.InstanceName $messages.getString("method"):$testResult.name$testInstanceName</td>
 		    </tr>
 		#end
 			
 		<tr>
-			<td class="time">$testResult.startMillis+$counter</td>
+			<td class="time">$testResult.startMillis</td>
 			<td class="methodConfiguration">
 				#if ($testResult.testName)
 					#set ($testInstanceName = "($testResult.testName)")
@@ -59,7 +58,7 @@
 				## Show logger output for the test.
 			    #set ($output = $utils.getTestOutput($testResult))
 			    #if ($output.size() > 0)
-			    	<div class="stackTrace" id="passed-$testResult.startMillis+$counter">
+			    	<div class="stackTrace" id="passed-$testResult.startMillis">
 			      	#foreach( $line in $output )
 				    	#if ($meta.shouldEscapeOutput())
 				        	$utils.escapeHTMLString($line)<br />
