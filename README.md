@@ -22,7 +22,7 @@ See a sample report [here](https://sdrss.github.io/test/)
  * org.uncommons.reportng.locale
 Over-rides the default locale for localised messages in generated reports. If not specified, the JVM default locale is used. If there are no translations available for the selected locale the default English messages are used instead. This property should be set to an ISO language code (e.g. "en" or "fr") or to an ISO language code and an ISO country code separated by an underscore (e.g. "en_US" or "fr_CA").
  * org.uncommons.reportng.skip.execution
- You can set this value "true" whenever you need to skip the rest testNG execution. You can use this system property as 'fail fast mechanism'. You don't have to wait the completion of all of testNG tests just to see for example that you can't login to your testing environment.
+ You can set this value "true" whenever you need to skip the rest testNG execution. You can use this system property as 'fail fast mode'. You don't have to wait the completion of all of testNG tests just to see for example that you can't login to your testing environment.
  ## How to use ReportNG ##
  
  To use the reporting plug-in, set the listeners attribute of the testng element. The class names for the ReportNG reporters are:
@@ -74,11 +74,20 @@ Over-rides the default locale for localised messages in generated reports. If no
      
    Test Classes with @NewFeature will be reported as new Features tests.
 
-  ## Usage of Fail Fast
-   At any point but it’s advisable to be the first case in your suite, you can set this system variable to true and skip the rest of  test execution :
+  ## Usage of Fail Fast Mode
+   At any point but it’s advisable to be the first case in suite xml, you can set this system variable to "true" and skip the rest of  test execution, for example :
    
-   System.setProperty("org.uncommons.reportng.skip.execution","true")
-  
+    @Test(description = "Fail Fast Test")
+    public void test1() throws Exception {
+        try{
+	   loginToMyTestEnv();
+	}catch(Exception ex){
+	  System.setProperty("org.uncommons.reportng.skip.execution","true");
+	}
+    }
+    
+  By enabling this system property all of the rest testNG tests will be skipped and the genareted report will have on overview page the root cause of the failure providing the message "Skip Execution due to Fail Fast Mode"
+     
  ## Mvn dependency : 
       
       <dependency>
