@@ -21,7 +21,8 @@ See a sample report [here](https://sdrss.github.io/test/)
  * org.uncommons.reportng.logOutputReport : Set to "true" or "false" to specify if a summary of log output is generated and linked in test report.
  * org.uncommons.reportng.locale
 Over-rides the default locale for localised messages in generated reports. If not specified, the JVM default locale is used. If there are no translations available for the selected locale the default English messages are used instead. This property should be set to an ISO language code (e.g. "en" or "fr") or to an ISO language code and an ISO country code separated by an underscore (e.g. "en_US" or "fr_CA").
- 
+ * org.uncommons.reportng.skip.execution
+ You can set this value "true" whenever you need to skip the rest testNG execution. You can use this system property as 'fail fast mechanism'. You don't have to wait the completion of all of testNG tests just to see for example that you can't login to your testing environment.
  ## How to use ReportNG ##
  
  To use the reporting plug-in, set the listeners attribute of the testng element. The class names for the ReportNG reporters are:
@@ -73,11 +74,15 @@ Over-rides the default locale for localised messages in generated reports. If no
      
    Test Classes with @NewFeature will be reported as new Features tests.
 
-
+  ## Usage of Fail Fast
+   At any point but it’s advisable to be the first case in your suite, you can set this system variable to true and skip the rest of  test execution :
+   
+   System.setProperty("org.uncommons.reportng.skip.execution","true")
+  
  ## Mvn dependency : 
       
       <dependency>
 	   <groupId>com.github.sdrss</groupId>
 	   <artifactId>reportng</artifactId>
-	   <version>2.1.0</version>
+	   <version>2.2.0</version>
       </dependency>
