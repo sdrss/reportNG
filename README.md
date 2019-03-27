@@ -83,6 +83,7 @@ Over-rides the default locale for localised messages in generated reports. If no
 	   loginToMyTestEnv();
 	}catch(Exception ex){
 	  System.setProperty("org.uncommons.reportng.skip.execution","true");
+	  throw ex;
 	}
     }
     
