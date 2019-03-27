@@ -113,7 +113,7 @@ public class ReportNGUtils {
 	public static String getReleaseStatus(List<ISuite> suites) {
 		String status = "";
 		if ("true".equalsIgnoreCase(System.getProperty(HTMLReporter.SKIP_EXECUTION))) {
-			status += "<b><font color=\"red\">Skip Execution due to \"Fail Fast Mode\".</font></b><br>";
+			status += "<b><font color=\"red\">Skip Execution due to \"Skip Execution Mode\".</font></b><br>";
 		} else {
 			boolean releaseRegression = true;
 			String responseStatus = "";
