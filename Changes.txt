@@ -1,4 +1,4 @@
-V2.2.0 * Skip Execution Option
+V2.2.0 * Skip Execution Mode
        * Bug Fixes
 V2.1.0 * Style sheet Changes
        * In case of Tests with multi classes report every class in Class.results.html file
