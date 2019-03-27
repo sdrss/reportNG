@@ -40,8 +40,9 @@ public class HTMLReporter extends AbstractReporter {
 	public static final String KWOWNDEFECTSMODE = "org.uncommons.reportng.knownDefectsMode";
 	public static final String EXTERNAL_LINKS = "org.uncommons.reportng.externalLinks";
 	public static final String ESCAPE_OUTPUT = "org.uncommons.reportng.escape-output";
+	public static final String SHOW_PASSED_CONFIGURATIONS = "org.uncommons.reportng.show-passed-configuration-methods";
 	public static final String TEMPLATES_PATH = "org/uncommons/reportng/templates/html/";
-	public static final String SKIP_EXECUTION = "SKIP_EXECUTION";
+	public static final String SKIP_EXECUTION = "org.uncommons.reportng.skip.execution";
 
 	// HTML pages
 	public static final String INDEX_FILE = "index.html";

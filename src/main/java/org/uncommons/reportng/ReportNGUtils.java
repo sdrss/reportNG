@@ -792,7 +792,7 @@ public class ReportNGUtils {
 
 	public List<ITestResult> getPassedConfigurations(IClass classTest, Map<IClass, List<ITestResult>> passedConfigurations) {
 		List<ITestResult> newmethods = new ArrayList<ITestResult>();
-		if ("true".equals(System.getProperty("org.uncommons.reportng.show-passed-configuration-methods"))) {
+		if ("true".equals(System.getProperty(HTMLReporter.SHOW_PASSED_CONFIGURATIONS))) {
 			Method[] methodsInClass = classTest.getRealClass().getDeclaredMethods();
 			List<ITestResult> methods = passedConfigurations.get(classTest);
 			for (ITestResult temp : methods) {

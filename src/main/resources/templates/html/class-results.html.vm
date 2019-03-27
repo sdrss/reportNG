@@ -9,21 +9,21 @@
 		<tr>
 			<td class="time">$testResult.startMillis</td>
 			<td class="header knownDefects"><a href="javascript:toggleElement('$testResult.startMillis', 'block')" title="Click to expand/collapse">$messages.getString("knownDefects")</a></td>
-			<td class="header knownDefects" colspan="3" >$messages.getString("class"):$testResult.InstanceName $messages.getString("method"):$testResult.name$testInstanceName</td>
+			<td class="header knownDefects" colspan="3">$messages.getString("class"):$testResult.InstanceName $messages.getString("method"):$testResult.name$testInstanceName</td>
 	    </tr>
 	#else
 		#if ($testResult.getStatus()==1 && $utils.hasFixed($testResult))
 			<tr>
 				<td class="time">$testResult.startMillis</td>
 				<td class="header fixed"><a href="javascript:toggleElement('$testResult.startMillis', 'block')" title="Click to expand/collapse">$messages.getString("fixed")</a></td>
-				<td class="header fixed" colspan="3" >$messages.getString("class"):$testResult.InstanceName $messages.getString("method"):$testResult.name$testInstanceName</td>
+				<td class="header fixed" colspan="3">$messages.getString("class"):$testResult.InstanceName $messages.getString("method"):$testResult.name$testInstanceName</td>
 		    </tr>
 	    #else
 	    	#if ($testResult.getStatus()==1)
 			    <tr>
 					<td class="time">$testResult.startMillis</td>
 					<td class="header passed"><a href="javascript:toggleElement('$testResult.startMillis', 'block')" title="Click to expand/collapse">$messages.getString("passedTests")</a></td>
-					<td class="header passed" colspan="3" >$messages.getString("class"):$testResult.InstanceName $messages.getString("method"):$testResult.name$testInstanceName</td>
+					<td class="header passed" colspan="3">$messages.getString("class"):$testResult.InstanceName $messages.getString("method"):$testResult.name$testInstanceName</td>
 			    </tr>
 		    #end
 	    #end
@@ -39,7 +39,7 @@
 		<tr>
 			<td class="time">$testResult.startMillis</td>
 			<td class="header skipped">$messages.getString("skippedTests")</td>
-			<td class="header skipped" colspan="3" >$messages.getString("class"):$testResult.InstanceName $messages.getString("method"):$testResult.name$testInstanceName</td>
+			<td class="header skipped" colspan="3">$messages.getString("class"):$testResult.InstanceName $messages.getString("method"):$testResult.name$testInstanceName</td>
 	  	</tr>
 	#end
 	
