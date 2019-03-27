@@ -77,8 +77,8 @@ Over-rides the default locale for localised messages in generated reports. If no
   ## Usage of Skip Execution
    At any point but it’s advisable to be the first case in suite xml, you can set this system variable to "true" and skip the rest of  test execution, for example :
    
-    @Test(description = "Fail Fast Test")
-    public void test1() throws Exception {
+    @Test(description = "In case of a failure Skip Execution")
+    public void testLoginPage() throws Exception {
         try{
 	   loginToMyTestEnv();
 	}catch(Exception ex){
@@ -86,7 +86,7 @@ Over-rides the default locale for localised messages in generated reports. If no
 	}
     }
     
-  By enabling this system property all of the rest testNG tests will be skipped and the genareted report will have on overview page the root cause of the failure providing the message "Skip Execution due to Fail Fast Mode"
+  By enabling this system property all of the rest testNG tests will be skipped and the genareted report will have on overview page the root cause of the failure providing the message "Skip Execution due to Skip Execution Mode"
      
  ## Mvn dependency : 
       
