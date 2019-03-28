@@ -87,7 +87,7 @@ Over-rides the default locale for localised messages in generated reports. If no
 	}
 	}
     
-  By enabling this system property all of the rest testNG tests will be skipped and the genareted report will have on overview page the root cause of the failure providing the message "Skip Execution due to Skip Execution Mode".
+  By enabling this system property all of the rest testNG tests will be skipped and the generated report will have on overview page the root cause of the failure providing the message "Skip Execution due to Skip Execution Mode".
   Alternative you can use this system property in your TestListener and Skip test execution on the first failure. This will work as Fail Fast Mode. See [Wiki](https://github.com/sdrss/reportNG/wiki) for example.
      
  ## Mvn dependency : 
