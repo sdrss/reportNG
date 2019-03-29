@@ -8,22 +8,19 @@
 		#if ($testResult.getStatus()==1)
 			<tr>
 				<td class="time">$testResult.startMillis</td>
-				<td class="header passedConfig"><a href="javascript:toggleElement('passed-$testResult.startMillis', 'block')" title="Click to expand/collapse">$messages.getString("passedConfigurations")</a></td>
-				<td class="header passedConfig" colspan="3">$messages.getString("class"):$testResult.InstanceName $messages.getString("method"):$testResult.name$testInstanceName</td>
+				<td class="header passedConfig" colspan="4"><div style="float:left;">$messages.getString("class"):$testResult.InstanceName</div><div style="float:right;"><a href="javascript:toggleElement('passed-$testResult.startMillis', 'block')" title="Click to expand/collapse">$messages.getString("passedConfigurations")</a></div></td>
 			</tr>
 		#end
 		#if ($testResult.getStatus()==2)
 			<tr>
 			    <td class="time">$testResult.startMillis</td>
-			    <td class="header failedConfig"><a href="javascript:toggleElement('passed-$testResult.startMillis', 'block')" title="Click to expand/collapse">$messages.getString("failedConfiguration")</a></td>
-			    <td class="failedConfig" colspan="3">$messages.getString("class"):$testResult.InstanceName $messages.getString("method"):$testResult.name$testInstanceName</td>
+			    <td class="header failedConfig" colspan="4"><div style="float:left;">$messages.getString("class"):$testResult.InstanceName</div><div style="float:right;"><a href="javascript:toggleElement('passed-$testResult.startMillis', 'block')" title="Click to expand/collapse">$messages.getString("failedConfiguration")</a></div></td>
 		    </tr>
 		#end
 		#if ($testResult.getStatus()==3)
 			<tr>
 			    <td class="time">$testResult.startMillis</td>
-			    <td class="header skippedConfig"><a href="javascript:toggleElement('passed-$testResult.startMillis', 'block')" title="Click to expand/collapse">$messages.getString("skippedConfiguration")</a></td>
-			    <td class="skippedConfig" colspan="3">$messages.getString("class"):$testResult.InstanceName $messages.getString("method"):$testResult.name$testInstanceName</td>
+			    <td class="header skippedConfig" colspan="4"><div style="float:left;">$messages.getString("class"):$testResult.InstanceName</div><div style="float:right;"><a href="javascript:toggleElement('passed-$testResult.startMillis', 'block')" title="Click to expand/collapse">$messages.getString("skippedConfiguration")</a></div></td>
 		    </tr>
 		#end
 			
@@ -33,10 +30,11 @@
 				#if ($testResult.testName)
 					#set ($testInstanceName = "($testResult.testName)")
 				#end
+				<span class="description"><b>$messages.getString("method"): </b>$testResult.name$testInstanceName</span><br>
 				#if ($utils.hasDescription($testResult))
-					<span class="description" title="$testResult.method.description">Description</span><br>
+					<span class="description"><b>$messages.getString("Description"): </b>$testResult.method.description</span><br>
 				#end
-				<span class="duration"><b>Duration: </b>$utils.formatDuration($testResult.startMillis, $testResult.endMillis)s</span><br>
+				<span class="duration"><b>$messages.getString("duration"): </b>$utils.formatDuration($testResult.startMillis, $testResult.endMillis)s</span><br>
 			</td>
 			<td class="resultConfiguration">
 				## Display the dependencies for skipped test methods.

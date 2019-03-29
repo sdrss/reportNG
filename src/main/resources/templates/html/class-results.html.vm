@@ -8,22 +8,19 @@
 	#if ($testResult.getStatus()==1 && $utils.hasKnownDefect($testResult))
 		<tr>
 			<td class="time">$testResult.startMillis</td>
-			<td class="header knownDefects"><a href="javascript:toggleElement('$testResult.startMillis', 'block')" title="Click to expand/collapse">$messages.getString("knownDefects")</a></td>
-			<td class="header knownDefects" colspan="3">$messages.getString("class"):$testResult.InstanceName $messages.getString("method"):$testResult.name$testInstanceName</td>
+			<td class="header knownDefects" colspan="4"><div style="float:left;">$messages.getString("class"):$testResult.InstanceName</div><div style="float:right;"><a href="javascript:toggleElement('$testResult.startMillis', 'block')" title="Click to expand/collapse">$messages.getString("knownDefects")</a></div></td>
 	    </tr>
 	#else
 		#if ($testResult.getStatus()==1 && $utils.hasFixed($testResult))
 			<tr>
 				<td class="time">$testResult.startMillis</td>
-				<td class="header fixed"><a href="javascript:toggleElement('$testResult.startMillis', 'block')" title="Click to expand/collapse">$messages.getString("fixed")</a></td>
-				<td class="header fixed" colspan="3">$messages.getString("class"):$testResult.InstanceName $messages.getString("method"):$testResult.name$testInstanceName</td>
+				<td class="header fixed" colspan="4"><div style="float:left;">$messages.getString("class"):$testResult.InstanceName</div><div style="float:right;"><a href="javascript:toggleElement('$testResult.startMillis', 'block')" title="Click to expand/collapse">$messages.getString("fixed")</a></div></td>
 		    </tr>
 	    #else
 	    	#if ($testResult.getStatus()==1)
 			    <tr>
 					<td class="time">$testResult.startMillis</td>
-					<td class="header passed"><a href="javascript:toggleElement('$testResult.startMillis', 'block')" title="Click to expand/collapse">$messages.getString("passedTests")</a></td>
-					<td class="header passed" colspan="3">$messages.getString("class"):$testResult.InstanceName $messages.getString("method"):$testResult.name$testInstanceName</td>
+					<td class="header passed" colspan="4"><div style="float:left;">$messages.getString("class"):$testResult.InstanceName</div><div style="float:right;"><a href="javascript:toggleElement('$testResult.startMillis', 'block')" title="Click to expand/collapse">$messages.getString("passedTests")</a></div></td>
 			    </tr>
 		    #end
 	    #end
@@ -31,15 +28,13 @@
 	#if ($testResult.getStatus()==2)
 		<tr>
 			<td class="time">$testResult.startMillis</td>
-			<td class="header failed">$messages.getString("failedTests")</td>
-			<td class="header failed" colspan="3">$messages.getString("class"):$testResult.InstanceName $messages.getString("method"):$testResult.name$testInstanceName</td>
+			<td class="header failed" colspan="4"><div style="float:left;">$messages.getString("class"):$testResult.InstanceName</div><div style="float:right;"><a href="javascript:toggleElement('$testResult.startMillis', 'block')" title="Click to expand/collapse">$messages.getString("failedTests")</a></div></td>
 	    </tr>
 	#end
 	#if ($testResult.getStatus()==3)
 		<tr>
 			<td class="time">$testResult.startMillis</td>
-			<td class="header skipped">$messages.getString("skippedTests")</td>
-			<td class="header skipped" colspan="3">$messages.getString("class"):$testResult.InstanceName $messages.getString("method"):$testResult.name$testInstanceName</td>
+			<td class="header skipped" colspan="4"><div style="float:left;">$messages.getString("class"):$testResult.InstanceName</div><div style="float:right;"><a href="javascript:toggleElement('$testResult.startMillis', 'block')" title="Click to expand/collapse">$messages.getString("skippedTests")</a></div></td>
 	  	</tr>
 	#end
 	
@@ -52,19 +47,20 @@
 			    #if ($testResult.testName)
 			    	#set ($testInstanceName = "($testResult.testName)")
 			    #end
+			    <span class="description"><b>$messages.getString("method"): </b>$testResult.name$testInstanceName</span><br>
 			    #if ($utils.hasDescription($testResult))
-			    	<span class="description"><b>Description: </b>$testResult.method.description</span><br>
+			    	<span class="description"><b>$messages.getString("Description"): </b>$testResult.method.description</span><br>
 			    #end
 			    #if ($utils.hasPriority($testResult))
-			    	<span class="description"><b>Priority:</b><font color='blue'>$testResult.method.priority</font></span><br>
+			    	<span class="description"><b>$messages.getString("Priority"): </b><font color='blue'>$testResult.method.priority</font></span><br>
 			    #end
 			    #if ($utils.hasKnownDefectsDescription($testResult))
-			    	<span class="Description"><b>Known Issue: </b><font color='red'>$utils.getKnownDefectDescription($testResult)</font></span><br>
+			    	<span class="Description"><b>$messages.getString("KnownIssue"): </b><font color='red'>$utils.getKnownDefectDescription($testResult)</font></span><br>
 			    #end
 			    #if ($utils.hasGroups($testResult))
-			    	<span class="description"><b>Groups:</b><font color='green'>$utils.getGroups($testResult)</font></span><br>
+			    	<span class="description"><b>$messages.getString("groups"): </b><font color='green'>$utils.getGroups($testResult)</font></span><br>
 			    #end
-			    <span class="duration"><b>Duration: </b>$utils.formatDuration($testResult.startMillis, $testResult.endMillis)s</span><br>
+			    <span class="duration"><b>$messages.getString("duration"): </b>$utils.formatDuration($testResult.startMillis, $testResult.endMillis)s</span><br>
 		  	</td>
 	  		<td class="result">
 		  		#if ($testResult.getStatus()==1 && $utils.hasKnownDefects($testResult))
