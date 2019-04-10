@@ -61,7 +61,7 @@
 	<div class="row">
 		<div class="col-xs-12">
 	        <div class="text-right">
-	            <button id="hideResults" type="button" class="btn btn-success" onclick="expandAll(this);" onkeypress="expandAll(this);" class="btn pull-right">$messages.getString("hidePass")</button>
+	            <button id="hideResults" type="button" class="btn btn-success" onclick="expandAll(this);" onkeypress="expandAll(this);" class="btn pull-right" title="$messages.getString("hoverTextHidePassTest")">$messages.getString("hidePass")</button>
 	        </div>
 	    </div>
 	</div>
