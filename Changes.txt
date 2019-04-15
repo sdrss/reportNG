@@ -1,5 +1,6 @@
 V2.2.1-SNAPSHOT * Class name on top of every test and test method over description at left panel
        * Tooltips for buttons
+       * Collapse/Expand test methods
 V2.2.0 * Skip Execution Mode
        * Bug Fixes
 V2.1.0 * Style sheet Changes
