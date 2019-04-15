@@ -1,29 +1,47 @@
 ## This macro formats the results (whether passed, skipped or failed) of the test
 ## methods in a single class for inclusion in the HTML report.  It assumes that the
-## the results for the class are in a variable called $classResults.  $id is a page
-## scope variable that is used to assign unique identifiers to divs.
-
+## the results for the class are in a variable called $classResults.  
 #foreach ($testResult in $classResults)
-		#set ($testInstanceName="")
+	#set ($testInstanceName="")
 		#if ($testResult.getStatus()==1)
-			<tr>
-				<td class="time">$testResult.startMillis</td>
-				<td class="header passedConfig" colspan="4"><div style="float:left;">$messages.getString("class") : $testResult.InstanceName</div><div style="float:right;"><a href="javascript:toggleElement('$testResult.startMillis', 'block');changeSingleIcon('span-$testResult.startMillis');" title="Click to expand/collapse">$messages.getString("passedConfigurations")&nbsp;<span id='span-$testResult.startMillis' class="glyphicon glyphicon-menu-down"></span></a></div></td>
-			</tr>
+		<tr>
+			<td class="time">$testResult.startMillis</td>
+			<td class="header passedConfig" colspan="4">
+			<div style="float:left;">$messages.getString("class") : $testResult.InstanceName</div>
+			<div style="float:right;">
+				<a href="javascript:toggleElement('$testResult.name $testResult.startMillis', 'block');changeSingleIcon('span-$testResult.name $testResult.startMillis');" title="Click to expand/collapse">$messages.getString("passedConfigurations")&nbsp;
+					<span id='span-$testResult.name $testResult.startMillis' class="glyphicon glyphicon-menu-down"></span>
+				</a>
+			</div>
+			</td>
+		</tr>
 		#end
 		#if ($testResult.getStatus()==2)
-			<tr>
-			    <td class="time">$testResult.startMillis</td>
-			    <td class="header failedConfig" colspan="4"><div style="float:left;">$messages.getString("class") : $testResult.InstanceName</div><div style="float:right;"><a href="javascript:toggleElement('$testResult.startMillis', 'block');changeSingleIcon('span-$testResult.startMillis');" title="Click to expand/collapse">$messages.getString("failedConfiguration")&nbsp;<span id='span-$testResult.startMillis' class="glyphicon glyphicon-menu-down"></span></a></div></td>
-		    </tr>
+		<tr>
+		    <td class="time">$testResult.startMillis</td>
+		    <td class="header failedConfig" colspan="4">
+		    <div style="float:left;">$messages.getString("class") : $testResult.testName</div>
+		    <div style="float:right;">
+			    <a href="javascript:toggleElement('$testResult.name $testResult.startMillis', 'block');changeSingleIcon('span-$testResult.name $testResult.startMillis');" title="Click to expand/collapse">$messages.getString("failedConfiguration")&nbsp;
+			    	<span id='span-$testResult.name $testResult.startMillis' class="glyphicon glyphicon-menu-down"></span>
+			    </a>
+		    </div>
+		    </td>
+		</tr>
 		#end
 		#if ($testResult.getStatus()==3)
-			<tr>
-			    <td class="time">$testResult.startMillis</td>
-			    <td class="header skippedConfig" colspan="4"><div style="float:left;">$messages.getString("class") : $testResult.InstanceName</div><div style="float:right;"><a href="javascript:toggleElement('$testResult.startMillis', 'block');changeSingleIcon('span-$testResult.startMillis');" title="Click to expand/collapse">$messages.getString("skippedConfiguration")&nbsp;<span id='span-$testResult.startMillis' class="glyphicon glyphicon-menu-down"></span></a></div></td>
-		    </tr>
+		<tr>
+			<td class="time">$testResult.startMillis</td>
+			<td class="header skippedConfig" colspan="4">
+			<div style="float:left;">$messages.getString("class") : $testResult.InstanceName</div>
+			<div style="float:right;">
+				<a href="javascript:toggleElement('$testResult.name $testResult.startMillis', 'block');changeSingleIcon('span-$testResult.name $testResult.startMillis');" title="Click to expand/collapse">$messages.getString("skippedConfiguration")&nbsp;
+					<span id='span-$testResult.name $testResult.startMillis' class="glyphicon glyphicon-menu-down"></span>
+				</a>
+			</div>
+			</td>
+		</tr>
 		#end
-			
 		<tr>
 			<td class="time">$testResult.startMillis</td>
 			<td class="methodConfiguration">
@@ -48,15 +66,13 @@
 			        <span class="dependency">$utils.getDependentMethods($testResult)</span>
 				#end
 			    #end
-			
 				#if ($utils.hasArguments($testResult))
 			    	<i>$messages.getString("methodArguments"): </i><span class="arguments">$utils.getArguments($testResult)</span><br/>
 				#end
-				
 				## Show logger output for the test.
 			    #set ($output = $utils.getTestOutput($testResult))
 			    #if ($output.size() > 0)
-			    	<div class="stackTrace" id="$testResult.startMillis">
+			    	<div class="stackTrace" id="$testResult.name $testResult.startMillis">
 			      	#foreach( $line in $output )
 				    	#if ($meta.shouldEscapeOutput())
 				        	$utils.escapeHTMLString($line)<br />
@@ -67,16 +83,16 @@
 			#end
 			#if ($testResult.throwable && ( $testResult.status == 2 || $meta.shouldShowExpectedExceptions()))
 				<a href="javascript:toggleElement('exception-$testResult.startMillis', 'block')" title="$messages.getString("clickToExpandCollapse")"><b>$utils.escapeHTMLString($testResult.throwable.toString())</b></a><br />
-			    <div class="stackTrace" id="exception-$testResult.startMillis">
+			    <div class="stackTrace" id="exception-$testResult.name $testResult.startMillis">
 					#foreach ($element in $testResult.throwable.stackTrace)
-						$utils.escapeHTMLString( $element.toString() )<br />
+						$utils.escapeHTMLString( $element.toString() )<br/>
 					#end
 					#set ($causes = $utils.getCauses($testResult.throwable))
 					#foreach ($throwable in $causes)
 					    <b>$messages.getString("causedBy"): </b> <a href="javascript:toggleElement('exception-$testResult.startMillis', 'block')" title="Click to expand/collapse">$utils.escapeHTMLString($throwable.toString())</a><br />
-					    <div class="stackTrace" id="exception-$testResult.startMillis">
+					    <div class="stackTrace" id="exception-$testResult.name $testResult.startMillis">
 							#foreach ($element in $throwable.stackTrace)
-								$utils.escapeHTMLString($element.toString())<br />
+								$utils.escapeHTMLString($element.toString())<br/>
 							#end
 						</div>
 					#end
