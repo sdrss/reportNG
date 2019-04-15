@@ -3,6 +3,22 @@ function toggleElement(elementId, displayStyle) {
     document.getElementById(elementId).style.display = (current == 'none' ? displayStyle : 'none');
 }
 
+function changeIcon(element) {
+	if ($(element).hasClass('glyphicon glyphicon-menu-down')){
+		$(element).removeClass('glyphicon glyphicon-menu-down').toggleClass('glyphicon glyphicon-menu-left');
+	}else{
+		$(element).removeClass('glyphicon glyphicon-menu-left').toggleClass('glyphicon glyphicon-menu-down');
+	}
+}
+
+function changeSingleIcon(elementId) {
+	if ($('#'+elementId).hasClass('glyphicon glyphicon-menu-down')){
+		$('#'+elementId).removeClass('glyphicon glyphicon-menu-down').toggleClass('glyphicon glyphicon-menu-left');
+	}else{
+		$('#'+elementId).removeClass('glyphicon glyphicon-menu-left').toggleClass('glyphicon glyphicon-menu-down');
+	}
+}
+
 function getStyle(elementId, property) {
     var element = document.getElementById(elementId);
     return element.currentStyle ? element.currentStyle[property] : document.defaultView.getComputedStyle(element, null).getPropertyValue(property);
@@ -44,11 +60,9 @@ function parse(str) {
         obj = str.parseJSON();
     } catch (e) {
         if (e instanceof SyntaxError) {
-            //alert("There was a syntax error in your JSON string.\n" + e.message + "\nPlease check your syntax and try again.");
             $("text").focus();
             return;
         }
-        //alert("There was an unknown error. Perhaps the JSON string contained a deep level of nesting.");
         $("text").focus();
         return
     }
@@ -115,12 +129,10 @@ function $(ele) {
 }
 
 function escapeHTML(str) {
-    //code portion borrowed from prototype library
     var div = document.createElement('div');
     var text = document.createTextNode(str);
     div.appendChild(text);
     return div.innerHTML;
-    //end portion
 }
 
 function wordwrap(str) {
@@ -152,17 +164,21 @@ function doFocus(event, ele) {
     if (event.stopPropagation) event.stopPropagation();
 }
 
-function expandAll(element) {
-    var allelements = document.getElementsByClassName("stackTrace");
-    for (i = 0; i < allelements.length; i++) {
-        toggleElement(allelements[i].id, 'block');
+function collapseExpand(element) {
+    var allStackTraceElements = document.getElementsByClassName("stackTrace");
+    for (i = 0; i < allStackTraceElements.length; i++) {
+        toggleElement(allStackTraceElements[i].id, 'block');
     }
-    if ($("#hideResults").hasClass('btn-danger')){
-		$("#hideResults").removeClass('btn-danger').toggleClass('btn-success');
-		$("#hideResults").text('Hide Pass');
+    var allelementsIcons = document.getElementsByClassName("glyphicon");
+    for (i = 0; i < allelementsIcons.length; i++) {
+        changeIcon(allelementsIcons[i]);
+    }
+    if ($("#hideResults").hasClass('btn-primary')){
+		$("#hideResults").removeClass('btn-primary').toggleClass('btn-default');
+		$("#hideResults").text('Collapse All');
 	}else{
-		$("#hideResults").removeClass('btn-success').toggleClass('btn-danger');
-		$("#hideResults").text('Show All');
+		$("#hideResults").removeClass('btn-default').toggleClass('btn-primary');
+		$("#hideResults").text('Expand All');
 	}
 }
 

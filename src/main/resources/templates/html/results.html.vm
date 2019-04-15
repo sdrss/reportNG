@@ -17,7 +17,7 @@
 	});
   </script>
 </head>
-<body onload="doParse(); return false;" onkeypress="expandAll();">
+<body onload="doParse(); return false;" onkeypress="collapseExpand();">
 <div class="well well-large">
 	<b>$messages.getString("testInfo")</>
 	<table class="table">
@@ -61,7 +61,7 @@
 	<div class="row">
 		<div class="col-xs-12">
 	        <div class="text-right">
-	            <button id="hideResults" type="button" class="btn btn-success" onclick="expandAll(this);" onkeypress="expandAll(this);" class="btn pull-right" title="$messages.getString("hoverTextHidePassTest")">$messages.getString("hidePass")</button>
+	            <button id="hideResults" type="button" class="btn-default" onclick="collapseExpand(this);" onkeypress="collapseExpand(this);" class="btn pull-right" title="$messages.getString("hoverTextHidePassTest")">$messages.getString("collapse")</button>
 	        </div>
 	    </div>
 	</div>
