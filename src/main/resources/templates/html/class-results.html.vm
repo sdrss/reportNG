@@ -7,39 +7,27 @@
 #if ($testResult.getStatus()==1 && $utils.hasKnownDefect($testResult))
 	<tr>
 	<td class="time">$testResult.startMillis</td>
-	<td class="header knownDefects" colspan="4">
-	<div style="float:left;">$messages.getString("class") : $testResult.InstanceName</div>
-	<div style="float:right;">
-	<a href="javascript:toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse">$messages.getString("knownDefects")&nbsp;
-	<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span>
-	</a>
-	</div>
+	<td class="header knownDefects" colspan="4" onClick="toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse">
+	<div style="float:left;">$messages.getString("class")&nbsp;:&nbsp;$testResult.InstanceName</div>
+	<div style="float:right;">$messages.getString("knownDefects")&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
 	</td>
 	</tr>
 	#else
 	#if ($testResult.getStatus()==1 && $utils.hasFixed($testResult))
 		<tr>
 		<td class="time">$testResult.startMillis</td>
-		<td class="header fixed" colspan="4">
-		<div style="float:left;">$messages.getString("class") : $testResult.testName</div>
-		<div style="float:right;">
-		<a href="javascript:toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse">$messages.getString("fixed")&nbsp;
-		<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span>
-		</a>
-		</div>
+		<td class="header fixed" colspan="4" onClick="toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse">
+		<div style="float:left;">$messages.getString("class")&nbsp;:&nbsp;$testResult.InstanceName</div>
+		<div style="float:right;">$messages.getString("fixed")&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
 		</td>
 		</tr>
 	#else
 		#if ($testResult.getStatus()==1)
 			<tr>
 			<td class="time">$testResult.startMillis</td>
-			<td class="header passed" colspan="4">
-			<div style="float:left;">$messages.getString("class") : $testResult.InstanceName</div>
-			<div style="float:right;">
-			<a href="javascript:toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse">$messages.getString("passedTests")&nbsp;
-			<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span>
-			</a>
-			</div>
+			<td class="header passed" colspan="4" onClick="toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse">
+			<div style="float:left;">$messages.getString("class")&nbsp;:&nbsp;$testResult.InstanceName</div>
+			<div style="float:right;">$messages.getString("passedTests")&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
 			</td>
 			</tr>
 		#end
@@ -48,26 +36,18 @@
 #if ($testResult.getStatus()==2)
 	<tr>
 	<td class="time">$testResult.startMillis</td>
-	<td class="header failed" colspan="4">
-	<div style="float:left;">$messages.getString("class") : $testResult.InstanceName</div>
-	<div style="float:right;">
-	<a href="javascript:toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse">$messages.getString("failedTests")&nbsp;
-	<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span>
-	</a>
-	</div>
+	<td class="header failed" colspan="4" onClick="toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse">
+	<div style="float:left;">$messages.getString("class")&nbsp;:&nbsp;$testResult.InstanceName</div>
+	<div style="float:right;">$messages.getString("failedTests")&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
 	</td>
 	</tr>
 #end
 #if ($testResult.getStatus()==3)
 	<tr>
 	<td class="time">$testResult.startMillis</td>
-	<td class="header skipped" colspan="4">
-	<div style="float:left;">$messages.getString("class") : $testResult.InstanceName</div>
-	<div style="float:right;">
-	<a href="javascript:toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse">$messages.getString("skippedTests")&nbsp;
-	<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span>
-	</a>
-	</div>
+	<td class="header skipped" colspan="4" onClick="toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse">
+	<div style="float:left;">$messages.getString("class")&nbsp;:&nbsp;$testResult.InstanceName</div>
+	<div style="float:right;">$messages.getString("skippedTests")&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
 	</td>
 	</tr>
 #end
