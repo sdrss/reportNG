@@ -1,6 +1,6 @@
 ## This macro formats the results (whether passed, skipped or failed) of the test
 ## methods in a single class for inclusion in the HTML report.  It assumes that the
-## the results for the class are in a variable called $classResults.  
+## the results for the class are in a variable called $classResults.
 #foreach ($testResult in $classResults)
 	#set ($testInstanceName="")
 		#if ($testResult.getStatus()==1)
@@ -82,15 +82,15 @@
 			      	#end
 			#end
 			#if ($testResult.throwable && ( $testResult.status == 2 || $meta.shouldShowExpectedExceptions()))
-				<a href="javascript:toggleElement('exception-$testResult.startMillis', 'block')" title="$messages.getString("clickToExpandCollapse")"><b>$utils.escapeHTMLString($testResult.throwable.toString())</b></a><br />
+				<a href="javascript:toggleElement('exception-$testResult.name $testResult.startMillis', 'block')" title="$messages.getString("clickToExpandCollapse")"><b>$utils.escapeHTMLString($testResult.throwable.toString())</b></a><br />
 			    <div class="stackTrace" id="exception-$testResult.name $testResult.startMillis">
 					#foreach ($element in $testResult.throwable.stackTrace)
 						$utils.escapeHTMLString( $element.toString() )<br/>
 					#end
 					#set ($causes = $utils.getCauses($testResult.throwable))
 					#foreach ($throwable in $causes)
-					    <b>$messages.getString("causedBy"): </b> <a href="javascript:toggleElement('exception-$testResult.startMillis', 'block')" title="Click to expand/collapse">$utils.escapeHTMLString($throwable.toString())</a><br />
-					    <div class="stackTrace" id="exception-$testResult.name $testResult.startMillis">
+					    <b>$messages.getString("causedBy"): </b> <a href="javascript:toggleElement('causedBy-$testResult.name $testResult.startMillis', 'block')" title="Click to expand/collapse">$utils.escapeHTMLString($throwable.toString())</a><br />
+					    <div class="stackTrace" id="causedBy-$testResult.name $testResult.startMillis">
 							#foreach ($element in $throwable.stackTrace)
 								$utils.escapeHTMLString($element.toString())<br/>
 							#end
