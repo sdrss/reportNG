@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.UUID;
 
 import org.testng.IClass;
 import org.testng.IInvokedMethod;
@@ -1770,5 +1771,9 @@ public class ReportNGUtils {
 				"<div class=\"progress-bar\" role=\"progressbar\" style=\"width: " + fail + "%; background-color:red; color:white\">" + fail + "%</div>" +
 				"</div>";*/
 		return "<div class=\"progress\" role=\"progressbar\" style=\"width: 100%; background-color:red; color:white\">" + per + "%</div>";
+	}
+
+	public String randomId() {
+		return UUID.randomUUID().toString();
 	}
 }

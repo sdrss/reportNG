@@ -1,144 +1,146 @@
-## This macro formats the results (whether passed, skipped or failed) of the test
+## This macro formats the results (whether passed,skipped or failed) of the test
 ## methods in a single class for inclusion in the HTML report.  It assumes that the
-## the results for the class are in a variable called $classResults.  
+## the results for the class are in a variable called $classResults.
+#set ($generatedID = $utils.randomId())
 #foreach ($testResult in $classResults)
-	#set ($testInstanceName="")
-	#if ($testResult.getStatus()==1 && $utils.hasKnownDefect($testResult))
-		<tr>
-			<td class="time">$testResult.startMillis</td>
-			<td class="header knownDefects" colspan="4">
-				<div style="float:left;">$messages.getString("class") : $testResult.InstanceName</div>
-				<div style="float:right;">
-					<a href="javascript:toggleElement('$testResult.name $testResult.startMillis', 'block');changeSingleIcon('span-$testResult.name $testResult.startMillis');" title="Click to expand/collapse">$messages.getString("knownDefects")&nbsp;
-						<span id='span-$testResult.name $testResult.startMillis' class="glyphicon glyphicon-menu-down"></span>
-					</a>
-				</div>
-			</td>
-	    </tr>
-	#else
-		#if ($testResult.getStatus()==1 && $utils.hasFixed($testResult))
-			<tr>
-				<td class="time">$testResult.startMillis</td>
-				<td class="header fixed" colspan="4">
-					<div style="float:left;">$messages.getString("class") : $testResult.testName</div>
-					<div style="float:right;">
-						<a href="javascript:toggleElement('$testResult.name $testResult.startMillis', 'block');changeSingleIcon('span-$testResult.name $testResult.startMillis');" title="Click to expand/collapse">$messages.getString("fixed")&nbsp;
-							<span id='span-$testResult.name $testResult.startMillis' class="glyphicon glyphicon-menu-down"></span>
-						</a>
-					</div>
-				</td>
-		    </tr>
-	    #else
-	    	#if ($testResult.getStatus()==1)
-			    <tr>
-					<td class="time">$testResult.startMillis</td>
-					<td class="header passed" colspan="4">
-						<div style="float:left;">$messages.getString("class") : $testResult.InstanceName</div>
-						<div style="float:right;">
-							<a href="javascript:toggleElement('$testResult.name $testResult.startMillis', 'block');changeSingleIcon('span-$testResult.name $testResult.startMillis');" title="Click to expand/collapse">$messages.getString("passedTests")&nbsp;
-								<span id='span-$testResult.name $testResult.startMillis' class="glyphicon glyphicon-menu-down"></span>
-							</a>
-						</div>
-					</td>
-			    </tr>
-		    #end
-	    #end
-	#end
-	#if ($testResult.getStatus()==2)
-		<tr>
-			<td class="time">$testResult.startMillis</td>
-			<td class="header failed" colspan="4">
-			<div style="float:left;">$messages.getString("class") : $testResult.InstanceName</div>
-			<div style="float:right;">
-				<a href="javascript:toggleElement('$testResult.name $testResult.startMillis', 'block');changeSingleIcon('span-$testResult.name $testResult.startMillis');" title="Click to expand/collapse">$messages.getString("failedTests")&nbsp;
-				<span id='span-$testResult.name $testResult.startMillis' class="glyphicon glyphicon-menu-down"></span>
-				</a>
-			</div>
-			</td>
-	    </tr>
-	#end
-	#if ($testResult.getStatus()==3)
-		<tr>
-			<td class="time">$testResult.startMillis</td>
-			<td class="header skipped" colspan="4">
-			<div style="float:left;">$messages.getString("class") : $testResult.InstanceName</div>
-			<div style="float:right;">
-				<a href="javascript:toggleElement('$testResult.name $testResult.startMillis', 'block');changeSingleIcon('span-$testResult.name $testResult.startMillis');" title="Click to expand/collapse">$messages.getString("skippedTests")&nbsp;
-				<span id='span-$testResult.name $testResult.startMillis' class="glyphicon glyphicon-menu-down"></span>
-				</a>
-			</div>
-			</td>
-	  	</tr>
-	#end
+#set ($testInstanceName="")
+#if ($testResult.getStatus()==1 && $utils.hasKnownDefect($testResult))
 	<tr>
+	<td class="time">$testResult.startMillis</td>
+	<td class="header knownDefects" colspan="4">
+	<div style="float:left;">$messages.getString("class") : $testResult.InstanceName</div>
+	<div style="float:right;">
+	<a href="javascript:toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse">$messages.getString("knownDefects")&nbsp;
+	<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span>
+	</a>
+	</div>
+	</td>
+	</tr>
+	#else
+	#if ($testResult.getStatus()==1 && $utils.hasFixed($testResult))
+		<tr>
 		<td class="time">$testResult.startMillis</td>
-		  	<td class="methodTest">
-			    #if ($testResult.testName)
-			    	#set ($testInstanceName = "($testResult.testName)")
-			    #end
-			    <span class="description"><b>$messages.getString("method"): </b>$testResult.name$testInstanceName</span><br>
-			    #if ($utils.hasDescription($testResult))
-			    	<span class="description"><b>$messages.getString("Description"): </b>$testResult.method.description</span><br>
-			    #end
-			    #if ($utils.hasPriority($testResult))
-			    	<span class="description"><b>$messages.getString("Priority"): </b><font color='blue'>$testResult.method.priority</font></span><br>
-			    #end
-			    #if ($utils.hasKnownDefectsDescription($testResult))
-			    	<span class="Description"><b>$messages.getString("KnownIssue"): </b><font color='red'>$utils.getKnownDefectDescription($testResult)</font></span><br>
-			    #end
-			    #if ($utils.hasGroups($testResult))
-			    	<span class="description"><b>$messages.getString("groups"): </b><font color='green'>$utils.getGroups($testResult)</font></span><br>
-			    #end
-			    <span class="duration"><b>$messages.getString("duration"): </b>$utils.formatDuration($testResult.startMillis, $testResult.endMillis)s</span><br>
-		  	</td>
-	  		<td class="result">
-		  		<div class="stackTrace" id="$testResult.name $testResult.startMillis" style="display: block;">
-	    		## Display the dependencies for skipped test methods.
-	    		#if ($testResult.status == 3) ## 3 means skipped.
-		      		#if( $utils.hasDependentGroups($testResult) )
-		        		<i>$messages.getString("dependsOnGroups"): </i>
-		        		<span class="dependency">$utils.getDependentGroups($testResult)</span>
-		        		<br/>
-		      		#end
-			      	#if ($utils.hasDependentMethods($testResult))
-			        	<i>$messages.getString("dependsOnMethods"): </i>
-			        	<span class="dependency">$utils.getDependentMethods($testResult)</span>
-			      	#end
-		    	#end
-			    #if ($utils.hasArguments($testResult))
-		      		<i>$messages.getString("methodArguments"): </i><span class="arguments">$utils.getArguments($testResult)</span><br />
-		    	#end
-			    ## Show logger output for the test.
-		    	#set ($output = $utils.getTestOutput($testResult))
-		    	#if ($output.size() > 0)
-		      		#foreach( $line in $output )
-			        	#if ($meta.shouldEscapeOutput())
-			          		$utils.escapeHTMLString($line)<br />
-			        	#else
-			          		$line
-			        	#end
-		      		#end
-		    	#end
-		    	#if ($testResult.throwable && ( $testResult.status == 2 || $meta.shouldShowExpectedExceptions()) || $testResult.getStatus()==1 && $utils.hasKnownDefects($testResult))
-		    		<a href="javascript:toggleElement('exception-$testResult.name $testResult.startMillis', 'block')" title="$messages.getString("clickToExpandCollapse")"><b>$utils.escapeHTMLString( $testResult.throwable.toString() )</b></a><br/>
-		    		<div class="stackTrace" id="exception-$testResult.name $testResult.startMillis">
-			      		#foreach ($element in $testResult.throwable.stackTrace)
-			        		$utils.escapeHTMLString( $element.toString() )<br/>
-			      		#end
-			      		#set ($causes = $utils.getCauses($testResult.throwable))
-			      		#foreach ($throwable in $causes)
-			        		<b>$messages.getString("causedBy"): </b> <a href="javascript:toggleElement('causedBy-$testResult.name $testResult.startMillis', 'block')" title="Click to expand/collapse">$utils.escapeHTMLString( $throwable.toString() )</a><br/>
-			        		<div class="stackTrace" id="causedBy-$testResult.name $testResult.startMillis">
-				          		#foreach ($element in $throwable.stackTrace)
-				            		$utils.escapeHTMLString($element.toString())<br/>
-				          		#end
-			        		</div>
-			      		#end
-		    		</div>
-		    	#end
-	  		</td>
-	  		#if ($testResult.getStatus()==1)
-	  		</div>
-			#end
+		<td class="header fixed" colspan="4">
+		<div style="float:left;">$messages.getString("class") : $testResult.testName</div>
+		<div style="float:right;">
+		<a href="javascript:toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse">$messages.getString("fixed")&nbsp;
+		<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span>
+		</a>
+		</div>
+		</td>
 		</tr>
+	#else
+		#if ($testResult.getStatus()==1)
+			<tr>
+			<td class="time">$testResult.startMillis</td>
+			<td class="header passed" colspan="4">
+			<div style="float:left;">$messages.getString("class") : $testResult.InstanceName</div>
+			<div style="float:right;">
+			<a href="javascript:toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse">$messages.getString("passedTests")&nbsp;
+			<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span>
+			</a>
+			</div>
+			</td>
+			</tr>
+		#end
+	#end
+#end
+#if ($testResult.getStatus()==2)
+	<tr>
+	<td class="time">$testResult.startMillis</td>
+	<td class="header failed" colspan="4">
+	<div style="float:left;">$messages.getString("class") : $testResult.InstanceName</div>
+	<div style="float:right;">
+	<a href="javascript:toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse">$messages.getString("failedTests")&nbsp;
+	<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span>
+	</a>
+	</div>
+	</td>
+	</tr>
+#end
+#if ($testResult.getStatus()==3)
+	<tr>
+	<td class="time">$testResult.startMillis</td>
+	<td class="header skipped" colspan="4">
+	<div style="float:left;">$messages.getString("class") : $testResult.InstanceName</div>
+	<div style="float:right;">
+	<a href="javascript:toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse">$messages.getString("skippedTests")&nbsp;
+	<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span>
+	</a>
+	</div>
+	</td>
+	</tr>
+#end
+<tr>
+	<td class="time">$testResult.startMillis</td>
+	<td class="methodTest">
+	#if ($testResult.testName)
+		#set ($testInstanceName = "($testResult.testName)")
+	#end
+	<span class="description"><b>$messages.getString("method"): </b>$testResult.name$testInstanceName</span><br>
+	#if ($utils.hasDescription($testResult))
+		<span class="description"><b>$messages.getString("Description"): </b>$testResult.method.description</span><br>
+	#end
+	#if ($utils.hasPriority($testResult))
+		<span class="description"><b>$messages.getString("Priority"): </b><font color='blue'>$testResult.method.priority</font></span><br>
+	#end
+	#if ($utils.hasKnownDefectsDescription($testResult))
+		<span class="Description"><b>$messages.getString("KnownIssue"): </b><font color='red'>$utils.getKnownDefectDescription($testResult)</font></span><br>
+	#end
+	#if ($utils.hasGroups($testResult))
+		<span class="description"><b>$messages.getString("groups"): </b><font color='green'>$utils.getGroups($testResult)</font></span><br>
+	#end
+	<span class="duration"><b>$messages.getString("duration"): </b>$utils.formatDuration($testResult.startMillis,$testResult.endMillis)s</span><br>
+	</td>
+	<td class="result">
+	<div class="stackTrace" id="$generatedID" style="display: block;">
+	## Display the dependencies for skipped test methods.
+	#if ($testResult.status == 3) ## 3 means skipped.
+		#if( $utils.hasDependentGroups($testResult) )
+			<i>$messages.getString("dependsOnGroups"): </i>
+			<span class="dependency">$utils.getDependentGroups($testResult)</span>
+			<br>
+		#end
+		#if ($utils.hasDependentMethods($testResult))
+			<i>$messages.getString("dependsOnMethods"): </i>
+			<span class="dependency">$utils.getDependentMethods($testResult)</span>
+		#end
+	#end
+	#if ($utils.hasArguments($testResult))
+		<i>$messages.getString("methodArguments"): </i><span class="arguments">$utils.getArguments($testResult)</span><br>
+	#end
+	## Show logger output for the test.
+	#set ($output = $utils.getTestOutput($testResult))
+	#if ($output.size() > 0)
+		#foreach( $line in $output )
+			#if ($meta.shouldEscapeOutput())
+				$utils.escapeHTMLString($line)<br>
+			#else
+				$line
+			#end
+		#end
+	#end
+	#if ($testResult.throwable && ( $testResult.status == 2 || $meta.shouldShowExpectedExceptions()) || $testResult.getStatus()==1 && $utils.hasKnownDefects($testResult))
+		<a href="javascript:toggleElement('exception-$generatedID','block')" title="$messages.getString("clickToExpandCollapse")"><b>$utils.escapeHTMLString( $testResult.throwable.toString() )</b></a><br/>
+		<div class="stackTrace" id="exception-$generatedID">
+		#foreach ($element in $testResult.throwable.stackTrace)
+			$utils.escapeHTMLString( $element.toString() )<br/>
+		#end
+		#set ($causes = $utils.getCauses($testResult.throwable))
+		#foreach ($throwable in $causes)
+			<b>$messages.getString("causedBy"): </b> <a href="javascript:toggleElement('causedBy-$generatedID','block')" title="Click to expand/collapse">$utils.escapeHTMLString( $throwable.toString() )</a><br/>
+			<div class="stackTrace" id="causedBy-$generatedID">
+			#foreach ($element in $throwable.stackTrace)
+				$utils.escapeHTMLString($element.toString())<br/>
+			#end
+			</div>
+		#end
+		</div>
+	#end
+	</td>
+	#if ($testResult.getStatus()==1)
+		</div>
+	#end
+</tr>
+#set ($generatedID = $utils.randomId())
 #end
