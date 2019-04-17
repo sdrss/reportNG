@@ -18,7 +18,7 @@ import org.uncommons.reportng.dto.IssuesDTO;
 import org.uncommons.reportng.dto.ResultsDTO;
 
 public class ReporterHelper {
-	
+
 	public static ResultsDTO checkAttribute(List<ISuite> suites) {
 		ArrayList<Date> startDate = new ArrayList<Date>();
 		ArrayList<Date> endDate = new ArrayList<Date>();
@@ -51,14 +51,17 @@ public class ReporterHelper {
 		results.setTotalSkip(results.getNewFeaturesSkip() + results.getRegressionSkip());
 		results.setTotalKnownDefect(results.getNewFeaturesKnownDefect() + results.getRegressionKnownDefect());
 		results.setTotalFixed(results.getNewFeaturesFixed() + results.getRegressionFixed());
-		
+
 		// Calculate Summary
 		results.setSummaryRegression(
-				results.getRegressionFail() + results.getRegressionFixed() + results.getRegressionKnownDefect() + results.getRegressionPass() + results.getRegressionSkip());
+				results.getRegressionFail() + results.getRegressionFixed() + results.getRegressionKnownDefect() + results.getRegressionPass()
+						+ results.getRegressionSkip());
 		results.setSummaryNewFeature(
-				results.getNewFeaturesFail() + results.getNewFeaturesFixed() + results.getNewFeaturesKnownDefect() + results.getNewFeaturesPass() + results.getNewFeaturesSkip());
-		results.setSummaryTotal(results.getTotalFail() + results.getTotalFixed() + results.getTotalKnownDefect() + results.getTotalPass() + results.getTotalSkip());
-		
+				results.getNewFeaturesFail() + results.getNewFeaturesFixed() + results.getNewFeaturesKnownDefect() + results.getNewFeaturesPass()
+						+ results.getNewFeaturesSkip());
+		results.setSummaryTotal(results.getTotalFail() + results.getTotalFixed() + results.getTotalKnownDefect() + results.getTotalPass()
+				+ results.getTotalSkip());
+
 		// Calculate Success Rate
 		double regression;
 		try {
@@ -67,7 +70,7 @@ public class ReporterHelper {
 		} catch (Exception ex) {
 			results.setRegression(0);
 		}
-		
+
 		double newFeatures;
 		try {
 			newFeatures = (results.getSummaryNewFeature() - results.getNewFeaturesFail() - results.getNewFeaturesSkip()) * 100 / results.getSummaryNewFeature();
@@ -82,29 +85,39 @@ public class ReporterHelper {
 		} catch (Exception ex) {
 			results.setTotal(0);
 		}
-		
+
 		// Calculate Start End Date
-		Date tempStartDate = startDate.get(0);
+		Date tempStartDate = new Date();
+		try {
+			tempStartDate = startDate.get(0);
+		} catch (NullPointerException ex) {
+
+		}
 		for (Date tempDate : startDate) {
 			if (tempDate.before(tempStartDate)) {
 				tempStartDate = tempDate;
 			}
 		}
 		results.setStartDate(tempStartDate);
-		
-		Date tempEndDate = endDate.get(0);
+
+		Date tempEndDate = new Date();
+		try {
+			tempEndDate = endDate.get(0);
+		} catch (NullPointerException ex) {
+
+		}
 		for (Date tempDate : endDate) {
 			if (tempDate.after(tempEndDate)) {
 				tempEndDate = tempDate;
 			}
 		}
 		results.setEndDate(tempEndDate);
-		
+
 		long executionTime = results.getEndDate().toInstant().toEpochMilli() - results.getStartDate().toInstant().toEpochMilli();
 		results.setExecutionTime(ReportNGUtils.formatDurationinMinutes(executionTime));
 		return results;
 	}
-	
+
 	public static IssuesDTO issues(List<ISuite> suites) {
 		IssuesDTO issuesDTO = new IssuesDTO();
 		int suiteIndex = 1;
@@ -125,7 +138,7 @@ public class ReporterHelper {
 					}
 				}
 				issuesDTO.setKnownIssuesAmount(issuesDTO.getKnownIssues().size());
-				
+
 				List<IssueDTO> fixedIssues = ReportNGUtils.getFixedIssues(tempISuite.getName(), link, result.getTestContext().getPassedTests().getAllResults());
 				for (IssueDTO tempIssueDTO : fixedIssues) {
 					if (issuesDTO.getFixedIssues().containsKey(tempIssueDTO.getIssueDescription())) {
@@ -135,7 +148,7 @@ public class ReporterHelper {
 					}
 				}
 				issuesDTO.setFixedIssuesAmount(issuesDTO.getFixedIssues().size());
-				
+
 				List<IssueDTO> newIssues = ReportNGUtils.getNewIssues(tempISuite.getName(), link, result.getTestContext().getFailedTests().getAllResults());
 				for (IssueDTO tempIssueDTO : newIssues) {
 					if (issuesDTO.getNewIssues().containsKey(tempIssueDTO.getIssueDescription())) {
@@ -145,7 +158,7 @@ public class ReporterHelper {
 					}
 				}
 				issuesDTO.setNewIssuesAmount(issuesDTO.getNewIssues().size());
-				
+
 				// Calculate Features and newFeatures
 				List<IssueDTO> newFeature = ReportNGUtils.getNewFeatures(tempISuite.getName(), link, result.getTestContext());
 				if (!newFeature.isEmpty()) {
@@ -157,7 +170,7 @@ public class ReporterHelper {
 						}
 					}
 				}
-				
+
 				List<IssueDTO> feature = ReportNGUtils.getFeatures(tempISuite.getName(), link, result.getTestContext());
 				if (!feature.isEmpty()) {
 					for (IssueDTO temp : feature) {
@@ -174,13 +187,13 @@ public class ReporterHelper {
 		}
 		return issuesDTO;
 	}
-	
+
 	public static ITestContext updateResults(ITestContext iTestContext) {
 		String knownDefectsMode = System.getProperty(HTMLReporter.KWOWNDEFECTSMODE);
 		if (knownDefectsMode == null || knownDefectsMode.isEmpty()) {
 			knownDefectsMode = "false";
-		}else{
-			if(knownDefectsMode.equalsIgnoreCase("true")){
+		} else {
+			if (knownDefectsMode.equalsIgnoreCase("true")) {
 				IResultMap failedResultMap = iTestContext.getFailedTests();
 				IResultMap passedResultMap = iTestContext.getPassedTests();
 				Iterator<ITestResult> failedIterator = failedResultMap.getAllResults().iterator();
@@ -189,7 +202,8 @@ public class ReporterHelper {
 					ITestResult testResult = failedIterator.next();
 					java.lang.reflect.Method method = testResult.getMethod().getConstructorOrMethod().getMethod();
 					if (method.getAnnotation(KnownDefect.class) != null && !ReportNGUtils.KNOWN.equals(testResult.getAttribute(ReportNGUtils.TEST))) {
-						// This is a KFAIL result Remove this test from the failed list
+						// This is a KFAIL result Remove this test from the
+						// failed list
 						failedResultMap.removeResult(testResult.getMethod());
 						// Mark this test as passed
 						testResult.setStatus(ITestResult.SUCCESS);
