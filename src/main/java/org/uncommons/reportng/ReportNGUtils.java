@@ -402,6 +402,16 @@ public class ReportNGUtils {
 			}
 			response += "<tr class=\"suite\">\n";
 			response += "<td colspan=\"4\">Total</td>";
+			// In case of suite with no tests totalEndDate & totalStartDate are
+			// null
+
+			if (totalEndDate == null) {
+				totalEndDate = 0L;
+			}
+			if (totalStartDate == null) {
+				totalStartDate = 0L;
+			}
+
 			response += "<td class=\"duration\">" + formatDurationinMinutes(totalEndDate - totalStartDate) + "</td>";
 			if (totalPass > 0) {
 				response += "<td class=\"passed number\">" + totalPass + "</td>";

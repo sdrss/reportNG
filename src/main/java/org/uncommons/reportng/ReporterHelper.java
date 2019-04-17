@@ -90,7 +90,7 @@ public class ReporterHelper {
 		Date tempStartDate = new Date();
 		try {
 			tempStartDate = startDate.get(0);
-		} catch (NullPointerException ex) {
+		} catch (NullPointerException | IndexOutOfBoundsException ex) {
 
 		}
 		for (Date tempDate : startDate) {
@@ -103,7 +103,7 @@ public class ReporterHelper {
 		Date tempEndDate = new Date();
 		try {
 			tempEndDate = endDate.get(0);
-		} catch (NullPointerException ex) {
+		} catch (NullPointerException | IndexOutOfBoundsException ex) {
 
 		}
 		for (Date tempDate : endDate) {
