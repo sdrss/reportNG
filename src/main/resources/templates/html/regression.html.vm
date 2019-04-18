@@ -21,7 +21,7 @@
 					<th scope="col" width="300px;">$messages.getString("testName")</th>
 				  	<th scope="col" width="300px;" class="break-word">$messages.getString("testClass")</th>
 				  	<th scope="col" width="300px;">$messages.getString("results")</th>
-				  	<th scope="col" width="300px;">$messages.getString("status")</th>
+				  	<th scope="col" width="100px;">$messages.getString("status")</th>
 				</tr>
 			</thead>
 			<tbody>
