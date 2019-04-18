@@ -20,7 +20,7 @@
 					<th scope="col" width="300px;">$messages.getString("suiteName")</th>
 					<th scope="col" width="300px;">$messages.getString("testName")</th>
 				  	<th scope="col" width="300px;">$messages.getString("testClass")</th>
-				  	<th scope="col" width="300px;">$messages.getString("regression")</th>
+				  	<th scope="col" width="100px;">$messages.getString("regression")</th>
 				</tr>
 			</thead>
 			<tbody>
