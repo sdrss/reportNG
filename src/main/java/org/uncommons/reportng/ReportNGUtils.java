@@ -117,89 +117,101 @@ public class ReportNGUtils {
 			status += "<b><font color=\"red\">Skip Execution due to \"Skip Execution Mode\".</font></b><br>";
 		} else {
 			boolean releaseRegression = true;
+			boolean emptyReport = false;
+			boolean skippedReport = false;
 			String responseStatus = "";
 			String responseNewFeatures = "";
 			ResultsDTO resultsDTO = HTMLReporter.getResults();
 			IssuesDTO issuesDTO = HTMLReporter.getIssuesDTO();
-			int numberofRegressionIssues = getNumberofRegressionIssues(issuesDTO);
-			if (numberofRegressionIssues == 1) {
-				responseStatus += "<li>There is <a href=\"newIssues.html\"/>one</a> regression failure, affecting ";
-				if (resultsDTO.getRegressionFail() == 1) {
-					responseStatus += resultsDTO.getRegressionFail() + " test.</li>";
-				} else {
-					responseStatus += resultsDTO.getRegressionFail() + " tests.</li>";
-				}
+			if (resultsDTO.getSummaryTotal() == 0) {
+				// No tests , empty report
 				releaseRegression = false;
-			} else if (numberofRegressionIssues > 1) {
-				responseStatus += "<li>There are <a href=\"newIssues.html\"/>" + numberofRegressionIssues + "</a> regression failures, affecting ";
-				if (resultsDTO.getRegressionFail() == 1) {
-					responseStatus += resultsDTO.getRegressionFail() + " test.</li>";
-				} else {
-					responseStatus += resultsDTO.getRegressionFail() + " tests.</li>";
-				}
+				emptyReport = true;
+			} else if (resultsDTO.getSummaryTotal() == resultsDTO.getTotalSkip()) {
+				// All tests skipped
 				releaseRegression = false;
-			} else if (resultsDTO.getRegressionFail() == 0 && resultsDTO.getRegressionPass() > 0) {
-				responseStatus += "<li>There are no Regression Issues.</li>";
-			}
-			if (resultsDTO.getNewFeatures() > 0) {
-				int numberofNewFeatureIssues = getNumberofNewFeatureIssues(issuesDTO);
-				if (releaseRegression && resultsDTO.getRegressionPass() == 0 && numberofNewFeatureIssues > 0) {
+				skippedReport = true;
+			} else {
+				int numberofRegressionIssues = getNumberofRegressionIssues(issuesDTO);
+				if (numberofRegressionIssues == 1) {
+					responseStatus += "<li>There is <a href=\"newIssues.html\"/>one</a> regression failure, affecting ";
+					if (resultsDTO.getRegressionFail() == 1) {
+						responseStatus += resultsDTO.getRegressionFail() + " test.</li>";
+					} else {
+						responseStatus += resultsDTO.getRegressionFail() + " tests.</li>";
+					}
 					releaseRegression = false;
-				}
-				if (numberofNewFeatureIssues == 1) {
-					responseStatus += "<li>There is <a href=\"newIssues.html\"/>one</a> failure related with new features, affecting ";
-					if (resultsDTO.getNewFeaturesFail() == 1) {
-						responseStatus += resultsDTO.getNewFeaturesFail() + " test.</li>";
+				} else if (numberofRegressionIssues > 1) {
+					responseStatus += "<li>There are <a href=\"newIssues.html\"/>" + numberofRegressionIssues + "</a> regression failures, affecting ";
+					if (resultsDTO.getRegressionFail() == 1) {
+						responseStatus += resultsDTO.getRegressionFail() + " test.</li>";
 					} else {
-						responseStatus += resultsDTO.getNewFeaturesFail() + " tests.</li>";
+						responseStatus += resultsDTO.getRegressionFail() + " tests.</li>";
 					}
-				} else if (numberofNewFeatureIssues > 1) {
-					responseStatus += "<li>There are <a href=\"newIssues.html\"/>" + numberofNewFeatureIssues
-							+ "</a> failures related with new features, affecting ";
-					if (resultsDTO.getNewFeaturesFail() == 1) {
-						responseStatus += resultsDTO.getNewFeaturesFail() + " test.</li>";
-					} else {
-						responseStatus += resultsDTO.getNewFeaturesFail() + " tests.</li>";
-					}
-				} else if (resultsDTO.getNewFeaturesFail() == 0 && resultsDTO.getNewFeaturesPass() > 0) {
+					releaseRegression = false;
+				} else if (resultsDTO.getRegressionFail() == 0 && resultsDTO.getRegressionPass() > 0) {
+					responseStatus += "<li>There are no Regression Issues.</li>";
 				}
-				Iterator<Entry<String, List<IssueDTO>>> it = issuesDTO.getNewFeature().entrySet().iterator();
-				responseNewFeatures += "";
-				while (it.hasNext()) {
-					Entry<String, List<IssueDTO>> pair = it.next();
-					ResultStatus overAllStatus = ResultStatus.PASS;
-					for (IssueDTO temp : pair.getValue()) {
-						if (ResultStatus.FAIL.equals(temp.getStatus())) {
-							overAllStatus = ResultStatus.FAIL;
-						} else if (ResultStatus.PASS_WITH_FIXED_ISSUES.equals(temp.getStatus())) {
-							overAllStatus = ResultStatus.PASS_WITH_FIXED_ISSUES;
-						} else if (ResultStatus.PASS_WITH_KNOWN_ISSUES.equals(temp.getStatus())) {
-							overAllStatus = ResultStatus.PASS_WITH_KNOWN_ISSUES;
-						} else if (ResultStatus.SKIP.equals(temp.getStatus())) {
-							overAllStatus = ResultStatus.SKIP;
+				if (resultsDTO.getNewFeatures() > 0) {
+					int numberofNewFeatureIssues = getNumberofNewFeatureIssues(issuesDTO);
+					if (releaseRegression && resultsDTO.getRegressionPass() == 0 && numberofNewFeatureIssues > 0) {
+						releaseRegression = false;
+					}
+					if (numberofNewFeatureIssues == 1) {
+						responseStatus += "<li>There is <a href=\"newIssues.html\"/>one</a> failure related with new features, affecting ";
+						if (resultsDTO.getNewFeaturesFail() == 1) {
+							responseStatus += resultsDTO.getNewFeaturesFail() + " test.</li>";
+						} else {
+							responseStatus += resultsDTO.getNewFeaturesFail() + " tests.</li>";
 						}
+					} else if (numberofNewFeatureIssues > 1) {
+						responseStatus += "<li>There are <a href=\"newIssues.html\"/>" + numberofNewFeatureIssues
+								+ "</a> failures related with new features, affecting ";
+						if (resultsDTO.getNewFeaturesFail() == 1) {
+							responseStatus += resultsDTO.getNewFeaturesFail() + " test.</li>";
+						} else {
+							responseStatus += resultsDTO.getNewFeaturesFail() + " tests.</li>";
+						}
+					} else if (resultsDTO.getNewFeaturesFail() == 0 && resultsDTO.getNewFeaturesPass() > 0) {
 					}
-					if (ResultStatus.PASS.equals(overAllStatus) || ResultStatus.PASS_WITH_FIXED_ISSUES.equals(overAllStatus)) {
-						responseNewFeatures += "<li>The new feature with description '<a href=\"" + HTMLReporter.FEATURES + "#" + pair.getKey()
-								+ "\" style=\"color:green\">" + pair.getKey()
-								+ "</a>' has no failures and can be announced !</li>";
-					} else if (ResultStatus.FAIL.equals(overAllStatus)) {
-						responseNewFeatures += "<li>The new feature with description '<a href=\"" + HTMLReporter.FEATURES + "#" + pair.getKey()
-								+ "\" style=\"color:red\">"
-								+ pair.getKey()
-								+ "</a>' has failures and should not be announced !</li>";
-					} else if (ResultStatus.PASS_WITH_KNOWN_ISSUES.equals(overAllStatus)) {
-						responseNewFeatures += "<li>The new feature with description '<a href=\"" + HTMLReporter.FEATURES + "#" + pair.getKey()
-								+ "\" style=\"color:orange\">" + pair.getKey()
-								+ "</a>' has Known issues and should not be announced !</li>";
-					} else if (ResultStatus.SKIP.equals(overAllStatus)) {
-						responseNewFeatures += "<li>The new feature with description '<a href=\"" + HTMLReporter.FEATURES + "#" + pair.getKey()
-								+ "\" style=\"color:yellow\">" + pair.getKey()
-								+ "</a>' has skip test cases and should not be announced !</li>";
-					}
+					Iterator<Entry<String, List<IssueDTO>>> it = issuesDTO.getNewFeature().entrySet().iterator();
+					responseNewFeatures += "";
+					while (it.hasNext()) {
+						Entry<String, List<IssueDTO>> pair = it.next();
+						ResultStatus overAllStatus = ResultStatus.PASS;
+						for (IssueDTO temp : pair.getValue()) {
+							if (ResultStatus.FAIL.equals(temp.getStatus())) {
+								overAllStatus = ResultStatus.FAIL;
+							} else if (ResultStatus.PASS_WITH_FIXED_ISSUES.equals(temp.getStatus())) {
+								overAllStatus = ResultStatus.PASS_WITH_FIXED_ISSUES;
+							} else if (ResultStatus.PASS_WITH_KNOWN_ISSUES.equals(temp.getStatus())) {
+								overAllStatus = ResultStatus.PASS_WITH_KNOWN_ISSUES;
+							} else if (ResultStatus.SKIP.equals(temp.getStatus())) {
+								overAllStatus = ResultStatus.SKIP;
+							}
+						}
+						if (ResultStatus.PASS.equals(overAllStatus) || ResultStatus.PASS_WITH_FIXED_ISSUES.equals(overAllStatus)) {
+							responseNewFeatures += "<li>The new feature with description '<a href=\"" + HTMLReporter.FEATURES + "#" + pair.getKey()
+									+ "\" style=\"color:green\">" + pair.getKey()
+									+ "</a>' has no failures and can be announced !</li>";
+						} else if (ResultStatus.FAIL.equals(overAllStatus)) {
+							responseNewFeatures += "<li>The new feature with description '<a href=\"" + HTMLReporter.FEATURES + "#" + pair.getKey()
+									+ "\" style=\"color:red\">"
+									+ pair.getKey()
+									+ "</a>' has failures and should not be announced !</li>";
+						} else if (ResultStatus.PASS_WITH_KNOWN_ISSUES.equals(overAllStatus)) {
+							responseNewFeatures += "<li>The new feature with description '<a href=\"" + HTMLReporter.FEATURES + "#" + pair.getKey()
+									+ "\" style=\"color:orange\">" + pair.getKey()
+									+ "</a>' has Known issues and should not be announced !</li>";
+						} else if (ResultStatus.SKIP.equals(overAllStatus)) {
+							responseNewFeatures += "<li>The new feature with description '<a href=\"" + HTMLReporter.FEATURES + "#" + pair.getKey()
+									+ "\" style=\"color:yellow\">" + pair.getKey()
+									+ "</a>' has skip test cases and should not be announced !</li>";
+						}
 
+					}
+					responseNewFeatures += "";
 				}
-				responseNewFeatures += "";
 			}
 			responseStatus += "";
 			if (releaseRegression) {
@@ -209,11 +221,25 @@ public class ReportNGUtils {
 				status += responseNewFeatures;
 				status += "</ul>";
 			} else {
-				status += "<font color=\"red\">You should not Proceed with a new Release !</font><br>";
-				status += "<ul>";
-				status += responseStatus;
-				status += responseNewFeatures;
-				status += "</ul>";
+				if (emptyReport) {
+					status += "<font color=\"black\">Empty Report !</font><br>";
+					status += "<ul>";
+					status += responseStatus;
+					status += responseNewFeatures;
+					status += "</ul>";
+				} else if (skippedReport) {
+					status += "<font color=\"red\">All test are Skipped !</font><br>";
+					status += "<ul>";
+					status += responseStatus;
+					status += responseNewFeatures;
+					status += "</ul>";
+				} else {
+					status += "<font color=\"red\">You should not Proceed with a new Release !</font><br>";
+					status += "<ul>";
+					status += responseStatus;
+					status += responseNewFeatures;
+					status += "</ul>";
+				}
 			}
 
 		}
