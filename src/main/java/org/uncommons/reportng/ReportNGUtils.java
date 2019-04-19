@@ -562,6 +562,20 @@ public class ReportNGUtils {
 		return duration;
 	}
 
+	public String getAnnotation(ITestResult result) {
+		String annotation = "";
+		try {
+			annotation = result.getMethod().getConstructorOrMethod().getMethod().getAnnotations()[0].annotationType().getSimpleName();
+		} catch (Exception ex) {
+
+		}
+		if (annotation.isEmpty()) {
+			return annotation;
+		} else {
+			return "@" + annotation;
+		}
+	}
+
 	public String formatDuration(long startMillis, long endMillis) {
 		long elapsed = endMillis - startMillis;
 		return formatDuration(elapsed);
