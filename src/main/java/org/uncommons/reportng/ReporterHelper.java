@@ -227,7 +227,7 @@ public class ReporterHelper {
 		}
 
 		// Calculate fixedissuesFeatures vs fixedIssuesRegression
-		item = issuesDTO.getKnownIssues().entrySet().iterator();
+		item = issuesDTO.getFixedIssues().entrySet().iterator();
 		while (item.hasNext()) {
 			Entry<String, List<IssueDTO>> pair = item.next();
 			for (IssueDTO temp : pair.getValue()) {
