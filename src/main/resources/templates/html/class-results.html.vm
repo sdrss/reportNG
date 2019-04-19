@@ -36,7 +36,7 @@
 #if ($testResult.getStatus()==2)
 	<tr>
 	<td class="time">$testResult.startMillis</td>
-	<td class="header failed" colspan="4" onClick="toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse">
+	<td class="header failed" colspan="4">
 	<div style="float:left;">$messages.getString("class")&nbsp;:&nbsp;$testResult.InstanceName</div>
 	<div style="float:right;">$messages.getString("failedTests")&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
 	</td>
@@ -73,7 +73,11 @@
 	<span class="duration"><b>$messages.getString("duration"): </b>$utils.formatDuration($testResult.startMillis,$testResult.endMillis)s</span><br>
 	</td>
 	<td class="result">
-	<div class="stackTrace" id="$generatedID" style="display: block;">
+	#if ($testResult.getStatus()==2)
+		<div class="noCollapse" id="$generatedID" style="display: block;">
+	#else
+		<div class="stackTrace" id="$generatedID" style="display: block;">
+	#end
 	## Display the dependencies for skipped test methods.
 	#if ($testResult.status == 3) ## 3 means skipped.
 		#if( $utils.hasDependentGroups($testResult) )

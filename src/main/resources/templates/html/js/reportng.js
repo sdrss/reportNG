@@ -43,11 +43,11 @@ function hidePass(element) {
 		 }
 	 }
 	 if ($("#hideResults").hasClass('btn-danger')){
-		$("#hideResults").removeClass('btn-danger').toggleClass('btn-success');
-		$("#hideResults").text('Hide Pass');
-	 }else{
-		$("#hideResults").removeClass('btn-success').toggleClass('btn-danger');
+		$("#hideResults").removeClass('btn-danger').toggleClass('btn-default');
 		$("#hideResults").text('Show All');
+	 }else{
+		$("#hideResults").removeClass('btn-default').toggleClass('btn-danger');
+		$("#hideResults").text('Show Only Failures');
 	}
 }
 
@@ -60,10 +60,10 @@ function hidePassSuites(element) {
 		}
 	}
 	 if ($("#hideResults").hasClass('btn-danger')){
-			$("#hideResults").removeClass('btn-danger').toggleClass('btn-success');
-			$("#hideResults").text('Hide Pass');
-		 }else{
-			$("#hideResults").removeClass('btn-success').toggleClass('btn-danger');
+			$("#hideResults").removeClass('btn-danger').toggleClass('btn-default');
 			$("#hideResults").text('Show All');
+		 }else{
+			$("#hideResults").removeClass('btn-default').toggleClass('btn-danger');
+			$("#hideResults").text('Show Only Failures');
 		}
 }

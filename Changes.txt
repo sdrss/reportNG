@@ -3,6 +3,7 @@ V2.2.1-SNAPSHOT * Class name on top of every test and test method over descripti
        * Collapse/Expand test methods
        * Smaller sizes for regression columns
        * Different msgs in Release status for empty and skipped runs
+       * Collapse Only Pass,Skip,Fixed,Known tests steps
 V2.2.0 * Skip Execution Mode
        * Bug Fixes
 V2.1.0 * Style sheet Changes

@@ -173,12 +173,12 @@ function collapseExpand(element) {
     for (i = 0; i < allelementsIcons.length; i++) {
         changeIcon(allelementsIcons[i]);
     }
-    if ($("#hideResults").hasClass('btn-primary')){
-		$("#hideResults").removeClass('btn-primary').toggleClass('btn-default');
-		$("#hideResults").text('Collapse All');
+    if ($("#hideResults").hasClass('btn-default')){
+		$("#hideResults").removeClass('btn-default').toggleClass('btn-danger');
+		$("#hideResults").text('Show Only Failures');
 	}else{
-		$("#hideResults").removeClass('btn-default').toggleClass('btn-primary');
-		$("#hideResults").text('Expand All');
+		$("#hideResults").removeClass('btn-danger').toggleClass('btn-default');
+		$("#hideResults").text('Show All');
 	}
 }
 
@@ -229,10 +229,10 @@ function hidePass(element) {
 	}
 	
 	if ($("#hideResults").hasClass('btn-danger')){
-		$("#hideResults").removeClass('btn-danger').toggleClass('btn-success');
-		$("#hideResults").text('Hide Pass');
+		$("#hideResults").removeClass('btn-danger').toggleClass('btn-default');
+		$("#hideResults").text('Show Only Failures');
 	}else{
-		$("#hideResults").removeClass('btn-success').toggleClass('btn-danger');
+		$("#hideResults").removeClass('btn-default').toggleClass('btn-danger');
 		$("#hideResults").text('Show All');
 	}
 }
