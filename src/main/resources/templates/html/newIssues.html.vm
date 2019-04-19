@@ -12,15 +12,16 @@
 <body>
 <h3 class="failTitle">$messages.getString("newIssues")</h3>
 <div>
+	#if ($utils.issues($suites).getNewIssuesRegression().size()>0)
 	<div class="well well-large">
 	<h4>$messages.getString("regressionissues")</h4>
 		<table class="table table-bordered">
 			<thead>
 				<tr>
-					<th scope="col" width="300px;">$messages.getString("issues")</th>
-					<th scope="col" width="300px;">$messages.getString("suiteName")</th>
-					<th scope="col" width="300px;">$messages.getString("testName")</th>
-				  	<th scope="col" width="300px;">$messages.getString("testClass")</th>
+					<th scope="col" width="25%">$messages.getString("issues")</th>
+					<th scope="col" width="25%">$messages.getString("suiteName")</th>
+					<th scope="col" width="25%">$messages.getString("testName")</th>
+				  	<th scope="col" width="25%">$messages.getString("testClass")</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -28,16 +29,18 @@
 			</tbody>
 		</table>
 	</div>
+	#end
 	
+	#if ($utils.issues($suites).getNewIssuesNewFeature().size()>0)
 	<div class="well well-large">
 	<h4>$messages.getString("newissuesonFeatures")</h4>
 		<table class="table table-bordered">
 			<thead>
 				<tr>
-					<th scope="col" width="300px;">$messages.getString("issues")</th>
-					<th scope="col" width="300px;">$messages.getString("suiteName")</th>
-					<th scope="col" width="300px;">$messages.getString("testName")</th>
-				  	<th scope="col" width="300px;">$messages.getString("testClass")</th>
+					<th scope="col" width="25%">$messages.getString("issues")</th>
+					<th scope="col" width="25%">$messages.getString("suiteName")</th>
+					<th scope="col" width="25%">$messages.getString("testName")</th>
+				  	<th scope="col" width="25%">$messages.getString("testClass")</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -45,7 +48,7 @@
 			</tbody>
 		</table>
 	</div>
-	
+	#end
 </div>	
 </body>
 </html>
