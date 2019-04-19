@@ -185,6 +185,67 @@ public class ReporterHelper {
 			}
 			suiteIndex++;
 		}
+		// Calculate newIssuesFeatures vs newIssuesRegression
+		Iterator<Entry<String, List<IssueDTO>>> item = issuesDTO.getNewIssues().entrySet().iterator();
+		while (item.hasNext()) {
+			Entry<String, List<IssueDTO>> pair = item.next();
+			for (IssueDTO temp : pair.getValue()) {
+				if (temp.isRegression()) {
+					if (issuesDTO.getNewIssuesRegression().containsKey(temp.getIssueDescription())) {
+						issuesDTO.getNewIssuesRegression().get(temp.getIssueDescription()).add(temp);
+					} else {
+						issuesDTO.getNewIssuesRegression().put(temp.getIssueDescription(), new ArrayList<IssueDTO>(Arrays.asList(temp)));
+					}
+				} else {
+					if (issuesDTO.getNewIssuesNewFeature().containsKey(temp.getIssueDescription())) {
+						issuesDTO.getNewIssuesNewFeature().get(temp.getIssueDescription()).add(temp);
+					} else {
+						issuesDTO.getNewIssuesNewFeature().put(temp.getIssueDescription(), new ArrayList<IssueDTO>(Arrays.asList(temp)));
+					}
+				}
+			}
+		}
+		// Calculate KnownissuesFeatures vs knownIssuesRegression
+		item = issuesDTO.getKnownIssues().entrySet().iterator();
+		while (item.hasNext()) {
+			Entry<String, List<IssueDTO>> pair = item.next();
+			for (IssueDTO temp : pair.getValue()) {
+				if (temp.isRegression()) {
+					if (issuesDTO.getKnownIssuesRegression().containsKey(temp.getIssueDescription())) {
+						issuesDTO.getKnownIssuesRegression().get(temp.getIssueDescription()).add(temp);
+					} else {
+						issuesDTO.getKnownIssuesRegression().put(temp.getIssueDescription(), new ArrayList<IssueDTO>(Arrays.asList(temp)));
+					}
+				} else {
+					if (issuesDTO.getKnownIssuesNewFeature().containsKey(temp.getIssueDescription())) {
+						issuesDTO.getKnownIssuesNewFeature().get(temp.getIssueDescription()).add(temp);
+					} else {
+						issuesDTO.getKnownIssuesNewFeature().put(temp.getIssueDescription(), new ArrayList<IssueDTO>(Arrays.asList(temp)));
+					}
+				}
+			}
+		}
+
+		// Calculate fixedissuesFeatures vs fixedIssuesRegression
+		item = issuesDTO.getKnownIssues().entrySet().iterator();
+		while (item.hasNext()) {
+			Entry<String, List<IssueDTO>> pair = item.next();
+			for (IssueDTO temp : pair.getValue()) {
+				if (temp.isRegression()) {
+					if (issuesDTO.getFixedIssuesRegression().containsKey(temp.getIssueDescription())) {
+						issuesDTO.getFixedIssuesRegression().get(temp.getIssueDescription()).add(temp);
+					} else {
+						issuesDTO.getFixedIssuesRegression().put(temp.getIssueDescription(), new ArrayList<IssueDTO>(Arrays.asList(temp)));
+					}
+				} else {
+					if (issuesDTO.getFixedIssuesNewFeature().containsKey(temp.getIssueDescription())) {
+						issuesDTO.getFixedIssuesNewFeature().get(temp.getIssueDescription()).add(temp);
+					} else {
+						issuesDTO.getFixedIssuesNewFeature().put(temp.getIssueDescription(), new ArrayList<IssueDTO>(Arrays.asList(temp)));
+					}
+				}
+			}
+		}
 		return issuesDTO;
 	}
 

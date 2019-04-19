@@ -324,7 +324,7 @@ public class ReportNGUtils {
 							+ "</a></td>";
 					response += "<td style=\"vertical-align:middle\"><a href=\"" + temp.getLink() + "\">" + temp.getTestName() + "</a></td>";
 					response += "<td class=\"break-word\" style=\"vertical-align:middle\">" + temp.getTestClass() + "</td>";
-					response += "<td style=\"vertical-align:middle;text-align:center;\">" + temp.isRegression() + "</td>";
+					/*response += "<td style=\"vertical-align:middle;text-align:center;\">" + temp.isRegression() + "</td>";*/
 					response += "</tr>\n";
 				}
 			}

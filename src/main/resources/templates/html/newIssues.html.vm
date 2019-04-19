@@ -13,6 +13,7 @@
 <h3 class="failTitle">$messages.getString("newIssues")</h3>
 <div>
 	<div class="well well-large">
+	<h4>$messages.getString("regressionissues")</h4>
 		<table class="table table-bordered">
 			<thead>
 				<tr>
@@ -20,14 +21,31 @@
 					<th scope="col" width="300px;">$messages.getString("suiteName")</th>
 					<th scope="col" width="300px;">$messages.getString("testName")</th>
 				  	<th scope="col" width="300px;">$messages.getString("testClass")</th>
-				  	<th scope="col" width="100px;">$messages.getString("regression")</th>
 				</tr>
 			</thead>
 			<tbody>
-				$utils.getIssues($utils.issues($suites).getNewIssues())
+				$utils.getIssues($utils.issues($suites).getNewIssuesRegression())
 			</tbody>
 		</table>
 	</div>
+	
+	<div class="well well-large">
+	<h4>$messages.getString("newissuesonFeatures")</h4>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th scope="col" width="300px;">$messages.getString("issues")</th>
+					<th scope="col" width="300px;">$messages.getString("suiteName")</th>
+					<th scope="col" width="300px;">$messages.getString("testName")</th>
+				  	<th scope="col" width="300px;">$messages.getString("testClass")</th>
+				</tr>
+			</thead>
+			<tbody>
+				$utils.getIssues($utils.issues($suites).getNewIssuesNewFeature())
+			</tbody>
+		</table>
+	</div>
+	
 </div>	
 </body>
 </html>
