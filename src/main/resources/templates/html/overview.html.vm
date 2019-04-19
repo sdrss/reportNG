@@ -17,10 +17,10 @@
 				<table class="table table-bordered">
 					<thead>
 						<tr>
-							<th scope="col" width="300px;">#</th>
-						  	<th scope="col" width="300px;" style="text-align:center">$messages.getString("regression")</th>
-						  	<th scope="col" width="300px;" style="text-align:center">$messages.getString("newFeatures")</th>
-							<th scope="col" width="300px;" style="text-align:center">$messages.getString("total")</th>
+							<th scope="col" width="25%;">#</th>
+						  	<th scope="col" width="25%;" style="text-align:center">$messages.getString("regression")</th>
+						  	<th scope="col" width="25%;" style="text-align:center">$messages.getString("newFeatures")</th>
+							<th scope="col" width="25%;" style="text-align:center">$messages.getString("total")</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -88,22 +88,30 @@
 				<table class="table table-bordered">
 				<thead>
 				<tr>
-					<th scope="col" width="300px;">#</th>
-				  	<th scope="col">Total</th>
+					<th scope="col" width="25%;">#</th>
+					<th scope="col" width="25%;" style="text-align:center">$messages.getString("regression")</th>
+					<th scope="col" width="25%;" style="text-align:center">$messages.getString("newFeatures")</th>
+				  	<th scope="col" width="25%;" style="text-align:center">$messages.getString("total")</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
 						<th scope="row" class="failTitle">$messages.getString("newIssues")</th>
-						<td><a href="newIssues.html">$utils.issues($suites).getNewIssuesAmount()</a></td>
+						<td align="center"><a href="newIssues.html">$utils.issues($suites).getNewIssuesRegression().size()</a></td>
+						<td align="center"><a href="newIssues.html">$utils.issues($suites).getNewIssuesNewFeature().size()</a></td>
+						<td align="center"><a href="newIssues.html">$utils.issues($suites).getNewIssuesAmount()</a></td>
 					</tr>
 					<tr>
 						<th scope="row" class="KnownDefectTitle">$messages.getString("knownIssues")</th>
-						<td><a href="knownIssues.html">$utils.issues($suites).getKnownIssuesAmount()</a></td>
+						<td align="center"><a href="knownIssues.html">$utils.issues($suites).getKnownIssuesRegression().size()</a></td>
+						<td align="center"><a href="knownIssues.html">$utils.issues($suites).getKnownIssuesNewFeature().size()</a></td>
+						<td align="center"><a href="knownIssues.html">$utils.issues($suites).getKnownIssuesAmount()</a></td>
 					</tr>
 					<tr>
 						<th scope="row" class="fixedTitle">$messages.getString("fixedIssues")</th>
-						<td><a href="fixedIssues.html">$utils.issues($suites).getFixedIssuesAmount()</a></td>
+						<td align="center"><a href="fixedIssues.html">$utils.issues($suites).getFixedIssuesRegression().size()</a></td>
+						<td align="center"><a href="fixedIssues.html">$utils.issues($suites).getFixedIssuesNewFeature().size()</a></td>
+						<td align="center"><a href="fixedIssues.html">$utils.issues($suites).getFixedIssuesAmount()</a></td>
 					</tr>
 				</tbody>
 				</table>

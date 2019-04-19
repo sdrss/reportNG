@@ -32,7 +32,7 @@ public class IssuesDTO {
 		newIssuesRegression = new HashMap<String, List<IssueDTO>>();
 		newIssuesNewFeature = new HashMap<String, List<IssueDTO>>();
 		knownIssuesRegression = new HashMap<String, List<IssueDTO>>();
-		knownIssuesRegression = new HashMap<String, List<IssueDTO>>();
+		knownIssuesNewFeature = new HashMap<String, List<IssueDTO>>();
 		fixedIssuesRegression = new HashMap<String, List<IssueDTO>>();
 		fixedIssuesNewFeature = new HashMap<String, List<IssueDTO>>();
 	}
