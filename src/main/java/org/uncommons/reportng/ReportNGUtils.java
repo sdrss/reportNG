@@ -566,7 +566,8 @@ public class ReportNGUtils {
 		try {
 			Annotation[] annotationArray = result.getMethod().getConstructorOrMethod().getMethod().getAnnotations();
 			for (int i = 0; i < annotationArray.length; i++) {
-				if (annotationArray[i].annotationType().getCanonicalName().startsWith("org.testng.annotations.")) {
+				if (annotationArray[i].annotationType().getCanonicalName().startsWith("org.testng.annotations.")
+						&& !annotationArray[i].annotationType().getSimpleName().equals("Parameters")) {
 					annotation = annotationArray[i].annotationType().getSimpleName();
 					break;
 				}
