@@ -34,7 +34,7 @@
 	    	<th class="header">$messages.getString("knownDefects")</th>
 	    	<th class="header">$messages.getString("fixed")</th>
 	    	<th class="header">$messages.getString("failed")</th>
-    		<th class="header">$messages.getString("status")</th>
+    		<th class="header">$messages.getString("overallstatus")</th>
   		</tr>
   	</thead>
   	$utils.getSuites($suites)

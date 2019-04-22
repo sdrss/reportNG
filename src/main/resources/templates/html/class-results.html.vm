@@ -73,11 +73,6 @@
 	<span class="duration"><b>$messages.getString("duration"): </b>$utils.formatDuration($testResult.startMillis,$testResult.endMillis)s</span><br>
 	</td>
 	<td class="result">
-	#if ($testResult.getStatus()==2)
-		<div class="noCollapse" id="$generatedID" style="display: block;">
-	#else
-		<div class="stackTrace" id="$generatedID" style="display: block;">
-	#end
 	## Display the dependencies for skipped test methods.
 	#if ($testResult.status == 3) ## 3 means skipped.
 		#if( $utils.hasDependentGroups($testResult) )
@@ -89,6 +84,11 @@
 			<i>$messages.getString("dependsOnMethods"): </i>
 			<span class="dependency">$utils.getDependentMethods($testResult)</span>
 		#end
+	#end
+	#if ($testResult.getStatus()==2)
+		<div class="noCollapse" id="$generatedID" style="display: block;">
+	#else
+		<div class="stackTrace" id="$generatedID" style="display: block;">
 	#end
 	#if ($utils.hasArguments($testResult))
 		<i>$messages.getString("methodArguments"): </i><span class="arguments">$utils.getArguments($testResult)</span><br>

@@ -15,8 +15,8 @@
 	<a href="overview.html" target="overview" class="list-group-item"><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;$messages.getString("overview")</a>
 	<a href="#pageSubmenuResults" class="list-group-item" data-toggle="collapse" aria-expanded="false"><span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;$messages.getString("results")</a>
 		<ul class="collapse list-unstyled" id="pageSubmenuResults">
-			<a href="suites_overview.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("totalResults")</a>
-        	<a href="suites.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("suiteResults")</a>
+			<a href="suites.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("suiteResults")</a>
+			<a href="suites_overview.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("testResults")</a>
         </ul>
     <a href="#pageSubmenuIssues" class="list-group-item" data-toggle="collapse" aria-expanded="false"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;$messages.getString("issues")</a>
 		<ul class="collapse list-unstyled" id="pageSubmenuIssues">

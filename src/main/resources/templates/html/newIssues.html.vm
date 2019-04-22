@@ -49,6 +49,23 @@
 		</table>
 	</div>
 	#end
+	
+	#if ($utils.issues($suites).getNewIssuesRegression().size()==0 && $utils.issues($suites).getNewIssuesNewFeature().size()==0)
+		<div class="well well-large">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th scope="col" width="25%">$messages.getString("issues")</th>
+						<th scope="col" width="25%">$messages.getString("suiteName")</th>
+						<th scope="col" width="25%">$messages.getString("testName")</th>
+					  	<th scope="col" width="25%">$messages.getString("testClass")</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	#end
 </div>	
 </body>
 </html>

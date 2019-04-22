@@ -324,7 +324,6 @@ public class ReportNGUtils {
 							+ "</a></td>";
 					response += "<td style=\"vertical-align:middle\"><a href=\"" + temp.getLink() + "\">" + temp.getTestName() + "</a></td>";
 					response += "<td class=\"break-word\" style=\"vertical-align:middle\">" + temp.getTestClass() + "</td>";
-					/*response += "<td style=\"vertical-align:middle;text-align:center;\">" + temp.isRegression() + "</td>";*/
 					response += "</tr>\n";
 				}
 			}
@@ -565,7 +564,13 @@ public class ReportNGUtils {
 	public String getAnnotation(ITestResult result) {
 		String annotation = "";
 		try {
-			annotation = result.getMethod().getConstructorOrMethod().getMethod().getAnnotations()[0].annotationType().getSimpleName();
+			Annotation[] annotationArray = result.getMethod().getConstructorOrMethod().getMethod().getAnnotations();
+			for (int i = 0; i < annotationArray.length; i++) {
+				if (annotationArray[i].annotationType().getCanonicalName().startsWith("org.testng.annotations.")) {
+					annotation = annotationArray[i].annotationType().getSimpleName();
+					break;
+				}
+			}
 		} catch (Exception ex) {
 
 		}
