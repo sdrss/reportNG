@@ -14,7 +14,7 @@
 <body onload="return false;" onkeypress="hidePass();">
 <div class="row">
 	<div class="col-xs-12">
-	<h3 class="normal">$messages.getString("totalResults")</h3>
+	<h3 class="normal">$messages.getString("testResults")</h3>
         <div class="text-right">
             <button id="hideResults" type="button" class="btn-danger" onclick="hidePass(this);" class="btn pull-right" title="$messages.getString("hoverTextHidePassSuites")">$messages.getString("showonlyfailures")</button>
         </div>
