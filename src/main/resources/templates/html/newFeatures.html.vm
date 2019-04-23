@@ -16,12 +16,12 @@
 		<table class="table table-bordered">
 			<thead>
 				<tr>
-					<th scope="col" width="18%;">$messages.getString("featureDescription")</th>
-					<th scope="col" width="18%;">$messages.getString("suiteName")</th>
-					<th scope="col" width="18%;">$messages.getString("testName")</th>
-				  	<th scope="col" width="18%;" class="break-word">$messages.getString("testClass")</th>
-				  	<th scope="col" width="18%;">$messages.getString("results")</th>
-				  	<th scope="col" width="10%;" style="text-align:center;">$messages.getString("overallstatus")</th>
+					<th scope="col" width="21%;">$messages.getString("featureDescription")</th>
+					<th scope="col" width="21%;">$messages.getString("suiteName")</th>
+					<th scope="col" width="21%;">$messages.getString("testName")</th>
+				  	<th scope="col" width="21%;" class="break-word">$messages.getString("testClass")</th>
+				  	<th scope="col" width="8%;">$messages.getString("results")</th>
+				  	<th scope="col" width="8%;" style="text-align:center;">$messages.getString("overallstatus")</th>
 				</tr>
 			</thead>
 			<tbody>
