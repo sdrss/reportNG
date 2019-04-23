@@ -13,10 +13,8 @@
 <body onload="return false;" onkeypress="hidePassSuites();">
 <div class="row">
 	<div class="col-xs-12">
-	<h3 class="normal">$messages.getString("suiteResults")</h3>
-        <div class="text-right">
-            <button id="hideResults" type="button" class="btn-danger" onclick="hidePassSuites(this);" class="btn pull-right" title="$messages.getString("hoverTextHidePassSuites")">$messages.getString("showonlyfailures")</button>
-        </div>
+	<h3 class="normal" style="float: left;">$messages.getString("suiteResults")</h3><br>
+	<button id="hideResults" type="button" class="btn-danger" onclick="hidePassSuites(this);" style="float: right;" title="$messages.getString("hoverTextHidePassSuites")">$messages.getString("showonlyfailures")</button>
     </div>
 </div>
 <br>
