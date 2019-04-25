@@ -294,6 +294,9 @@ a {
      visibility:hidden;
      font-size: 0em;
 }
+td.header:hover  {
+      background-color: #C0C0C0;
+}
  .headerTime {
      visibility:hidden;
      font-size: 0em;
