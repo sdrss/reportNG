@@ -1,4 +1,4 @@
-V2.2.1-SNAPSHOT * Class name on top of every test and test method over description at left panel
+V2.2.1 * Class name on top of every test and test method over description at left panel
        * Tooltips for buttons
        * Collapse/Expand test methods
        * Smaller sizes for regression columns
