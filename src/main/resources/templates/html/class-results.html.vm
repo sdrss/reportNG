@@ -85,13 +85,13 @@
 			<span class="dependency">$utils.getDependentMethods($testResult)</span>
 		#end
 	#end
+	#if ($utils.hasArguments($testResult))
+		<i>$messages.getString("methodArguments"): </i><span class="arguments">$utils.getArguments($testResult)</span><br>
+	#end
 	#if ($testResult.getStatus()==2)
 		<div class="noCollapse" id="$generatedID" style="display: block;">
 	#else
 		<div class="stackTrace" id="$generatedID" style="display: block;">
-	#end
-	#if ($utils.hasArguments($testResult))
-		<i>$messages.getString("methodArguments"): </i><span class="arguments">$utils.getArguments($testResult)</span><br>
 	#end
 	## Show logger output for the test.
 	#set ($output = $utils.getTestOutput($testResult))
