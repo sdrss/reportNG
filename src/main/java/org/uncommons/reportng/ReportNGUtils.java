@@ -392,8 +392,8 @@ public class ReportNGUtils {
 					totalEndDate = endDate;
 				}
 				response += "<tr class=\"test\">\n";
-				response += "<td width=\"100\">" + getDate(tempISuite) + "</td>";
-				response += "<td width=\"250\">" + parentSuiteName + "</td>";
+				response += "<td>" + getDate(tempISuite) + "</td>";
+				response += "<td>" + parentSuiteName + "</td>";
 				response += "<td><a href=\"suites_overview.html#" + suiteName + "\">" + suiteName + "</a></td>";
 				response += "<td class=\"duration\">" + parallel + "</td>";
 				response += "<td class=\"duration\">" + formatDurationinMinutes(endDate - startDate) + "</td>";
@@ -425,18 +425,17 @@ public class ReportNGUtils {
 				response += "<td class=\"zero number\">" + getStatusColor(getStatus(pass, fail, skip, known, fixed)) + "</td>";
 				response += "</tr>\n";
 			}
+			response += "<tbody class=\"avoid-sort\">";
 			response += "<tr class=\"suite\">\n";
 			response += "<td colspan=\"4\">Total</td>";
 			// In case of suite with no tests totalEndDate & totalStartDate are
 			// null
-
 			if (totalEndDate == null) {
 				totalEndDate = 0L;
 			}
 			if (totalStartDate == null) {
 				totalStartDate = 0L;
 			}
-
 			response += "<td class=\"duration\">" + formatDurationinMinutes(totalEndDate - totalStartDate) + "</td>";
 			if (totalPass > 0) {
 				response += "<td class=\"passed number\">" + totalPass + "</td>";
@@ -465,6 +464,7 @@ public class ReportNGUtils {
 			}
 			response += "<td class=\"zero number\">" + getStatusColor(getStatus(totalPass, totalFail, totalSkip, totalKnown, totalFixed)) + "</td>";
 			response += "</tr>\n";
+			response += "</tbody>\n";
 		}
 		return response;
 	}
