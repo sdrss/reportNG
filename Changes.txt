@@ -1,3 +1,5 @@
+V2.2.2 * Sort Suites
+       * 
 V2.2.1 * Class name on top of every test and test method over description at left panel
        * Tooltips for buttons
        * Collapse/Expand test methods
@@ -7,9 +9,13 @@ V2.2.1 * Class name on top of every test and test method over description at lef
        * Print @annotation in class results
        * Print in separate table regression vs new features issues
        * Print in Overview number of issues for Total,Regression and New Features
+       *
 V2.2.0 * Skip Execution Mode
        * Bug Fixes
+       *
 V2.1.0 * Style sheet Changes
        * In case of Tests with multi classes report every class in Class.results.html file
+       *
 V2.0.2 * Bug Fixes
+	   *
 V2.0.1 * Initial Import
