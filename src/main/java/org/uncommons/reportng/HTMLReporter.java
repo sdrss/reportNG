@@ -280,6 +280,11 @@ public class HTMLReporter extends AbstractReporter {
 		copyStream("js/canvasjs.min.js", "js/canvasjs.min.js", outputDirectory);
 		copyStream("js/bootstrap.min.js", "js/bootstrap.min.js", outputDirectory);
 		copyStream("images/testng.png", "images/testng.png", outputDirectory);
+
+		copyStream("images/asc.gif", "images/asc.gif", outputDirectory);
+		copyStream("images/bg.gif", "images/bg.gif", outputDirectory);
+		copyStream("images/desc.gif", "images/desc.gif", outputDirectory);
+
 		copyStream("fonts/glyphicons-halflings-regular.eot", "fonts/glyphicons-halflings-regular.eot", outputDirectory);
 		copyStream("fonts/glyphicons-halflings-regular.svg", "fonts/glyphicons-halflings-regular.svg", outputDirectory);
 		copyStream("fonts/glyphicons-halflings-regular.ttf", "fonts/glyphicons-halflings-regular.ttf", outputDirectory);
