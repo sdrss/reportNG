@@ -1250,13 +1250,12 @@ public class ReportNGUtils {
 
 	public String getFeatures(Map<String, List<IssueDTO>> features) {
 		String response = "";
+		int indexCounter = 1;
 		if (features != null) {
 			Iterator<Entry<String, List<IssueDTO>>> it = features.entrySet().iterator();
 			while (it.hasNext()) {
 				Entry<String, List<IssueDTO>> pair = it.next();
-				response += "<tr>\n";
-				response += "<td rowspan=\"" + pair.getValue().size() + "\" style=\"vertical-align:middle\" id=\"" + pair.getKey() + "\">" + pair.getKey()
-						+ "</td>\n";
+				// Calculate overall status
 				ResultStatus overAllStatus = ResultStatus.PASS;
 				for (IssueDTO temp : pair.getValue()) {
 					if (ResultStatus.FAIL.equals(temp.getStatus())) {
@@ -1268,23 +1267,34 @@ public class ReportNGUtils {
 					} else if (ResultStatus.SKIP.equals(temp.getStatus())) {
 						overAllStatus = ResultStatus.SKIP;
 					}
-
 				}
-				int index = 1;
+				UUID id = UUID.randomUUID();
+				response += "<tr class=\"parent\" id=\"row"
+						+ indexCounter
+						+ "\" title=\"Click to expand/collapse\" style=\"cursor: pointer;\" onclick=\"changeIcon('span-" + id + "'); \">\n";
+				response += "<td><span id=\"span-" + id + "\" class=\"glyphicon glyphicon-minus\"></span></td>\n";
+				response += "<td colspan=\"2\" id=\"" + pair.getKey() + "\">" + pair.getKey() + "</td>";
+				response += "<td colspan=\"2\">" + getStatusColor(overAllStatus) + "</td>\n";
+				response += "</tr>";
+				//
+				response += "<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">";
+				response += "<td></td>";
+				response += "<td><i>Suite Name</i></td>";
+				response += "<td><i>Test Name</i></td>";
+				response += "<td><i>Class Name</i></td>";
+				response += "<td><i>Tests</i></td>";
+				response += "</tr>";
+				//
 				for (IssueDTO temp : pair.getValue()) {
-					response += "<td style=\"vertical-align:middle\"><a href=\"suites_overview.html#" + temp.getSuiteName() + "\">" + temp.getSuiteName()
-							+ "</a></td>\n";
-					response += "<td style=\"vertical-align:middle\"><a href=\"" + temp.getLink() + "\">" + temp.getTestName() + "</a></td>\n";
-					response += "<td class=\"break-word\" style=\"vertical-align:middle\">" + temp.getTestClass() + "</td>\n";
-					response += "<td>\n<div>" + temp.getResults() + "</div>\n</td>\n";
-					if (index == 1) {
-						response += "<td rowspan=\"" + pair.getValue().size() + "\" style=\"vertical-align:middle;text-align:center;\">"
-								+ getStatusColor(overAllStatus) + "</td>\n";
-						index++;
-					} else {
-					}
+					response += "<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">";
+					response += "<td></td>";
+					response += "<td><a href=\"suites_overview.html#" + temp.getSuiteName() + "\">" + temp.getSuiteName() + "</a></td>\n";
+					response += "<td><a href=\"" + temp.getLink() + "\">" + temp.getTestName() + "</a></td>\n";
+					response += "<td class=\"break-word\">" + temp.getTestClass() + "</td>\n";
+					response += "<td><div>" + temp.getResults() + "</div></td>\n";
 					response += "</tr>\n";
 				}
+				indexCounter++;
 			}
 		}
 		return response;

@@ -8,20 +8,35 @@
 	<script type="text/javascript" src="js/canvasjs.min.js"></script>
 	<link href="css/bootstrap.min.css" rel="stylesheet" />
 	<link href="css/reportng.css" rel="stylesheet" />
+	<script type="text/javascript">  
+    	$(document).ready(function () {  
+	            $('tr.parent')  
+	                .css("cursor", "pointer")  
+	                .attr("title", "Click to expand/collapse")  
+	                .click(function () {  
+	                    $(this).siblings('.child-' + this.id).toggle();  
+	                });  
+	            $('tr[@class^=child-]').hide().children('td');  
+	    });
+	    function changeIcon(elementId) {
+			if ($('#'+elementId).hasClass('glyphicon glyphicon-minus')){
+				$('#'+elementId).removeClass('glyphicon glyphicon-minus').toggleClass('glyphicon glyphicon-plus');
+			}else{
+				$('#'+elementId).removeClass('glyphicon glyphicon-plus').toggleClass('glyphicon glyphicon-minus');
+			}
+		}
+    </script>
 </head>
 <body>
 <h3 class="normal">$messages.getString("newFeatures")</h3>
 <div>
 	<div class="well well-large">
-		<table class="table table-bordered">
+		<table class="table table-bordered" width="100%;">
 			<thead>
 				<tr>
-					<th scope="col" width="21%;">$messages.getString("featureDescription")</th>
-					<th scope="col" width="21%;">$messages.getString("suiteName")</th>
-					<th scope="col" width="21%;">$messages.getString("testName")</th>
-				  	<th scope="col" width="21%;" class="break-word">$messages.getString("testClass")</th>
-				  	<th scope="col" width="8%;">$messages.getString("results")</th>
-				  	<th scope="col" width="8%;" style="text-align:center;">$messages.getString("overallstatus")</th>
+					<th scope="col">#</th>
+					<th scope="col" colspan="2">$messages.getString("featureDescription")</th>
+				  	<th scope="col" colspan="2">$messages.getString("overallstatus")</th>
 				</tr>
 			</thead>
 			<tbody>
