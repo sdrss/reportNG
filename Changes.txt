@@ -1,4 +1,5 @@
 V2.2.2 * Sort Suites
+	   * Sort Tests
        * Features and New Features grouped
 V2.2.1 * Class name on top of every test and test method over description at left panel
        * Tooltips for buttons

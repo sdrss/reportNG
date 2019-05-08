@@ -9,7 +9,8 @@
 	<link rel="stylesheet" href="css/bootstrap.min.css" />
   	<script type="text/javascript" src="js/jquery-1.12.0.min.js"></script> 
   	<script type="text/javascript" src="js/jquery.tablesorter.min.js"></script>
-  	<script type="text/javascript" src="js/reportng.js"></script> 
+  	<script type="text/javascript" src="js/reportng.js"></script>
+  	<script type="text/javascript">$(document).ready(function(){$('.table').tablesorter({sortList: [[0,0]]});});</script>
 </head>
 <body onload="return false;" onkeypress="hidePass();">
 <div class="row">
@@ -27,7 +28,7 @@
 		<a href="suite${suiteId}_groups.html"> / $messages.getString("groups")</a>
         #end
         </div>
- 	<table class="table table-bordered">
+ 	<table class="table table-bordered" id="${suite.name}">
   		#set ($suiteId = $velocityCount)
   		#set ($totalTests = 0)
   		#set ($totalPassed = 0)
@@ -38,16 +39,16 @@
   		#set ($totalDuration=0)
  		<thead>
 	  		<tr class="columnHeadings">
-	  		    <th class="header">$messages.getString("testTime")</th>
-	    		<th class="header">$messages.getString("testName")</th>
-	    		<th class="header">$messages.getString("regression")</th>
-	    		<th class="header">$messages.getString("duration")</th>
-	    		<th class="header">$messages.getString("passed")</th>
-	    		<th class="header">$messages.getString("skipped")</th>
-	    		<th class="header">$messages.getString("knownDefects")</th>
-	    		<th class="header">$messages.getString("fixed")</th>
-	    		<th class="header">$messages.getString("failed")</th>
-	    		<th class="header">$messages.getString("passRate")</th>
+	  		    <th class="header">$messages.getString("testTime")&nbsp;&nbsp;</th>
+	    		<th class="header">$messages.getString("testName")&nbsp;&nbsp;</th>
+	    		<th class="header">$messages.getString("regression")&nbsp;&nbsp;</th>
+	    		<th class="header">$messages.getString("duration")&nbsp;&nbsp;</th>
+	    		<th class="header">$messages.getString("passed")&nbsp;&nbsp;</th>
+	    		<th class="header">$messages.getString("skipped")&nbsp;&nbsp;</th>
+	    		<th class="header">$messages.getString("knownDefects")&nbsp;&nbsp;</th>
+	    		<th class="header">$messages.getString("fixed")&nbsp;&nbsp;</th>
+	    		<th class="header">$messages.getString("failed")&nbsp;&nbsp;</th>
+	    		<th class="header">$messages.getString("passRate")&nbsp;&nbsp;</th>
   			</tr>
  		</thead>
  		<tbody>

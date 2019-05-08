@@ -612,3 +612,18 @@ table#suiteResults thead tr .headerSortUp {
 table#suiteResults thead tr .headerSortDown {
 	background-image: url(../images/desc.gif);
 }
+
+table thead tr .header {
+	background-image: url(../images/bg.gif);
+	background-repeat: no-repeat;
+	background-position: 100% 50%;
+	cursor: pointer;
+}
+
+table thead tr .headerSortUp {
+	background-image: url(../images/asc.gif);
+}
+
+table thead tr .headerSortDown {
+	background-image: url(../images/desc.gif);
+}
