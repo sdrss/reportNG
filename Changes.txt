@@ -1,5 +1,5 @@
 V2.2.2 * Sort Suites
-	   * Sort Tests
+       * Sort Tests
        * Features and New Features grouped
        * Issues grouped
        * 
@@ -20,5 +20,5 @@ V2.1.0 * Style sheet Changes
        * In case of Tests with multi classes report every class in Class.results.html file
        *
 V2.0.2 * Bug Fixes
-	   *
+       *
 V2.0.1 * Initial Import
