@@ -8,8 +8,8 @@
 	<tr>
 		<td class="time">$testResult.startMillis</td>
 		<td class="header passedConfig" colspan="4" onClick="toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse" style="cursor: pointer;">
-	 	<div style="float:left;">$messages.getString("class")&nbsp;:&nbsp;$testResult.InstanceName</div>
-		<div style="float:right;">$utils.getAnnotation($testResult)&nbsp;$messages.getString("passedConfigurations")&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
+	 	<div style="float:left;"><i>$messages.getString("class")&nbsp;:&nbsp;</i>$testResult.InstanceName</div>
+		<div style="float:right;">$utils.getAnnotation($testResult)&nbsp;&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
 		</td>
 	</tr>
 	#end
@@ -17,8 +17,8 @@
 	<tr>
 		<td class="time">$testResult.startMillis</td>
 		<td class="header failedConfig" colspan="4">
-		<div style="float:left;">$messages.getString("class")&nbsp;:&nbsp;$testResult.InstanceName</div>
-		<div style="float:right;">$utils.getAnnotation($testResult)&nbsp;$messages.getString("failedConfiguration")&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
+		<div style="float:left;"><i>$messages.getString("class")&nbsp;:&nbsp;</i>$testResult.InstanceName</div>
+		<div style="float:right;">$utils.getAnnotation($testResult)&nbsp;&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
 		</td>
 	</tr>
 	#end
@@ -26,8 +26,8 @@
 	<tr>
 		<td class="time">$testResult.startMillis</td>
 		<td class="header skippedConfig" colspan="4" onClick="toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse">
-		<div style="float:left;">$messages.getString("class")&nbsp;:&nbsp;$testResult.InstanceName</div>
-		<div style="float:right;">$utils.getAnnotation($testResult)&nbsp;$messages.getString("skippedConfiguration")&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
+		<div style="float:left;"><i>$messages.getString("class")&nbsp;:&nbsp;</i>$testResult.InstanceName</div>
+		<div style="float:right;">$utils.getAnnotation($testResult)&nbsp;&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
 		</td>
 	</tr>
 	#end

@@ -39,16 +39,16 @@
   		#set ($totalDuration=0)
  		<thead>
 	  		<tr class="columnHeadings">
-	  		    <th class="header">$messages.getString("testTime")&nbsp;&nbsp;</th>
-	    		<th class="header">$messages.getString("testName")&nbsp;&nbsp;</th>
-	    		<th class="header">$messages.getString("regression")&nbsp;&nbsp;</th>
-	    		<th class="header">$messages.getString("duration")&nbsp;&nbsp;</th>
-	    		<th class="header">$messages.getString("passed")&nbsp;&nbsp;</th>
-	    		<th class="header">$messages.getString("skipped")&nbsp;&nbsp;</th>
-	    		<th class="header">$messages.getString("knownDefects")&nbsp;&nbsp;</th>
-	    		<th class="header">$messages.getString("fixed")&nbsp;&nbsp;</th>
-	    		<th class="header">$messages.getString("failed")&nbsp;&nbsp;</th>
-	    		<th class="header">$messages.getString("passRate")&nbsp;&nbsp;</th>
+	  		    <th class="header" style="vertical-align:middle;text-align:left;">$messages.getString("testTime")&nbsp;&nbsp;</th>
+	    		<th class="header" style="vertical-align:middle;text-align:left;">$messages.getString("testName")&nbsp;&nbsp;</th>
+	    		<th class="header" style="vertical-align:middle;text-align:center;">$messages.getString("regression")&nbsp;&nbsp;</th>
+	    		<th class="header" style="vertical-align:middle;text-align:center;">$messages.getString("duration")&nbsp;&nbsp;</th>
+	    		<th class="header" style="vertical-align:middle;text-align:center;">$messages.getString("passed")&nbsp;&nbsp;</th>
+	    		<th class="header" style="vertical-align:middle;text-align:center;">$messages.getString("skipped")&nbsp;&nbsp;</th>
+	    		<th class="header" style="vertical-align:middle;text-align:center;">$messages.getString("knownDefects")&nbsp;&nbsp;</th>
+	    		<th class="header" style="vertical-align:middle;text-align:center;">$messages.getString("fixed")&nbsp;&nbsp;</th>
+	    		<th class="header" style="vertical-align:middle;text-align:center;">$messages.getString("failed")&nbsp;&nbsp;</th>
+	    		<th class="header" style="vertical-align:middle;text-align:center;">$messages.getString("passRate")&nbsp;&nbsp;</th>
   			</tr>
  		</thead>
  		<tbody>

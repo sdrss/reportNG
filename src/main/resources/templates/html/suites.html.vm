@@ -24,17 +24,17 @@
 <table class="table table-bordered" id="suiteResults">
 	<thead>
    		<tr class="columnHeadings">
-   			<th class="header" style="text-align:left;width:6%">$messages.getString("testTime")</th>
-   		 	<th class="header" style="text-align:left;width:23%">$messages.getString("parentSuite")</th>
-    		<th class="header" style="text-align:left;width:23%">$messages.getString("suiteName")</th>
-    		<th class="header" style="width:6%">$messages.getString("suiteArguments")</th>
-    		<th class="header" style="width:6%">$messages.getString("duration")</th>
-	    	<th class="header" style="width:6%">$messages.getString("passed")</th>
-	    	<th class="header" style="width:6%">$messages.getString("skipped")</th>
-	    	<th class="header" style="width:6%">$messages.getString("knownDefects")</th>
-	    	<th class="header" style="width:6%">$messages.getString("fixed")</th>
-	    	<th class="header" style="width:6%">$messages.getString("failed")</th>
-    		<th class="header" style="width:6%">$messages.getString("overallstatus")</th>
+   			<th class="header" style="vertical-align:middle;text-align:left;width:6%">$messages.getString("testTime")</th>
+   		 	<th class="header" style="vertical-align:middle;text-align:left;width:23%">$messages.getString("parentSuite")</th>
+    		<th class="header" style="vertical-align:middle;text-align:left;width:23%">$messages.getString("suiteName")</th>
+    		<th class="header" style="vertical-align:middle;width:6%">$messages.getString("suiteArguments")</th>
+    		<th class="header" style="vertical-align:middle;width:6%">$messages.getString("duration")</th>
+	    	<th class="header" style="vertical-align:middle;width:6%">$messages.getString("passed")</th>
+	    	<th class="header" style="vertical-align:middle;width:6%">$messages.getString("skipped")</th>
+	    	<th class="header" style="vertical-align:middle;width:6%">$messages.getString("knownDefects")</th>
+	    	<th class="header" style="vertical-align:middle;width:6%">$messages.getString("fixed")</th>
+	    	<th class="header" style="vertical-align:middle;width:6%">$messages.getString("failed")</th>
+    		<th class="header" style="vertical-align:middle;width:6%">$messages.getString("overallstatus")</th>
   		</tr>
   	</thead>
   	$utils.getSuites($suites)

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -315,17 +316,33 @@ public class ReportNGUtils {
 		String response = "";
 		if (issues != null) {
 			Iterator<Entry<String, List<IssueDTO>>> it = issues.entrySet().iterator();
+			int indexCounter = 0;
 			while (it.hasNext()) {
 				Entry<String, List<IssueDTO>> pair = it.next();
-				response += "<tr>\n";
-				response += "<td rowspan=\"" + pair.getValue().size() + "\" style=\"vertical-align:middle\" class=\"break-word\">" + pair.getKey() + "</td>";
+
+				UUID id = UUID.randomUUID();
+				response += "<tr class=\"parent\" id=\"row" + indexCounter
+						+ "\" title=\"Click to expand/collapse\" style=\"cursor: pointer;\" onclick=\"changeIcon('span-" + id + "'); \">\n";
+				response += "<td><span id=\"span-" + id + "\" class=\"glyphicon glyphicon-minus\"></span></td>\n";
+				response += "<td>" + pair.getKey() + "</td>";
+				response += "<td>" + pair.getValue().size() + "</td>";
+				response += "</tr>";
+				//
+				response += "<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">";
+				response += "<td></td>";
+				response += "<td><i>Suite Name</i></td>";
+				response += "<td><i>Test Name</i></td>";
+				response += "<td><i>Class Name</i></td>";
+				response += "</tr>";
 				for (IssueDTO temp : pair.getValue()) {
-					response += "<td style=\"vertical-align:middle\"><a href=\"suites_overview.html#" + temp.getSuiteName() + "\">" + temp.getSuiteName()
-							+ "</a></td>";
-					response += "<td style=\"vertical-align:middle\"><a href=\"" + temp.getLink() + "\">" + temp.getTestName() + "</a></td>";
-					response += "<td class=\"break-word\" style=\"vertical-align:middle\">" + temp.getTestClass() + "</td>";
+					response += "<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">";
+					response += "<td></td>";
+					response += "<td><a href=\"suites_overview.html#" + temp.getSuiteName() + "\">" + temp.getSuiteName() + "</a></td>";
+					response += "<td><a href=\"" + temp.getLink() + "\">" + temp.getTestName() + "</a></td>";
+					response += "<td class=\"break-word\">" + temp.getTestClass() + "</td>";
 					response += "</tr>\n";
 				}
+				indexCounter++;
 			}
 		}
 		return response;
@@ -496,9 +513,9 @@ public class ReportNGUtils {
 		} else if (ResultStatus.SKIP.equals(status)) {
 			return "<font color=\"yellow\">" + ResultStatus.SKIP + "</font>";
 		} else if (ResultStatus.PASS_WITH_FIXED_ISSUES.equals(status)) {
-			return "<font color=\"blue\">" + ResultStatus.PASS_WITH_FIXED_ISSUES + "</font>";
+			return "<font color=\"blue\">" + ResultStatus.FIXED + "</font>";
 		} else if (ResultStatus.PASS_WITH_KNOWN_ISSUES.equals(status)) {
-			return "<font color=\"orange\">" + ResultStatus.PASS_WITH_KNOWN_ISSUES + "</font>";
+			return "<font color=\"orange\">" + ResultStatus.KNOWN + "</font>";
 		}
 		return status.toString();
 	}
@@ -569,6 +586,10 @@ public class ReportNGUtils {
 				if (annotationArray[i].annotationType().getCanonicalName().startsWith("org.testng.annotations.")
 						&& !annotationArray[i].annotationType().getSimpleName().equals("Parameters")) {
 					annotation = annotationArray[i].annotationType().getSimpleName();
+					HashMap<String, String> map = getTestAnnotationAttributes(annotationArray[i].toString());
+					if (map.containsKey("dataProvider") && !map.get("dataProvider").isEmpty()) {
+						annotation += " with DataProvider : [" + map.get("dataProvider") + "]";
+					}
 					break;
 				}
 			}
@@ -580,6 +601,24 @@ public class ReportNGUtils {
 		} else {
 			return "@" + annotation;
 		}
+	}
+
+	private HashMap<String, String> getTestAnnotationAttributes(String annotation) {
+		HashMap<String, String> map = new HashMap<>();
+		try {
+			annotation = annotation.substring(annotation.indexOf('(') + 1, annotation.indexOf(')'));
+			String[] splitter = annotation.split(",");
+			for (int i = 0; i < splitter.length; i++) {
+				String[] splitMap = splitter[i].split("=");
+				if (splitMap.length == 1) {
+					map.put(splitMap[0].trim(), "");
+				} else {
+					map.put(splitMap[0].trim(), splitMap[1].trim());
+				}
+			}
+		} catch (Exception ex) {
+		}
+		return map;
 	}
 
 	public String formatDuration(long startMillis, long endMillis) {
@@ -1260,20 +1299,25 @@ public class ReportNGUtils {
 				for (IssueDTO temp : pair.getValue()) {
 					if (ResultStatus.FAIL.equals(temp.getStatus())) {
 						overAllStatus = ResultStatus.FAIL;
-					} else if (ResultStatus.PASS_WITH_FIXED_ISSUES.equals(temp.getStatus())) {
-						overAllStatus = ResultStatus.PASS_WITH_FIXED_ISSUES;
 					} else if (ResultStatus.PASS_WITH_KNOWN_ISSUES.equals(temp.getStatus())) {
 						overAllStatus = ResultStatus.PASS_WITH_KNOWN_ISSUES;
+					} else if (ResultStatus.PASS_WITH_FIXED_ISSUES.equals(temp.getStatus())) {
+						overAllStatus = ResultStatus.PASS_WITH_FIXED_ISSUES;
 					} else if (ResultStatus.SKIP.equals(temp.getStatus())) {
 						overAllStatus = ResultStatus.SKIP;
 					}
 				}
+				// Calculate Total Tests
+				int totalTests = 0;
+				for (IssueDTO temp : pair.getValue()) {
+					totalTests += temp.getTotalNumberOfTests();
+				}
 				UUID id = UUID.randomUUID();
-				response += "<tr class=\"parent\" id=\"row"
-						+ indexCounter
+				response += "<tr class=\"parent\" id=\"row" + indexCounter
 						+ "\" title=\"Click to expand/collapse\" style=\"cursor: pointer;\" onclick=\"changeIcon('span-" + id + "'); \">\n";
 				response += "<td><span id=\"span-" + id + "\" class=\"glyphicon glyphicon-minus\"></span></td>\n";
 				response += "<td colspan=\"2\" id=\"" + pair.getKey() + "\">" + pair.getKey() + "</td>";
+				response += "<td colspan=\"1\">" + totalTests + "</td>";
 				response += "<td colspan=\"2\">" + getStatusColor(overAllStatus) + "</td>\n";
 				response += "</tr>";
 				//
@@ -1749,12 +1793,12 @@ public class ReportNGUtils {
 			all.addAll(iResultMapSkip);
 			all.addAll(iResultMapKnown);
 			all.addAll(iResultMapFixed);
-
+			int totalNumberOfTests = getTotalNumberOfTests(iResultMapPass, iResultMapFail, iResultMapSkip, iResultMapKnown, iResultMapFixed);
 			String results = getFeatureResults(iResultMapPass, iResultMapFail, iResultMapSkip, iResultMapKnown, iResultMapFixed);
 			ResultStatus status = getStatus(iResultMapPass.size(), iResultMapFail.size(), iResultMapFail.size(), iResultMapKnown.size(), iResultMapFixed.size());
 			for (ITestResult iTestResult : all) {
 				issues.add(new IssueDTO(suiteName, iTestResult.getTestContext().getName(), iTestResult.getInstanceName(), getFeatureDescription(iTestContext),
-						linkName, results, status));
+						linkName, results, status, totalNumberOfTests));
 				break;
 			}
 
@@ -1788,9 +1832,10 @@ public class ReportNGUtils {
 						break;
 					}
 				}
+				int totalNumberOfTests = getTotalNumberOfTests(iResultMapPass, iResultMapFail, iResultMapSkip, iResultMapKnown, iResultMapFixed);
 				if (!alreadyExists) {
 					issues.add(new IssueDTO(suiteName, iTestResult.getTestContext().getName(), iTestResult.getInstanceName(),
-							getNewFeatureDescription(iTestContext), linkName, results, status));
+							getNewFeatureDescription(iTestContext), linkName, results, status, totalNumberOfTests));
 					break;
 				}
 			}
@@ -1800,24 +1845,63 @@ public class ReportNGUtils {
 
 	private static String getFeatureResults(Set<ITestResult> iResultMapPass, Set<ITestResult> iResultMapFail, Set<ITestResult> iResultMapSkip,
 			Set<ITestResult> iResultMapKnown, Set<ITestResult> iResultMapFixed) {
-		String results = "<table class=\"table\">" + "\n";
+		String results = "<table>" + "\n";
+		results += "<tr>";
 		if (iResultMapPass.size() > 0) {
-			results += "<tr class=\"passed number\"><th>PASS</th>" + "<th>" + iResultMapPass.size() + "</th></tr>";
+			results += "<th class=\"passed number\" width=\"30px\">Pass</th>";
 		}
 		if (iResultMapFail.size() > 0) {
-			results += "<tr class=\"failed number\"><th>FAIL</th>" + "<th>" + iResultMapFail.size() + "</th></tr>";
+			results += "<th class=\"failed number\" width=\"30px\">Fail</th>";
 		}
 		if (iResultMapSkip.size() > 0) {
-			results += "<tr class=\"skipped number\"><th>SKIP</th>" + "<th>" + iResultMapSkip.size() + "</th></tr>";
+			results += "<th class=\"skipped number\" width=\"30px\">Skip</th>";
 		}
 		if (iResultMapKnown.size() > 0) {
-			results += "<tr class=\"knownDefects number\"><th>KNOWN</th>" + "<th>" + iResultMapKnown.size() + "</th></tr>";
+			results += "<th class=\"knownDefects number\" width=\"30px\">Known</th>";
 		}
 		if (iResultMapFixed.size() > 0) {
-			results += "<tr class=\"fixed number\"><th>FIXED</th>" + "<th>" + iResultMapFixed.size() + "</th></tr>";
+			results += "<th class=\"fixed number\" width=\"30px\">Fixed</th></tr>";
 		}
+		results += "<tr>";
+		if (iResultMapPass.size() > 0) {
+			results += "<td class=\"passed number\" width=\"30px\">" + iResultMapPass.size() + "</td>";
+		}
+		if (iResultMapFail.size() > 0) {
+			results += "<td class=\"failed number\" width=\"30px\">" + iResultMapFail.size() + "</td>";
+		}
+		if (iResultMapSkip.size() > 0) {
+			results += "<td class=\"skipped number\" width=\"30px\">" + iResultMapSkip.size() + "</td>";
+		}
+		if (iResultMapKnown.size() > 0) {
+			results += "<td class=\"knownDefects number\" width=\"30px\">" + iResultMapKnown.size() + "</td>";
+		}
+		if (iResultMapFixed.size() > 0) {
+			results += "<td class=\"fixed number\" width=\"30px\">" + iResultMapFixed.size() + "</td>";
+		}
+		results += "</tr>";
 		results += "</table>";
 		return results;
+	}
+
+	private static int getTotalNumberOfTests(Set<ITestResult> iResultMapPass, Set<ITestResult> iResultMapFail, Set<ITestResult> iResultMapSkip,
+			Set<ITestResult> iResultMapKnown, Set<ITestResult> iResultMapFixed) {
+		int totalNumberOfTests = 0;
+		if (iResultMapPass.size() > 0) {
+			totalNumberOfTests += iResultMapPass.size();
+		}
+		if (iResultMapFail.size() > 0) {
+			totalNumberOfTests += iResultMapFail.size();
+		}
+		if (iResultMapSkip.size() > 0) {
+			totalNumberOfTests += iResultMapSkip.size();
+		}
+		if (iResultMapKnown.size() > 0) {
+			totalNumberOfTests += iResultMapKnown.size();
+		}
+		if (iResultMapFixed.size() > 0) {
+			totalNumberOfTests += iResultMapFixed.size();
+		}
+		return totalNumberOfTests;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -1831,11 +1915,6 @@ public class ReportNGUtils {
 		} else if (per == 0) {
 			return "";
 		}
-		double fail = 100 - per;
-		/*return "<div class=\"progress\">" +
-				"<div class=\"progress-bar\" role=\"progressbar\" style=\"width: " + per + "%; background-color:green; color:white\">" + per + "%</div>" +
-				"<div class=\"progress-bar\" role=\"progressbar\" style=\"width: " + fail + "%; background-color:red; color:white\">" + fail + "%</div>" +
-				"</div>";*/
 		return "<div class=\"progress\" role=\"progressbar\" style=\"width: 100%; background-color:red; color:white\">" + per + "%</div>";
 	}
 

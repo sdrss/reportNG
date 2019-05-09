@@ -8,8 +8,8 @@
 	<tr>
 	<td class="time">$testResult.startMillis</td>
 	<td class="header knownDefects" colspan="4" onClick="toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse" style="cursor: pointer;">
-	<div style="float:left;">$messages.getString("class")&nbsp;:&nbsp;$testResult.InstanceName</div>
-	<div style="float:right;">$utils.getAnnotation($testResult)&nbsp;$messages.getString("knownDefects")&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
+	<div style="float:left;"><i>$messages.getString("class")&nbsp;:&nbsp;</i>$testResult.InstanceName</div>
+	<div style="float:right;">$utils.getAnnotation($testResult)&nbsp;&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
 	</td>
 	</tr>
 	#else
@@ -17,8 +17,8 @@
 		<tr>
 		<td class="time">$testResult.startMillis</td>
 		<td class="header fixed" colspan="4" onClick="toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse" style="cursor: pointer;">
-		<div style="float:left;">$messages.getString("class")&nbsp;:&nbsp;$testResult.InstanceName</div>
-		<div style="float:right;">$utils.getAnnotation($testResult)&nbsp;$messages.getString("fixed")&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
+		<div style="float:left;"><i>$messages.getString("class")&nbsp;:&nbsp;</i>$testResult.InstanceName</div>
+		<div style="float:right;">$utils.getAnnotation($testResult)&nbsp&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
 		</td>
 		</tr>
 	#else
@@ -26,8 +26,8 @@
 			<tr>
 			<td class="time">$testResult.startMillis</td>
 			<td class="header passed" colspan="4" onClick="toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse" style="cursor: pointer;">
-			<div style="float:left;">$messages.getString("class")&nbsp;:&nbsp;$testResult.InstanceName</div>
-			<div style="float:right;">$utils.getAnnotation($testResult)&nbsp;$messages.getString("passedTests")&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
+			<div style="float:left;"><i>$messages.getString("class")&nbsp;:&nbsp;</i>$testResult.InstanceName</div>
+			<div style="float:right;">$utils.getAnnotation($testResult)&nbsp;&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
 			</td>
 			</tr>
 		#end
@@ -37,8 +37,8 @@
 	<tr>
 	<td class="time">$testResult.startMillis</td>
 	<td class="header failed" colspan="4">
-	<div style="float:left;">$messages.getString("class")&nbsp;:&nbsp;$testResult.InstanceName</div>
-	<div style="float:right;">$utils.getAnnotation($testResult)&nbsp;$messages.getString("failedTests")&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
+	<div style="float:left;"><i>$messages.getString("class")&nbsp;:&nbsp;</i>$testResult.InstanceName</div>
+	<div style="float:right;">$utils.getAnnotation($testResult)&nbsp;&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
 	</td>
 	</tr>
 #end
@@ -46,8 +46,8 @@
 	<tr>
 	<td class="time">$testResult.startMillis</td>
 	<td class="header skipped" colspan="4">
-	<div style="float:left;">$messages.getString("class")&nbsp;:&nbsp;$testResult.InstanceName</div>
-	<div style="float:right;">$utils.getAnnotation($testResult)&nbsp;$messages.getString("skippedTests")&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
+	<div style="float:left;"><i>$messages.getString("class")&nbsp;:&nbsp;</i>$testResult.InstanceName</div>
+	<div style="float:right;">$utils.getAnnotation($testResult)&nbsp;&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
 	</td>
 	</tr>
 #end
@@ -104,7 +104,7 @@
 			#end
 		#end
 	#end
-	#if ($testResult.throwable && ( $testResult.status == 2 || $meta.shouldShowExpectedExceptions()) || $testResult.getStatus()==1 && $utils.hasKnownDefects($testResult))
+	#if ($testResult.throwable)
 		<a href="javascript:toggleElement('exception-$generatedID','block')" title="$messages.getString("clickToExpandCollapse")"><b>$utils.escapeHTMLString( $testResult.throwable.toString() )</b></a><br/>
 		<div class="stackTrace" id="exception-$generatedID">
 		#foreach ($element in $testResult.throwable.stackTrace)

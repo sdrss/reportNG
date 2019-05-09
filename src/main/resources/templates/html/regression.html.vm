@@ -37,8 +37,9 @@
 		<table class="table table-bordered" width="100%;">
 			<thead>
 				<tr>
-					<th scope="col">#</th>
+					<th scope="col" width="30px">#</th>
 					<th scope="col" colspan="2">$messages.getString("featureDescription")</th>
+					<th scope="col" colspan="1">$messages.getString("totalTests")</th>
 				  	<th scope="col" colspan="2">$messages.getString("overallstatus")</th>
 				</tr>
 			</thead>
