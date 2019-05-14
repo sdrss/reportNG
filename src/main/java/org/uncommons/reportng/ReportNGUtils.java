@@ -1794,7 +1794,7 @@ public class ReportNGUtils {
 			all.addAll(iResultMapKnown);
 			all.addAll(iResultMapFixed);
 			int totalNumberOfTests = getTotalNumberOfTests(iResultMapPass, iResultMapFail, iResultMapSkip, iResultMapKnown, iResultMapFixed);
-			String results = getFeatureResults(iResultMapPass, iResultMapFail, iResultMapSkip, iResultMapKnown, iResultMapFixed);
+			String results = getFeatureResults(iResultMapPass, iResultMapFail, iResultMapSkip, iResultMapKnown, iResultMapFixed, linkName);
 			ResultStatus status = getStatus(iResultMapPass.size(), iResultMapFail.size(), iResultMapFail.size(), iResultMapKnown.size(), iResultMapFixed.size());
 			for (ITestResult iTestResult : all) {
 				issues.add(new IssueDTO(suiteName, iTestResult.getTestContext().getName(), iTestResult.getInstanceName(), getFeatureDescription(iTestContext),
@@ -1822,7 +1822,7 @@ public class ReportNGUtils {
 			all.addAll(iResultMapKnown);
 			all.addAll(iResultMapFixed);
 
-			String results = getFeatureResults(iResultMapPass, iResultMapFail, iResultMapSkip, iResultMapKnown, iResultMapFixed);
+			String results = getFeatureResults(iResultMapPass, iResultMapFail, iResultMapSkip, iResultMapKnown, iResultMapFixed, linkName);
 			ResultStatus status = getStatus(iResultMapPass.size(), iResultMapFail.size(), iResultMapFail.size(), iResultMapKnown.size(), iResultMapFixed.size());
 			for (ITestResult iTestResult : all) {
 				boolean alreadyExists = false;
@@ -1844,39 +1844,23 @@ public class ReportNGUtils {
 	}
 
 	private static String getFeatureResults(Set<ITestResult> iResultMapPass, Set<ITestResult> iResultMapFail, Set<ITestResult> iResultMapSkip,
-			Set<ITestResult> iResultMapKnown, Set<ITestResult> iResultMapFixed) {
+			Set<ITestResult> iResultMapKnown, Set<ITestResult> iResultMapFixed, String link) {
 		String results = "<table>" + "\n";
 		results += "<tr>";
 		if (iResultMapPass.size() > 0) {
-			results += "<th class=\"passed number\" width=\"30px\">Pass</th>";
+			results += "<td class=\"passed number\" width=\"30px\"><a href=\"" + link + "\">" + iResultMapPass.size() + "</a></td>";
 		}
 		if (iResultMapFail.size() > 0) {
-			results += "<th class=\"failed number\" width=\"30px\">Fail</th>";
+			results += "<td class=\"failed number\" width=\"30px\"><a href=\"" + link + "\">" + iResultMapFail.size() + "</a></td>";
 		}
 		if (iResultMapSkip.size() > 0) {
-			results += "<th class=\"skipped number\" width=\"30px\">Skip</th>";
+			results += "<td class=\"skipped number\" width=\"30px\"><a href=\"" + link + "\">" + iResultMapSkip.size() + "</a></td>";
 		}
 		if (iResultMapKnown.size() > 0) {
-			results += "<th class=\"knownDefects number\" width=\"30px\">Known</th>";
+			results += "<td class=\"knownDefects number\" width=\"30px\"><a href=\"" + link + "\">" + iResultMapKnown.size() + "</a></td>";
 		}
 		if (iResultMapFixed.size() > 0) {
-			results += "<th class=\"fixed number\" width=\"30px\">Fixed</th></tr>";
-		}
-		results += "<tr>";
-		if (iResultMapPass.size() > 0) {
-			results += "<td class=\"passed number\" width=\"30px\">" + iResultMapPass.size() + "</td>";
-		}
-		if (iResultMapFail.size() > 0) {
-			results += "<td class=\"failed number\" width=\"30px\">" + iResultMapFail.size() + "</td>";
-		}
-		if (iResultMapSkip.size() > 0) {
-			results += "<td class=\"skipped number\" width=\"30px\">" + iResultMapSkip.size() + "</td>";
-		}
-		if (iResultMapKnown.size() > 0) {
-			results += "<td class=\"knownDefects number\" width=\"30px\">" + iResultMapKnown.size() + "</td>";
-		}
-		if (iResultMapFixed.size() > 0) {
-			results += "<td class=\"fixed number\" width=\"30px\">" + iResultMapFixed.size() + "</td>";
+			results += "<td class=\"fixed number\" width=\"30px\"><a href=\"" + link + "\">" + iResultMapFixed.size() + "</a></td>";
 		}
 		results += "</tr>";
 		results += "</table>";
