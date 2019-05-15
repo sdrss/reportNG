@@ -627,3 +627,7 @@ table thead tr .headerSortUp {
 table thead tr .headerSortDown {
 	background-image: url(../images/desc.gif);
 }
+
+#features tr:hover {
+    background-color: #c8c8ca;
+}

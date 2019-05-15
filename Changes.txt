@@ -1,3 +1,5 @@
+V2.2.3 * Hover for features and issues
+       * 
 V2.2.2 * Sort Suites
        * Sort Tests
        * Features and New Features grouped

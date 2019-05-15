@@ -326,6 +326,7 @@ public class ReportNGUtils {
 				response += "<td><span id=\"span-" + id + "\" class=\"glyphicon glyphicon-minus\"></span></td>\n";
 				response += "<td>" + pair.getKey() + "</td>";
 				response += "<td>" + pair.getValue().size() + "</td>";
+				response += "<td></td>";
 				response += "</tr>";
 				//
 				response += "<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">";
@@ -763,6 +764,51 @@ public class ReportNGUtils {
 			return getStatusColor(ResultStatus.SKIP);
 		}
 		return getStatusColor(ResultStatus.PASS);
+	}
+
+	public String getSteps(ISuiteResult result) {
+		String steps = "<table><tr>";
+		Set<ITestResult> all = new HashSet<>();
+		if (result.getTestContext().getFailedTests() != null && !result.getTestContext().getFailedTests().getAllResults().isEmpty()) {
+			all.addAll(result.getTestContext().getFailedTests().getAllResults());
+		}
+		if (result.getTestContext().getPassedTests() != null && !result.getTestContext().getPassedTests().getAllResults().isEmpty()) {
+			all.addAll(result.getTestContext().getPassedTests().getAllResults());
+		}
+		if (result.getTestContext().getSkippedTests() != null && !result.getTestContext().getSkippedTests().getAllResults().isEmpty()) {
+			all.addAll(result.getTestContext().getSkippedTests().getAllResults());
+		}
+
+		for (ITestResult temp : all) {
+			steps += "<td>";
+			if (temp.getStatus() == ITestResult.SUCCESS) {
+				boolean isFixed = false;
+				boolean isKnown = false;
+				Annotation[] annotation = getDeclaredAnnotations(temp);
+				for (Annotation tempAnnotation : annotation) {
+					if (tempAnnotation.toString().contains(KNOWNDEFECT) && FIXED.equals(temp.getAttribute(TEST))) {
+						steps += "F";
+						isFixed = true;
+						break;
+					} else if (tempAnnotation.toString().contains(KNOWNDEFECT) && KNOWN.equals(temp.getAttribute(TEST))) {
+						steps += "K";
+						isKnown = true;
+					}
+				}
+				if (!isFixed && !isKnown) {
+					steps += "P";
+				}
+			}
+			if (temp.getStatus() == ITestResult.FAILURE) {
+				steps += "F";
+			}
+			if (temp.getStatus() == ITestResult.SKIP) {
+				steps += "S";
+			}
+			steps += "</td>";
+		}
+		steps += "</table>";
+		return steps;
 	}
 
 	public boolean hasPriority(ITestResult result) {

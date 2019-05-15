@@ -36,7 +36,7 @@
 	#if ($utils.issues($suites).getKnownIssuesRegression().size()>0)
 	<div class="well well-large">
 	<h4>$messages.getString("regressionissues")</h4>
-		<table class="table table-bordered" width="100%;">
+		<table class="table table-bordered" width="100%;" id="features">
 			<thead>
 				<tr>
 					<th scope="col" width="30px">#</th>
@@ -54,7 +54,7 @@
 	#if ($utils.issues($suites).getKnownIssuesNewFeature().size()>0)
 	<div class="well well-large">
 	<h4>$messages.getString("newissuesonFeatures")</h4>
-		<table class="table table-bordered" width="100%;">
+		<table class="table table-bordered" width="100%;" id="features">
 			<thead>
 				<tr>
 					<th scope="col" width="30px">#</th>
