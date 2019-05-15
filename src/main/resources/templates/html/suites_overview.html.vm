@@ -10,7 +10,7 @@
   	<script type="text/javascript" src="js/jquery-1.12.0.min.js"></script> 
   	<script type="text/javascript" src="js/jquery.tablesorter.min.js"></script>
   	<script type="text/javascript" src="js/reportng.js"></script>
-  	<script type="text/javascript">$(document).ready(function(){$('.table').tablesorter({sortList: [[0,0]]});});</script>
+  	<script type="text/javascript">$(document).ready(function(){$('.table').tablesorter({});});</script>
 </head>
 <body onload="return false;" onkeypress="hidePass();">
 <div class="row">
