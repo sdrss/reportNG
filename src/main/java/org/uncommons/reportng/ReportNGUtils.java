@@ -323,7 +323,7 @@ public class ReportNGUtils {
 				UUID id = UUID.randomUUID();
 				response += "<tr class=\"parent\" id=\"row" + indexCounter
 						+ "\" title=\"Click to expand/collapse\" style=\"cursor: pointer;\" onclick=\"changeIcon('span-" + id + "'); \">\n";
-				response += "<td><span id=\"span-" + id + "\" class=\"glyphicon glyphicon-minus\"></span></td>\n";
+				response += "<td><span id=\"span-" + id + "\" class=\"glyphicon glyphicon-minus\" style=\"color:blue\"></span></td>\n";
 				response += "<td>" + pair.getKey() + "</td>";
 				response += "<td>" + pair.getValue().size() + "</td>";
 				response += "<td></td>";
@@ -1361,7 +1361,7 @@ public class ReportNGUtils {
 				UUID id = UUID.randomUUID();
 				response += "<tr class=\"parent\" id=\"row" + indexCounter
 						+ "\" title=\"Click to expand/collapse\" style=\"cursor: pointer;\" onclick=\"changeIcon('span-" + id + "'); \">\n";
-				response += "<td><span id=\"span-" + id + "\" class=\"glyphicon glyphicon-minus\"></span></td>\n";
+				response += "<td><span id=\"span-" + id + "\" class=\"glyphicon glyphicon-minus\" style=\"color:blue\"></span></td>\n";
 				response += "<td colspan=\"2\" id=\"" + pair.getKey() + "\">" + pair.getKey() + "</td>";
 				response += "<td colspan=\"1\">" + totalTests + "</td>";
 				response += "<td colspan=\"2\">" + getStatusColor(overAllStatus) + "</td>\n";
