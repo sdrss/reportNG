@@ -97,21 +97,21 @@
 				<tbody>
 					<tr>
 						<th scope="row" class="failTitle">$messages.getString("newIssues")</th>
-						<td align="center"><a href="newIssues.html">$utils.issues($suites).getNewIssuesRegression().size()</a></td>
-						<td align="center"><a href="newIssues.html">$utils.issues($suites).getNewIssuesNewFeature().size()</a></td>
-						<td align="center"><a href="newIssues.html">$utils.issues($suites).getNewIssuesAmount()</a></td>
+						<td align="center" title="$messages.getString("clickNewIssuesRegressionTests")"><a href="newIssues.html">$utils.issues($suites).getNewIssuesRegression().size()</a></td>
+						<td align="center" title="$messages.getString("clickNewIssuesFeatureTests")"><a href="newIssues.html">$utils.issues($suites).getNewIssuesNewFeature().size()</a></td>
+						<td align="center" title="$messages.getString("clickNewIssues")"><a href="newIssues.html">$utils.issues($suites).getNewIssuesAmount()</a></td>
 					</tr>
 					<tr>
 						<th scope="row" class="KnownDefectTitle">$messages.getString("knownIssues")</th>
-						<td align="center"><a href="knownIssues.html">$utils.issues($suites).getKnownIssuesRegression().size()</a></td>
-						<td align="center"><a href="knownIssues.html">$utils.issues($suites).getKnownIssuesNewFeature().size()</a></td>
-						<td align="center"><a href="knownIssues.html">$utils.issues($suites).getKnownIssuesAmount()</a></td>
+						<td align="center" title="$messages.getString("clickKnownIssuesRegressionTests")"><a href="knownIssues.html">$utils.issues($suites).getKnownIssuesRegression().size()</a></td>
+						<td align="center" title="$messages.getString("clickKnownIssuesFeatureTests")"><a href="knownIssues.html">$utils.issues($suites).getKnownIssuesNewFeature().size()</a></td>
+						<td align="center" title="$messages.getString("clickKnownIssues")"><a href="knownIssues.html">$utils.issues($suites).getKnownIssuesAmount()</a></td>
 					</tr>
 					<tr>
 						<th scope="row" class="fixedTitle">$messages.getString("fixedIssues")</th>
-						<td align="center"><a href="fixedIssues.html">$utils.issues($suites).getFixedIssuesRegression().size()</a></td>
-						<td align="center"><a href="fixedIssues.html">$utils.issues($suites).getFixedIssuesNewFeature().size()</a></td>
-						<td align="center"><a href="fixedIssues.html">$utils.issues($suites).getFixedIssuesAmount()</a></td>
+						<td align="center" title="$messages.getString("clickFixedIssuesRegressionTests")"><a href="fixedIssues.html">$utils.issues($suites).getFixedIssuesRegression().size()</a></td>
+						<td align="center" title="$messages.getString("clickFixedIssuesFeatureTests")"><a href="fixedIssues.html">$utils.issues($suites).getFixedIssuesNewFeature().size()</a></td>
+						<td align="center" title="$messages.getString("clickFixedIssues")"><a href="fixedIssues.html">$utils.issues($suites).getFixedIssuesAmount()</a></td>
 					</tr>
 				</tbody>
 				</table>
