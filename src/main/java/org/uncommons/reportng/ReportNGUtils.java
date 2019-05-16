@@ -37,6 +37,7 @@ import org.uncommons.reportng.annotations.KnownDefect;
 import org.uncommons.reportng.annotations.NewFeature;
 import org.uncommons.reportng.dto.IssueDTO;
 import org.uncommons.reportng.dto.IssuesDTO;
+import org.uncommons.reportng.dto.PackageDTO;
 import org.uncommons.reportng.dto.ResultStatus;
 import org.uncommons.reportng.dto.ResultsDTO;
 
@@ -487,6 +488,58 @@ public class ReportNGUtils {
 		return response;
 	}
 
+	public String getPackages(List<ISuite> suites) {
+		String response = "<tbody>";
+		Map<String, PackageDTO> packages = new HashMap<>();
+		if (suites != null) {
+			for (ISuite tempISuite : suites) {
+				Map<String, ISuiteResult> results = tempISuite.getResults();
+				for (Map.Entry<String, ISuiteResult> entry : results.entrySet()) {
+					for (XmlClass tempClass : entry.getValue().getTestContext().getCurrentXmlTest().getClasses()) {
+						if (tempClass.getName() != null && !tempClass.getName().isEmpty()) {
+
+							String packageName = tempClass.getName().substring(0, tempClass.getName().lastIndexOf("."));
+							PackageDTO packageResults = new PackageDTO();
+							packageResults.setPass(getPassed(entry.getValue().getTestContext()).size());
+							packageResults.setFail(getFailed(entry.getValue().getTestContext()).size());
+							packageResults.setSkip(getSkip(entry.getValue().getTestContext()).size());
+							packageResults.setKnown(getKnownDefect(entry.getValue().getTestContext()).size());
+							packageResults.setFixed(getFixed(entry.getValue().getTestContext()).size());
+							Long startDate = entry.getValue().getTestContext().getStartDate().getTime();
+							Long endDate = entry.getValue().getTestContext().getEndDate().getTime();
+							packageResults.setDuration(formatDurationinMinutes(endDate - startDate));
+							System.out.println(tempClass.getName() + "->" + packageResults.getDuration());
+							if (packages.containsKey(packageName)) {
+								packages.get(packageName).setFail(packages.get(packageName).getFail() + packageResults.getFail());
+								packages.get(packageName).setFixed(packages.get(packageName).getFixed() + packageResults.getFixed());
+								packages.get(packageName).setKnown(packages.get(packageName).getKnown() + packageResults.getKnown());
+								packages.get(packageName).setPass(packages.get(packageName).getPass() + packageResults.getPass());
+								packages.get(packageName).setSkip(packages.get(packageName).getSkip() + packageResults.getSkip());
+								packages.get(packageName).setDuration(
+										formatDurationinMinutes(packages.get(packageName).getDuration(), packageResults.getDuration()));
+							} else {
+								packages.put(packageName, packageResults);
+							}
+						}
+					}
+				}
+			}
+			for (Map.Entry<String, PackageDTO> entry : packages.entrySet()) {
+				response += "<tr class=\"test\">";
+				response += "<td align=\"left\">" + entry.getKey() + "</td>";
+				response += "<td align=\"center\">" + entry.getValue().getDuration() + "</td>";
+				response += "<td align=\"center\">" + entry.getValue().getPass() + "</td>";
+				response += "<td align=\"center\">" + entry.getValue().getFail() + "</td>";
+				response += "<td align=\"center\">" + entry.getValue().getSkip() + "</td>";
+				response += "<td align=\"center\">" + entry.getValue().getKnown() + "</td>";
+				response += "<td align=\"center\">" + entry.getValue().getFixed() + "</td>";
+				response += "</tr>\n";
+			}
+		}
+		response += "</tbody>\n";
+		return response;
+	}
+
 	private String getDate(ISuite tempISuite) {
 		Date date = new Date(getStartTime(tempISuite.getAllInvokedMethods()));
 		return DateFormat.getTimeInstance().format(date);
@@ -562,6 +615,47 @@ public class ReportNGUtils {
 		long minutes = (elapsed / (1000 * 60)) % 60;
 		long hours = (elapsed / (1000 * 60 * 60)) % 24;
 		return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+	}
+
+	public static String formatDurationinMinutes(String time1, String time2) {
+		String[] splitter1 = time1.split(":");
+		String[] splitter2 = time2.split(":");
+
+		int seconds = Integer.parseInt(splitter1[2]) + Integer.parseInt(splitter2[2]);
+		int minutes = Integer.parseInt(splitter1[1]) + Integer.parseInt(splitter2[1]);
+		int hours = Integer.parseInt(splitter1[0]) + Integer.parseInt(splitter2[0]);
+
+		if (seconds >= 60) {
+			minutes++;
+			seconds = seconds - 60;
+		}
+		if (minutes >= 60) {
+			hours++;
+			minutes = minutes - 60;
+		}
+
+		String hoursString = "00";
+		String minutesString = "00";
+		String secondsString = "00";
+
+		if (hours <= 9) {
+			hoursString = "0" + hours;
+		} else {
+			hoursString = Integer.toString(hours);
+		}
+
+		if (minutes <= 9) {
+			minutesString = "0" + minutes;
+		} else {
+			minutesString = Integer.toString(minutes);
+		}
+
+		if (seconds <= 9) {
+			secondsString = "0" + seconds;
+		} else {
+			secondsString = Integer.toString(seconds);
+		}
+		return hoursString + ":" + minutesString + ":" + secondsString;
 	}
 
 	/**

@@ -62,6 +62,7 @@ public class HTMLReporter extends AbstractReporter {
 	public static final String RUN_ARGUMENTS = "runArguments.html";
 	public static final String REGRESSION = "regression.html";
 	public static final String FEATURES = "newFeatures.html";
+	public static final String PACKAGES = "packages.html";
 	// JS scripts
 	public static final String CANVAS_FILE = "canvas.js";
 	// Keys
@@ -137,6 +138,8 @@ public class HTMLReporter extends AbstractReporter {
 			createRunArguments(sortedSuites, outputDirectory);
 			// Create Features
 			createFeatures(sortedSuites, outputDirectory);
+			// Packages
+			createPackagesView(sortedSuites, outputDirectory);
 			// Create Log
 			createLog(outputDirectory);
 		} catch (Exception ex) {
@@ -218,6 +221,12 @@ public class HTMLReporter extends AbstractReporter {
 			}
 			++index;
 		}
+	}
+
+	private void createPackagesView(List<ISuite> suites, File outputDirectory) throws Exception {
+		VelocityContext context = createContext();
+		context.put(SUITES_KEY, suites);
+		generateFile(new File(outputDirectory, PACKAGES), PACKAGES + TEMPLATE_EXTENSION, context);
 	}
 
 	protected void createCanvasJs(List<ISuite> suites, File outputDirectory) throws Exception {
