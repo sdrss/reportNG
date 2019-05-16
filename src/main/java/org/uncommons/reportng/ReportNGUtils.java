@@ -528,11 +528,31 @@ public class ReportNGUtils {
 				response += "<tr class=\"test\">";
 				response += "<td align=\"left\">" + entry.getKey() + "</td>";
 				response += "<td align=\"center\">" + entry.getValue().getDuration() + "</td>";
-				response += "<td align=\"center\">" + entry.getValue().getPass() + "</td>";
-				response += "<td align=\"center\">" + entry.getValue().getFail() + "</td>";
-				response += "<td align=\"center\">" + entry.getValue().getSkip() + "</td>";
-				response += "<td align=\"center\">" + entry.getValue().getKnown() + "</td>";
-				response += "<td align=\"center\">" + entry.getValue().getFixed() + "</td>";
+				if (entry.getValue().getPass() > 0) {
+					response += "<td align=\"center\" class=\"passed number\">" + entry.getValue().getPass() + "</td>";
+				} else {
+					response += "<td align=\"center\" class=\"zero number\">" + entry.getValue().getPass() + "</td>";
+				}
+				if (entry.getValue().getFail() > 0) {
+					response += "<td align=\"center\" class=\"failed number\">" + entry.getValue().getFail() + "</td>";
+				} else {
+					response += "<td align=\"center\" class=\"zero number\">" + entry.getValue().getFail() + "</td>";
+				}
+				if (entry.getValue().getSkip() > 0) {
+					response += "<td align=\"center\" class=\"skipped number\">" + entry.getValue().getSkip() + "</td>";
+				} else {
+					response += "<td align=\"center\" class=\"zero number\">" + entry.getValue().getSkip() + "</td>";
+				}
+				if (entry.getValue().getKnown() > 0) {
+					response += "<td align=\"center\" class=\"knownDefects number\">" + entry.getValue().getKnown() + "</td>";
+				} else {
+					response += "<td align=\"center\" class=\"zero number\">" + entry.getValue().getKnown() + "</td>";
+				}
+				if (entry.getValue().getFixed() > 0) {
+					response += "<td align=\"center\" class=\"fixed number\">" + entry.getValue().getFixed() + "</td>";
+				} else {
+					response += "<td align=\"center\" class=\"zero number\">" + entry.getValue().getFixed() + "</td>";
+				}
 				response += "</tr>\n";
 			}
 		}
