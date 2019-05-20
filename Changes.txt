@@ -1,8 +1,10 @@
-V2.2.3 * Hover for features and issues
+V2.3.0 * External Links in report
+       * Hover for features and issues
        * Hover for Issues table in overview page
        * Tooltip text in overview page
        * Blue Color for expand/collapse features and issues
        * New Results menu. Show results per package 
+       * Various Fixes
        * 
 V2.2.2 * Sort Suites
        * Sort Tests
