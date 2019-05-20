@@ -14,7 +14,7 @@
 		<div class="container">
 			<div class="well well-large">
 				<b>$messages.getString("tests")</b>
-				<table class="table table-bordered" id="features">
+				<table class="table table-bordered">
 					<thead>
 						<tr>
 							<th scope="col" width="25%;">#</th>
@@ -62,7 +62,7 @@
 						</tr>
 					</tbody>
 				</table>
-				<table class="table table-bordered" id="features">
+				<table class="table table-bordered">
 					<thead>
 						<tr>
 							<th scope="col" width="300px;">#</th>
@@ -85,7 +85,7 @@
 		<div class="container">
 			<div class="well well-large">
 				<b>$messages.getString("issues")</b>
-				<table class="table table-bordered" id="features">
+				<table class="table table-bordered">
 				<thead>
 				<tr>
 					<th scope="col" width="25%;">#</th>

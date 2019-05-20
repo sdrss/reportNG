@@ -1,7 +1,9 @@
 package org.uncommons.reportng.dto;
 
-public class PackageDTO {
+public class PackageDetailsDTO {
 
+	private String className;
+	private String packageName;
 	private int pass;
 	private int fail;
 	private int skip;
@@ -9,11 +11,13 @@ public class PackageDTO {
 	private int fixed;
 	private String duration;
 
-	public PackageDTO() {
+	public PackageDetailsDTO() {
 
 	}
 
-	public PackageDTO(int pass, int fail, int skip, int known, int fixed, String duration) {
+	public PackageDetailsDTO(String className, String packageName, int pass, int fail, int skip, int known, int fixed, String duration) {
+		setClassName(className);
+		setPackageName(packageName);
 		setPass(pass);
 		setFail(fail);
 		setSkip(skip);
@@ -68,6 +72,22 @@ public class PackageDTO {
 
 	public void setDuration(String duration) {
 		this.duration = duration;
+	}
+
+	public String getClassΝame() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
+	}
+
+	public String getPackageName() {
+		return packageName;
+	}
+
+	public void setPackageName(String packageName) {
+		this.packageName = packageName;
 	}
 
 }
