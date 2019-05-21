@@ -315,7 +315,7 @@ public class ReportNGUtils {
 
 	public String getIssues(Map<String, List<IssueDTO>> issues) {
 		String response = "";
-		if (issues != null) {
+		if (issues != null && !issues.isEmpty()) {
 			Iterator<Entry<String, List<IssueDTO>>> it = issues.entrySet().iterator();
 			int indexCounter = 0;
 			while (it.hasNext()) {
@@ -346,6 +346,13 @@ public class ReportNGUtils {
 				}
 				indexCounter++;
 			}
+		} else {
+			response += "<tr style=\"display: table-row;\">";
+			response += "<td></td>";
+			response += "<td></td>";
+			response += "<td></td>";
+			response += "<td></td>";
+			response += "</tr>\n";
 		}
 		return response;
 	}
@@ -1452,7 +1459,7 @@ public class ReportNGUtils {
 	public String getFeatures(Map<String, List<IssueDTO>> features) {
 		String response = "";
 		int indexCounter = 1;
-		if (features != null) {
+		if (features != null && !features.isEmpty()) {
 			Iterator<Entry<String, List<IssueDTO>>> it = features.entrySet().iterator();
 			while (it.hasNext()) {
 				Entry<String, List<IssueDTO>> pair = it.next();
@@ -1502,6 +1509,14 @@ public class ReportNGUtils {
 				}
 				indexCounter++;
 			}
+		} else {
+			response += "<tr style=\"display: table-row;\">";
+			response += "<td></td>";
+			response += "<td></td>\n";
+			response += "<td></td>\n";
+			response += "<td></td>\n";
+			response += "<td></td>\n";
+			response += "</tr>\n";
 		}
 		return response;
 	}

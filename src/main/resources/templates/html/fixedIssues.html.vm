@@ -79,6 +79,7 @@
 				</tr>
 			</thead>
 			<tbody>
+				$utils.getIssues($utils.issues($suites).getFixedIssuesNewFeature())
 			</tbody>
 		</table>
 		</div>
