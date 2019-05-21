@@ -490,115 +490,73 @@ public class ReportNGUtils {
 
 	public String getPackages(List<ISuite> suites) {
 		String response = "";
-		Map<String, List<PackageDetailsDTO>> packages = new HashMap<>();
-		if (suites != null) {
-			for (ISuite tempISuite : suites) {
-				Map<String, ISuiteResult> results = tempISuite.getResults();
-				for (Map.Entry<String, ISuiteResult> entry : results.entrySet()) {
-					for (XmlClass tempClass : entry.getValue().getTestContext().getCurrentXmlTest().getClasses()) {
-						if (tempClass.getName() != null && !tempClass.getName().isEmpty()) {
-							String packageName = tempClass.getName().substring(0, tempClass.getName().lastIndexOf("."));
-							PackageDetailsDTO packageResults = new PackageDetailsDTO();
-							packageResults.setPackageName(packageName);
-							packageResults.setPass(getPassed(entry.getValue().getTestContext()).size());
-							packageResults.setFail(getFailed(entry.getValue().getTestContext()).size());
-							packageResults.setSkip(getSkip(entry.getValue().getTestContext()).size());
-							packageResults.setKnown(getKnownDefect(entry.getValue().getTestContext()).size());
-							packageResults.setFixed(getFixed(entry.getValue().getTestContext()).size());
-							packageResults.setDuration(formatDurationinMinutes(entry.getValue().getTestContext().getEndDate().getTime() - entry.getValue().getTestContext().getStartDate().getTime()));
-							packageResults.setClassName(tempClass.getName());
-							if (packages.containsKey(packageResults.getPackageName())) {
-								packages.get(packageResults.getPackageName()).add(packageResults);
-							} else {
-								packages.put(packageResults.getPackageName(), new ArrayList<>(Arrays.asList(packageResults)));
-							}
-						}
-					}
-				}
+		int indexCounter = 0;
+		for (Entry<PackageDetailsDTO, List<PackageDetailsDTO>> entry : HTMLReporter.getPackageDeatails().entrySet()) {
+			UUID id = UUID.randomUUID();
+			response += "<tr class=\"parent\" id=\"row" + indexCounter
+					+ "\" title=\"Click to expand/collapse\" style=\"cursor: pointer;\" onclick=\"changeIcon('span-" + id + "'); \">\n";
+			response += "<td><span id=\"span-" + id + "\" class=\"glyphicon glyphicon-minus\" style=\"color:blue\"></span></td>\n";
+			response += "<td align=\"left\">" + entry.getKey().getPackageName() + "</td>";
+			response += "<td align=\"center\">" + entry.getKey().getDuration() + "</td>";
+			if (entry.getKey().getPass() > 0) {
+				response += "<td align=\"center\" class=\"passed number\">" + entry.getKey().getPass() + "</td>";
+			} else {
+				response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getPass() + "</td>";
 			}
-			// Count Summary per Package
-			Map<PackageDetailsDTO, List<PackageDetailsDTO>> packagesFinal = new HashMap<>();
-			for (Map.Entry<String, List<PackageDetailsDTO>> entry : packages.entrySet()) {
-				PackageDetailsDTO packageDetailsDTO = new PackageDetailsDTO(null, null, 0, 0, 0, 0, 0, "00:00:00");
-				for (PackageDetailsDTO temp : entry.getValue()) {
-					packageDetailsDTO.setDuration(formatDurationinMinutes(temp.getDuration(), packageDetailsDTO.getDuration()));
-					packageDetailsDTO.setFail(temp.getFail() + packageDetailsDTO.getFail());
-					packageDetailsDTO.setFixed(temp.getFixed() + packageDetailsDTO.getFixed());
-					packageDetailsDTO.setKnown(temp.getKnown() + packageDetailsDTO.getKnown());
-					packageDetailsDTO.setPass(temp.getPass() + packageDetailsDTO.getPass());
-					packageDetailsDTO.setSkip(temp.getSkip() + packageDetailsDTO.getSkip());
-					packageDetailsDTO.setPackageName(entry.getKey());
-				}
-				packagesFinal.put(packageDetailsDTO, entry.getValue());
+			if (entry.getKey().getFail() > 0) {
+				response += "<td align=\"center\" class=\"failed number\">" + entry.getKey().getFail() + "</td>";
+			} else {
+				response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getFail() + "</td>";
 			}
-			int indexCounter = 0;
-			for (Entry<PackageDetailsDTO, List<PackageDetailsDTO>> entry : packagesFinal.entrySet()) {
-				UUID id = UUID.randomUUID();
-				response += "<tr class=\"parent\" id=\"row" + indexCounter
-						+ "\" title=\"Click to expand/collapse\" style=\"cursor: pointer;\" onclick=\"changeIcon('span-" + id + "'); \">\n";
-				response += "<td><span id=\"span-" + id + "\" class=\"glyphicon glyphicon-minus\" style=\"color:blue\"></span></td>\n";
-				response += "<td align=\"left\">" + entry.getKey().getPackageName() + "</td>";
-				response += "<td align=\"center\">" + entry.getKey().getDuration() + "</td>";
-				if (entry.getKey().getPass() > 0) {
-					response += "<td align=\"center\" class=\"passed number\">" + entry.getKey().getPass() + "</td>";
-				} else {
-					response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getPass() + "</td>";
-				}
-				if (entry.getKey().getFail() > 0) {
-					response += "<td align=\"center\" class=\"failed number\">" + entry.getKey().getFail() + "</td>";
-				} else {
-					response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getFail() + "</td>";
-				}
-				if (entry.getKey().getSkip() > 0) {
-					response += "<td align=\"center\" class=\"skipped number\">" + entry.getKey().getSkip() + "</td>";
-				} else {
-					response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getSkip() + "</td>";
-				}
-				if (entry.getKey().getKnown() > 0) {
-					response += "<td align=\"center\" class=\"knownDefects number\">" + entry.getKey().getKnown() + "</td>";
-				} else {
-					response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getKnown() + "</td>";
-				}
-				if (entry.getKey().getFixed() > 0) {
-					response += "<td align=\"center\" class=\"fixed number\">" + entry.getKey().getFixed() + "</td>";
-				} else {
-					response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getFixed() + "</td>";
-				}
-				response += "</tr>\n";
+			if (entry.getKey().getSkip() > 0) {
+				response += "<td align=\"center\" class=\"skipped number\">" + entry.getKey().getSkip() + "</td>";
+			} else {
+				response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getSkip() + "</td>";
+			}
+			if (entry.getKey().getKnown() > 0) {
+				response += "<td align=\"center\" class=\"knownDefects number\">" + entry.getKey().getKnown() + "</td>";
+			} else {
+				response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getKnown() + "</td>";
+			}
+			if (entry.getKey().getFixed() > 0) {
+				response += "<td align=\"center\" class=\"fixed number\">" + entry.getKey().getFixed() + "</td>";
+			} else {
+				response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getFixed() + "</td>";
+			}
+			response += "</tr>\n";
 
-				for (PackageDetailsDTO packageDTO : entry.getValue()) {
-					response += "<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">";
-					response += "<td></td>";
-					response += "<td>&nbsp;&nbsp;&nbsp;" + packageDTO.getClassΝame() + "</td>";
-					response += "<td align=\"center\">" + packageDTO.getDuration() + "</td>";
-					if (packageDTO.getPass() > 0) {
-						response += "<td align=\"center\" class=\"passed number\">" + packageDTO.getPass() + "</td>";
-					} else {
-						response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getPass() + "</td>";
-					}
-					if (packageDTO.getFail() > 0) {
-						response += "<td align=\"center\" class=\"failed number\">" + packageDTO.getFail() + "</td>";
-					} else {
-						response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getFail() + "</td>";
-					}
-					if (packageDTO.getSkip() > 0) {
-						response += "<td align=\"center\" class=\"skipped number\">" + packageDTO.getSkip() + "</td>";
-					} else {
-						response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getSkip() + "</td>";
-					}
-					if (packageDTO.getKnown() > 0) {
-						response += "<td align=\"center\" class=\"knownDefects number\">" + packageDTO.getKnown() + "</td>";
-					} else {
-						response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getKnown() + "</td>";
-					}
-					if (packageDTO.getFixed() > 0) {
-						response += "<td align=\"center\" class=\"fixed number\">" + packageDTO.getFixed() + "</td>";
-					} else {
-						response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getFixed() + "</td>";
-					}
+			for (PackageDetailsDTO packageDTO : entry.getValue()) {
+				response += "<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">";
+				response += "<td></td>";
+				response += "<td>&nbsp;<a href=\"" + packageDTO.getUrl() + "\">" + packageDTO.getClassΝame() + "</a></td>";
+				response += "<td align=\"center\">" + packageDTO.getDuration() + "</td>";
+				if (packageDTO.getPass() > 0) {
+					response += "<td align=\"center\" class=\"passed number\">" + packageDTO.getPass() + "</td>";
+				} else {
+					response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getPass() + "</td>";
 				}
-				indexCounter++;
+				if (packageDTO.getFail() > 0) {
+					response += "<td align=\"center\" class=\"failed number\">" + packageDTO.getFail() + "</td>";
+				} else {
+					response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getFail() + "</td>";
+				}
+				if (packageDTO.getSkip() > 0) {
+					response += "<td align=\"center\" class=\"skipped number\">" + packageDTO.getSkip() + "</td>";
+				} else {
+					response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getSkip() + "</td>";
+				}
+				if (packageDTO.getKnown() > 0) {
+					response += "<td align=\"center\" class=\"knownDefects number\">" + packageDTO.getKnown() + "</td>";
+				} else {
+					response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getKnown() + "</td>";
+				}
+				if (packageDTO.getFixed() > 0) {
+					response += "<td align=\"center\" class=\"fixed number\">" + packageDTO.getFixed() + "</td>";
+				} else {
+					response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getFixed() + "</td>";
+				}
 			}
+			indexCounter++;
 		}
 		response += "\n";
 		return response;
@@ -670,7 +628,7 @@ public class ReportNGUtils {
 		return date;
 	}
 
-	public String getTotalDuration() {
+	public static String getTotalDuration() {
 		return formatDurationinMinutes(HTMLReporter.totalDuration);
 	}
 

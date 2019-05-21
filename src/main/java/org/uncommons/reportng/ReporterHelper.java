@@ -3,8 +3,10 @@ package org.uncommons.reportng;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.testng.IResultMap;
@@ -12,9 +14,11 @@ import org.testng.ISuite;
 import org.testng.ISuiteResult;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
+import org.testng.xml.XmlClass;
 import org.uncommons.reportng.annotations.KnownDefect;
 import org.uncommons.reportng.dto.IssueDTO;
 import org.uncommons.reportng.dto.IssuesDTO;
+import org.uncommons.reportng.dto.PackageDetailsDTO;
 import org.uncommons.reportng.dto.ResultsDTO;
 
 public class ReporterHelper {
@@ -128,7 +132,7 @@ public class ReporterHelper {
 				Entry<String, ISuiteResult> pair = item.next();
 				ISuiteResult result = pair.getValue();
 				String link = "suite" + suiteIndex + "_test" + testIndex + "_results.html";
-				// Calculate issues
+				// Calculate Known issues
 				List<IssueDTO> knownIssues = ReportNGUtils.getKnownIssues(tempISuite.getName(), link, result.getTestContext().getPassedTests().getAllResults());
 				for (IssueDTO tempIssueDTO : knownIssues) {
 					if (issuesDTO.getKnownIssues().containsKey(tempIssueDTO.getIssueDescription())) {
@@ -138,7 +142,7 @@ public class ReporterHelper {
 					}
 				}
 				issuesDTO.setKnownIssuesAmount(issuesDTO.getKnownIssues().size());
-
+				// Calculate Fixed issues
 				List<IssueDTO> fixedIssues = ReportNGUtils.getFixedIssues(tempISuite.getName(), link, result.getTestContext().getPassedTests().getAllResults());
 				for (IssueDTO tempIssueDTO : fixedIssues) {
 					if (issuesDTO.getFixedIssues().containsKey(tempIssueDTO.getIssueDescription())) {
@@ -148,7 +152,7 @@ public class ReporterHelper {
 					}
 				}
 				issuesDTO.setFixedIssuesAmount(issuesDTO.getFixedIssues().size());
-
+				// Calculate New issues
 				List<IssueDTO> newIssues = ReportNGUtils.getNewIssues(tempISuite.getName(), link, result.getTestContext().getFailedTests().getAllResults());
 				for (IssueDTO tempIssueDTO : newIssues) {
 					if (issuesDTO.getNewIssues().containsKey(tempIssueDTO.getIssueDescription())) {
@@ -287,5 +291,56 @@ public class ReporterHelper {
 			}
 		}
 		return iTestContext;
+	}
+
+	public static Map<PackageDetailsDTO, List<PackageDetailsDTO>> packageDetails(List<ISuite> sortedSuites) {
+		Map<PackageDetailsDTO, List<PackageDetailsDTO>> packagesFinal = new HashMap<>();
+		if (sortedSuites != null) {
+			Map<String, List<PackageDetailsDTO>> packages = new HashMap<>();
+			int suiteIndex = 1;
+			for (ISuite tempISuite : sortedSuites) {
+				Map<String, ISuiteResult> results = tempISuite.getResults();
+				int testIndex = 1;
+				for (Map.Entry<String, ISuiteResult> entry : results.entrySet()) {
+					for (XmlClass tempClass : entry.getValue().getTestContext().getCurrentXmlTest().getClasses()) {
+						if (tempClass.getName() != null && !tempClass.getName().isEmpty()) {
+							String packageName = tempClass.getName().substring(0, tempClass.getName().lastIndexOf("."));
+							PackageDetailsDTO packageResults = new PackageDetailsDTO();
+							packageResults.setPackageName(packageName);
+							packageResults.setPass(ReportNGUtils.getPassed(entry.getValue().getTestContext()).size());
+							packageResults.setFail(ReportNGUtils.getFailed(entry.getValue().getTestContext()).size());
+							packageResults.setSkip(ReportNGUtils.getSkip(entry.getValue().getTestContext()).size());
+							packageResults.setKnown(ReportNGUtils.getKnownDefect(entry.getValue().getTestContext()).size());
+							packageResults.setFixed(ReportNGUtils.getFixed(entry.getValue().getTestContext()).size());
+							packageResults.setDuration(ReportNGUtils.formatDurationinMinutes(entry.getValue().getTestContext().getEndDate().getTime() - entry.getValue().getTestContext().getStartDate().getTime()));
+							packageResults.setClassName(tempClass.getName());
+							packageResults.setUrl("suite" + suiteIndex + "_test" + testIndex + "_results.html");
+							if (packages.containsKey(packageResults.getPackageName())) {
+								packages.get(packageResults.getPackageName()).add(packageResults);
+							} else {
+								packages.put(packageResults.getPackageName(), new ArrayList<>(Arrays.asList(packageResults)));
+							}
+						}
+						testIndex++;
+					}
+				}
+				suiteIndex++;
+			}
+			// Count Summary per Package
+			for (Map.Entry<String, List<PackageDetailsDTO>> entry : packages.entrySet()) {
+				PackageDetailsDTO packageDetailsDTO = new PackageDetailsDTO(null, null, 0, 0, 0, 0, 0, "00:00:00", "");
+				for (PackageDetailsDTO temp : entry.getValue()) {
+					packageDetailsDTO.setDuration(ReportNGUtils.formatDurationinMinutes(temp.getDuration(), packageDetailsDTO.getDuration()));
+					packageDetailsDTO.setFail(temp.getFail() + packageDetailsDTO.getFail());
+					packageDetailsDTO.setFixed(temp.getFixed() + packageDetailsDTO.getFixed());
+					packageDetailsDTO.setKnown(temp.getKnown() + packageDetailsDTO.getKnown());
+					packageDetailsDTO.setPass(temp.getPass() + packageDetailsDTO.getPass());
+					packageDetailsDTO.setSkip(temp.getSkip() + packageDetailsDTO.getSkip());
+					packageDetailsDTO.setPackageName(entry.getKey());
+				}
+				packagesFinal.put(packageDetailsDTO, entry.getValue());
+			}
+		}
+		return packagesFinal;
 	}
 }

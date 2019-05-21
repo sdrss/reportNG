@@ -4,6 +4,7 @@ public class PackageDetailsDTO {
 
 	private String className;
 	private String packageName;
+	private String url;
 	private int pass;
 	private int fail;
 	private int skip;
@@ -15,7 +16,7 @@ public class PackageDetailsDTO {
 
 	}
 
-	public PackageDetailsDTO(String className, String packageName, int pass, int fail, int skip, int known, int fixed, String duration) {
+	public PackageDetailsDTO(String className, String packageName, int pass, int fail, int skip, int known, int fixed, String duration, String url) {
 		setClassName(className);
 		setPackageName(packageName);
 		setPass(pass);
@@ -24,6 +25,7 @@ public class PackageDetailsDTO {
 		setKnown(known);
 		setFixed(fixed);
 		setDuration(duration);
+		setUrl(url);
 	}
 
 	public int getPass() {
@@ -88,6 +90,14 @@ public class PackageDetailsDTO {
 
 	public void setPackageName(String packageName) {
 		this.packageName = packageName;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 }

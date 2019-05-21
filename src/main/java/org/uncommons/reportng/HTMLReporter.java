@@ -27,6 +27,7 @@ import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 import org.testng.xml.XmlSuite;
 import org.uncommons.reportng.dto.IssuesDTO;
+import org.uncommons.reportng.dto.PackageDetailsDTO;
 import org.uncommons.reportng.dto.ResultsDTO;
 
 /**
@@ -88,6 +89,7 @@ public class HTMLReporter extends AbstractReporter {
 
 	private static ResultsDTO results;
 	private static IssuesDTO issuesDTO;
+	private static Map<PackageDetailsDTO, List<PackageDetailsDTO>> packageDeatails;
 
 	public HTMLReporter() {
 		super(TEMPLATES_PATH);
@@ -114,8 +116,9 @@ public class HTMLReporter extends AbstractReporter {
 			// Copy Resources
 			copyResources(outputDirectory);
 			// Update results
-			results = ReporterHelper.checkAttribute(sortedSuites);
-			issuesDTO = ReporterHelper.issues(sortedSuites);
+			setResults(ReporterHelper.checkAttribute(sortedSuites));
+			setIssuesDTO(ReporterHelper.issues(sortedSuites));
+			setPackageDeatails(ReporterHelper.packageDetails(sortedSuites));
 			// Create Frames
 			createFrameset(outputDirectory);
 			// Create Menu
@@ -350,6 +353,14 @@ public class HTMLReporter extends AbstractReporter {
 
 	public static void setIssuesDTO(IssuesDTO issuesDTO) {
 		HTMLReporter.issuesDTO = issuesDTO;
+	}
+
+	public static Map<PackageDetailsDTO, List<PackageDetailsDTO>> getPackageDeatails() {
+		return packageDeatails;
+	}
+
+	public static void setPackageDeatails(Map<PackageDetailsDTO, List<PackageDetailsDTO>> packageDeatails) {
+		HTMLReporter.packageDeatails = packageDeatails;
 	}
 
 }

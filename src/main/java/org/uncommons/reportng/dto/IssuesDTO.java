@@ -148,4 +148,5 @@ public class IssuesDTO {
 	public void setFixedIssuesNewFeature(Map<String, List<IssueDTO>> fixedIssuesNewFeature) {
 		this.fixedIssuesNewFeature = fixedIssuesNewFeature;
 	}
+
 }
