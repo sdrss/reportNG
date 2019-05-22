@@ -348,10 +348,10 @@ public class ReportNGUtils {
 			}
 		} else {
 			response += "<tr style=\"display: table-row;\">";
-			response += "<td></td>";
-			response += "<td></td>";
-			response += "<td></td>";
-			response += "<td></td>";
+			response += "<td>&nbsp;</td>";
+			response += "<td>&nbsp;</td>";
+			response += "<td>&nbsp;</td>";
+			response += "<td>&nbsp;</td>";
 			response += "</tr>\n";
 		}
 		return response;
@@ -1511,11 +1511,11 @@ public class ReportNGUtils {
 			}
 		} else {
 			response += "<tr style=\"display: table-row;\">";
-			response += "<td></td>";
-			response += "<td></td>\n";
-			response += "<td></td>\n";
-			response += "<td></td>\n";
-			response += "<td></td>\n";
+			response += "<td>&nbsp;</td>";
+			response += "<td>&nbsp;</td>\n";
+			response += "<td>&nbsp;</td>\n";
+			response += "<td>&nbsp;</td>\n";
+			response += "<td>&nbsp;</td>\n";
 			response += "</tr>\n";
 		}
 		return response;

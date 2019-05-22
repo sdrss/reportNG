@@ -32,10 +32,11 @@
 		}
     </script>
 </head>
-<body onload="return false;">
+<body onload="return false;" onkeypress="hidePass();">
 <div class="row">
 	<div class="col-xs-12">
 	<h3 class="normal" style="float: left;">$messages.getString("packages")</h3><br>
+	<button id="hideResults" type="button" class="btn-danger" onclick="hidePassPackages(this);" style="float: right;" title="$messages.getString("hoverTextHidePassSuites")">$messages.getString("showonlyfailures")</button>
     </div>
 </div>
 <br>
