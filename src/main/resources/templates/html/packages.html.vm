@@ -32,7 +32,7 @@
 		}
     </script>
 </head>
-<body onload="return false;" onkeypress="hidePass();">
+<body onload="return false;" onkeypress="hidePassPackages();">
 <div class="row">
 	<div class="col-xs-12">
 	<h3 class="normal" style="float: left;">$messages.getString("packages")</h3><br>
