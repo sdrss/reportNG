@@ -1,8 +1,8 @@
 package org.uncommons.reportng.dto;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class IssuesDTO {
 
@@ -24,17 +24,17 @@ public class IssuesDTO {
 	private Map<String, List<IssueDTO>> feature;
 
 	public IssuesDTO() {
-		newIssues = new HashMap<String, List<IssueDTO>>();
-		fixedIssues = new HashMap<String, List<IssueDTO>>();
-		knownIssues = new HashMap<String, List<IssueDTO>>();
-		newFeature = new HashMap<String, List<IssueDTO>>();
-		feature = new HashMap<String, List<IssueDTO>>();
-		newIssuesRegression = new HashMap<String, List<IssueDTO>>();
-		newIssuesNewFeature = new HashMap<String, List<IssueDTO>>();
-		knownIssuesRegression = new HashMap<String, List<IssueDTO>>();
-		knownIssuesNewFeature = new HashMap<String, List<IssueDTO>>();
-		fixedIssuesRegression = new HashMap<String, List<IssueDTO>>();
-		fixedIssuesNewFeature = new HashMap<String, List<IssueDTO>>();
+		newIssues = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		fixedIssues = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		knownIssues = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		newFeature = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		feature = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		newIssuesRegression = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		newIssuesNewFeature = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		knownIssuesRegression = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		knownIssuesNewFeature = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		fixedIssuesRegression = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		fixedIssuesNewFeature = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 	}
 
 	public Map<String, List<IssueDTO>> getNewIssues() {
