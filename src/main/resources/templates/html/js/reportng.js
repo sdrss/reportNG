@@ -3,6 +3,19 @@ function toggleElement(elementId, displayStyle) {
 	elementId.style.display = (current == 'none' ? displayStyle : 'none');
 }
 
+function toggleElementRow(elementId, parentStyle) {
+	var current = getStyle(elementId, 'display');
+	if(parentStyle=='none' && current == 'none'){
+		elementId.style.display = 'none';
+	}else
+	if(parentStyle=='none' && current == 'table-row'){
+		elementId.style.display = 'none';
+	}else
+	if(parentStyle=='table-row' && current == 'table-row'){
+		elementId.style.display = 'table-row';
+	}
+}
+
 function getStyle(elementId, property) {
 	var element = elementId;
 	return element.currentStyle ? element.currentStyle[property]
@@ -83,6 +96,10 @@ function hidePassPackages(element) {
 		}
 		if (foundFailures == 0) {
 			toggleElement(suitefooter[i], '');
+			childElements = $('tr.child-'+suitefooter[i].getAttribute('id'));
+			for (var k = 0; k < childElements.length; k++) {
+				toggleElementRow(childElements[k], getStyle(suitefooter[i], 'display'));
+			}
 		}
 	}
 	

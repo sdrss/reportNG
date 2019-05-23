@@ -13,9 +13,9 @@
 <div class="well well-large">
 <table class="table table-bordered">
 	<thead>
-   		<tr class="columnHeadings">
-    		<th class="header">#</th>
-	    	<th class="header"></th>
+   		<tr>
+    		<th>#</th>
+	    	<th></th>
   		</tr>
   	</thead>
   	$utils.runArguments($suites)

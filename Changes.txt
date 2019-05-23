@@ -1,4 +1,6 @@
 V2.3.1 * Links for Package Results
+       * Remove sorting from run arguments page
+       * Issue and general feature are not case sensitive
        *
 V2.3.0 * External Links in report
        * Hover for features and issues
