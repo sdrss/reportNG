@@ -136,30 +136,42 @@ public class ReporterHelper {
 				// Calculate Known issues
 				List<IssueDTO> knownIssues = ReportNGUtils.getKnownIssues(tempISuite.getName(), link, result.getTestContext().getPassedTests().getAllResults());
 				for (IssueDTO tempIssueDTO : knownIssues) {
-					if (issuesDTO.getKnownIssues().containsKey(tempIssueDTO.getIssueDescription())) {
-						issuesDTO.getKnownIssues().get(tempIssueDTO.getIssueDescription()).add(tempIssueDTO);
+					String issueDescription = "null";
+					if (tempIssueDTO.getIssueDescription() != null) {
+						issueDescription = tempIssueDTO.getIssueDescription();
+					}
+					if (issuesDTO.getKnownIssues().containsKey(issueDescription)) {
+						issuesDTO.getKnownIssues().get(issueDescription).add(tempIssueDTO);
 					} else {
-						issuesDTO.getKnownIssues().put(tempIssueDTO.getIssueDescription(), new ArrayList<IssueDTO>(Arrays.asList(tempIssueDTO)));
+						issuesDTO.getKnownIssues().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(tempIssueDTO)));
 					}
 				}
 				issuesDTO.setKnownIssuesAmount(issuesDTO.getKnownIssues().size());
 				// Calculate Fixed issues
 				List<IssueDTO> fixedIssues = ReportNGUtils.getFixedIssues(tempISuite.getName(), link, result.getTestContext().getPassedTests().getAllResults());
 				for (IssueDTO tempIssueDTO : fixedIssues) {
-					if (issuesDTO.getFixedIssues().containsKey(tempIssueDTO.getIssueDescription())) {
-						issuesDTO.getFixedIssues().get(tempIssueDTO.getIssueDescription()).add(tempIssueDTO);
+					String issueDescription = "null";
+					if (tempIssueDTO.getIssueDescription() != null) {
+						issueDescription = tempIssueDTO.getIssueDescription();
+					}
+					if (issuesDTO.getFixedIssues().containsKey(issueDescription)) {
+						issuesDTO.getFixedIssues().get(issueDescription).add(tempIssueDTO);
 					} else {
-						issuesDTO.getFixedIssues().put(tempIssueDTO.getIssueDescription(), new ArrayList<IssueDTO>(Arrays.asList(tempIssueDTO)));
+						issuesDTO.getFixedIssues().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(tempIssueDTO)));
 					}
 				}
 				issuesDTO.setFixedIssuesAmount(issuesDTO.getFixedIssues().size());
 				// Calculate New issues
 				List<IssueDTO> newIssues = ReportNGUtils.getNewIssues(tempISuite.getName(), link, result.getTestContext().getFailedTests().getAllResults());
 				for (IssueDTO tempIssueDTO : newIssues) {
-					if (issuesDTO.getNewIssues().containsKey(tempIssueDTO.getIssueDescription())) {
-						issuesDTO.getNewIssues().get(tempIssueDTO.getIssueDescription()).add(tempIssueDTO);
+					String issueDescription = "null";
+					if (tempIssueDTO.getIssueDescription() != null) {
+						issueDescription = tempIssueDTO.getIssueDescription();
+					}
+					if (issuesDTO.getNewIssues().containsKey(issueDescription)) {
+						issuesDTO.getNewIssues().get(issueDescription).add(tempIssueDTO);
 					} else {
-						issuesDTO.getNewIssues().put(tempIssueDTO.getIssueDescription(), new ArrayList<IssueDTO>(Arrays.asList(tempIssueDTO)));
+						issuesDTO.getNewIssues().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(tempIssueDTO)));
 					}
 				}
 				issuesDTO.setNewIssuesAmount(issuesDTO.getNewIssues().size());
@@ -168,10 +180,14 @@ public class ReporterHelper {
 				List<IssueDTO> newFeature = ReportNGUtils.getNewFeatures(tempISuite.getName(), link, result.getTestContext());
 				if (!newFeature.isEmpty()) {
 					for (IssueDTO temp : newFeature) {
-						if (issuesDTO.getNewFeature().containsKey(temp.getIssueDescription())) {
-							issuesDTO.getNewFeature().get(temp.getIssueDescription()).add(temp);
+						String issueDescription = "null";
+						if (temp.getIssueDescription() != null) {
+							issueDescription = temp.getIssueDescription();
+						}
+						if (issuesDTO.getNewFeature().containsKey(issueDescription)) {
+							issuesDTO.getNewFeature().get(issueDescription).add(temp);
 						} else {
-							issuesDTO.getNewFeature().put(temp.getIssueDescription(), new ArrayList<IssueDTO>(Arrays.asList(temp)));
+							issuesDTO.getNewFeature().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
 						}
 					}
 				}
@@ -179,10 +195,14 @@ public class ReporterHelper {
 				List<IssueDTO> feature = ReportNGUtils.getFeatures(tempISuite.getName(), link, result.getTestContext());
 				if (!feature.isEmpty()) {
 					for (IssueDTO temp : feature) {
-						if (issuesDTO.getFeature().containsKey(temp.getIssueDescription())) {
-							issuesDTO.getFeature().get(temp.getIssueDescription()).add(temp);
+						String issueDescription = "null";
+						if (temp.getIssueDescription() != null) {
+							issueDescription = temp.getIssueDescription();
+						}
+						if (issuesDTO.getFeature().containsKey(issueDescription)) {
+							issuesDTO.getFeature().get(issueDescription).add(temp);
 						} else {
-							issuesDTO.getFeature().put(temp.getIssueDescription(), new ArrayList<IssueDTO>(Arrays.asList(temp)));
+							issuesDTO.getFeature().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
 						}
 					}
 				}
@@ -195,17 +215,21 @@ public class ReporterHelper {
 		while (item.hasNext()) {
 			Entry<String, List<IssueDTO>> pair = item.next();
 			for (IssueDTO temp : pair.getValue()) {
+				String issueDescription = "null";
+				if (temp.getIssueDescription() != null) {
+					issueDescription = temp.getIssueDescription();
+				}
 				if (temp.isRegression()) {
-					if (issuesDTO.getNewIssuesRegression().containsKey(temp.getIssueDescription())) {
-						issuesDTO.getNewIssuesRegression().get(temp.getIssueDescription()).add(temp);
+					if (issuesDTO.getNewIssuesRegression().containsKey(issueDescription)) {
+						issuesDTO.getNewIssuesRegression().get(issueDescription).add(temp);
 					} else {
-						issuesDTO.getNewIssuesRegression().put(temp.getIssueDescription(), new ArrayList<IssueDTO>(Arrays.asList(temp)));
+						issuesDTO.getNewIssuesRegression().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
 					}
 				} else {
-					if (issuesDTO.getNewIssuesNewFeature().containsKey(temp.getIssueDescription())) {
-						issuesDTO.getNewIssuesNewFeature().get(temp.getIssueDescription()).add(temp);
+					if (issuesDTO.getNewIssuesNewFeature().containsKey(issueDescription)) {
+						issuesDTO.getNewIssuesNewFeature().get(issueDescription).add(temp);
 					} else {
-						issuesDTO.getNewIssuesNewFeature().put(temp.getIssueDescription(), new ArrayList<IssueDTO>(Arrays.asList(temp)));
+						issuesDTO.getNewIssuesNewFeature().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
 					}
 				}
 			}
@@ -215,17 +239,21 @@ public class ReporterHelper {
 		while (item.hasNext()) {
 			Entry<String, List<IssueDTO>> pair = item.next();
 			for (IssueDTO temp : pair.getValue()) {
+				String issueDescription = "null";
+				if (temp.getIssueDescription() != null) {
+					issueDescription = temp.getIssueDescription();
+				}
 				if (temp.isRegression()) {
-					if (issuesDTO.getKnownIssuesRegression().containsKey(temp.getIssueDescription())) {
-						issuesDTO.getKnownIssuesRegression().get(temp.getIssueDescription()).add(temp);
+					if (issuesDTO.getKnownIssuesRegression().containsKey(issueDescription)) {
+						issuesDTO.getKnownIssuesRegression().get(issueDescription).add(temp);
 					} else {
-						issuesDTO.getKnownIssuesRegression().put(temp.getIssueDescription(), new ArrayList<IssueDTO>(Arrays.asList(temp)));
+						issuesDTO.getKnownIssuesRegression().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
 					}
 				} else {
-					if (issuesDTO.getKnownIssuesNewFeature().containsKey(temp.getIssueDescription())) {
-						issuesDTO.getKnownIssuesNewFeature().get(temp.getIssueDescription()).add(temp);
+					if (issuesDTO.getKnownIssuesNewFeature().containsKey(issueDescription)) {
+						issuesDTO.getKnownIssuesNewFeature().get(issueDescription).add(temp);
 					} else {
-						issuesDTO.getKnownIssuesNewFeature().put(temp.getIssueDescription(), new ArrayList<IssueDTO>(Arrays.asList(temp)));
+						issuesDTO.getKnownIssuesNewFeature().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
 					}
 				}
 			}
@@ -236,17 +264,21 @@ public class ReporterHelper {
 		while (item.hasNext()) {
 			Entry<String, List<IssueDTO>> pair = item.next();
 			for (IssueDTO temp : pair.getValue()) {
+				String issueDescription = "null";
+				if (temp.getIssueDescription() != null) {
+					issueDescription = temp.getIssueDescription();
+				}
 				if (temp.isRegression()) {
-					if (issuesDTO.getFixedIssuesRegression().containsKey(temp.getIssueDescription())) {
-						issuesDTO.getFixedIssuesRegression().get(temp.getIssueDescription()).add(temp);
+					if (issuesDTO.getFixedIssuesRegression().containsKey(issueDescription)) {
+						issuesDTO.getFixedIssuesRegression().get(issueDescription).add(temp);
 					} else {
-						issuesDTO.getFixedIssuesRegression().put(temp.getIssueDescription(), new ArrayList<IssueDTO>(Arrays.asList(temp)));
+						issuesDTO.getFixedIssuesRegression().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
 					}
 				} else {
-					if (issuesDTO.getFixedIssuesNewFeature().containsKey(temp.getIssueDescription())) {
-						issuesDTO.getFixedIssuesNewFeature().get(temp.getIssueDescription()).add(temp);
+					if (issuesDTO.getFixedIssuesNewFeature().containsKey(issueDescription)) {
+						issuesDTO.getFixedIssuesNewFeature().get(issueDescription).add(temp);
 					} else {
-						issuesDTO.getFixedIssuesNewFeature().put(temp.getIssueDescription(), new ArrayList<IssueDTO>(Arrays.asList(temp)));
+						issuesDTO.getFixedIssuesNewFeature().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
 					}
 				}
 			}
