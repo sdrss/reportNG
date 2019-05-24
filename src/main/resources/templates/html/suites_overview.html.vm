@@ -25,7 +25,7 @@
 		<div class="suite" id="${suite.name}">${suite.name} 
 		#if ($utils.hasGroups($suite))
         #set ($suiteId = $velocityCount)
-		<a href="suite${suiteId}_groups.html"> / $messages.getString("groups")</a>
+		/ <a href="suite${suiteId}_groups.html">$messages.getString("groups")</a>
         #end
         </div>
  	<table class="table table-bordered" id="${suite.name}">

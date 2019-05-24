@@ -64,6 +64,7 @@ public class HTMLReporter extends AbstractReporter {
 	public static final String REGRESSION = "regression.html";
 	public static final String FEATURES = "newFeatures.html";
 	public static final String PACKAGES = "packages.html";
+	public static final String GROUPS = "groupsresults.html";
 	// JS scripts
 	public static final String CANVAS_FILE = "canvas.js";
 	// Keys
@@ -90,6 +91,7 @@ public class HTMLReporter extends AbstractReporter {
 	private static ResultsDTO results;
 	private static IssuesDTO issuesDTO;
 	private static Map<PackageDetailsDTO, List<PackageDetailsDTO>> packageDeatails;
+	private static Map<PackageDetailsDTO, List<PackageDetailsDTO>> groupDetails;
 
 	public HTMLReporter() {
 		super(TEMPLATES_PATH);
@@ -119,6 +121,7 @@ public class HTMLReporter extends AbstractReporter {
 			setResults(ReporterHelper.checkAttribute(sortedSuites));
 			setIssuesDTO(ReporterHelper.issues(sortedSuites));
 			setPackageDeatails(ReporterHelper.packageDetails(sortedSuites));
+			setGroupDetails(ReporterHelper.groupDetails(sortedSuites));
 			// Create Frames
 			createFrameset(outputDirectory);
 			// Create Menu
@@ -143,6 +146,8 @@ public class HTMLReporter extends AbstractReporter {
 			createFeatures(sortedSuites, outputDirectory);
 			// Packages
 			createPackagesView(sortedSuites, outputDirectory);
+			// Groups View
+			createGroupsView(sortedSuites, outputDirectory);
 			// Create Log
 			createLog(outputDirectory);
 		} catch (Exception ex) {
@@ -230,6 +235,12 @@ public class HTMLReporter extends AbstractReporter {
 		VelocityContext context = createContext();
 		context.put(SUITES_KEY, suites);
 		generateFile(new File(outputDirectory, PACKAGES), PACKAGES + TEMPLATE_EXTENSION, context);
+	}
+
+	private void createGroupsView(List<ISuite> suites, File outputDirectory) throws Exception {
+		VelocityContext context = createContext();
+		context.put(SUITES_KEY, suites);
+		generateFile(new File(outputDirectory, GROUPS), GROUPS + TEMPLATE_EXTENSION, context);
 	}
 
 	protected void createCanvasJs(List<ISuite> suites, File outputDirectory) throws Exception {
@@ -361,6 +372,14 @@ public class HTMLReporter extends AbstractReporter {
 
 	public static void setPackageDeatails(Map<PackageDetailsDTO, List<PackageDetailsDTO>> packageDeatails) {
 		HTMLReporter.packageDeatails = packageDeatails;
+	}
+
+	public static Map<PackageDetailsDTO, List<PackageDetailsDTO>> getGroupDetails() {
+		return groupDetails;
+	}
+
+	public static void setGroupDetails(Map<PackageDetailsDTO, List<PackageDetailsDTO>> groupDetails) {
+		HTMLReporter.groupDetails = groupDetails;
 	}
 
 }

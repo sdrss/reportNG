@@ -18,6 +18,7 @@
 			<a href="suites.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("suiteResults")&nbsp;</a>
 			<a href="suites_overview.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("testResults")&nbsp;</a>
 			<a href="packages.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("packages")&nbsp;</a>
+			<a href="groupsresults.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("groupsResults")&nbsp;</a>
         </ul>
     <a href="#pageSubmenuIssues" class="list-group-item" data-toggle="collapse" aria-expanded="false"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;$messages.getString("issues")&nbsp;</a>
 		<ul class="collapse list-unstyled" id="pageSubmenuIssues">

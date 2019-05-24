@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$messages.locale.language" lang="$messages.locale.language">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="description" content="TestNG unit test results." />
+  <link rel="stylesheet" href="css/reportng.css" />
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <script type="text/javascript" src="js/jquery-1.12.0.min.js"></script> 
+  <script type="text/javascript" src="js/jquery.tablesorter.min.js"></script>
+  <script type="text/javascript" src="js/reportng.js"></script>
+  <script type="text/javascript">  
+    	$(document).ready(function () {  
+	            $('tr.parent')  
+	                .css("cursor", "pointer")  
+	                .attr("title", "Click to expand/collapse")  
+	                .click(function () {  
+	                    $(this).siblings('.child-' + this.id).toggle();  
+	                });
+	                $('tr.parent')  
+	                .css("cursor", "pointer")  
+	                .attr("title", "Click to expand/collapse")  
+	                .click();  
+	    });
+	    function changeIcon(elementId) {
+			if ($('#'+elementId).hasClass('glyphicon glyphicon-minus')){
+				$('#'+elementId).removeClass('glyphicon glyphicon-minus').toggleClass('glyphicon glyphicon-plus');
+			}else{
+				$('#'+elementId).removeClass('glyphicon glyphicon-plus').toggleClass('glyphicon glyphicon-minus');
+			}
+		}
+    </script>
+</head>
+<body onload="return false;" onkeypress="hidePassPackages();">
+<div class="row">
+	<div class="col-xs-12">
+	<h3 class="normal" style="float: left;">$messages.getString("groupsResults")</h3><br>
+	<button id="hideResults" type="button" class="btn-danger" onclick="hidePassPackages(this);" style="float: right;" title="$messages.getString("hoverTextHidePassSuites")">$messages.getString("showonlyfailures")</button>
+    </div>
+</div>
+<br>
+<div class="well well-large">
+<table class="table table-bordered" width="100%;" id="features">
+	<thead>
+   		<tr>
+   			<th width="30px"></th>
+   			<th scope="col" style="vertical-align:middle;text-align:left;">$messages.getString("group")</th>
+   		 	<th scope="col" width="50px">$messages.getString("duration")&nbsp;&nbsp;&nbsp;</th>
+   		 	<th scope="col" width="30px">$messages.getString("passed")&nbsp;&nbsp;&nbsp;</th>
+    		<th scope="col" width="30px">$messages.getString("failedTests")&nbsp;&nbsp;&nbsp;</th>
+    		<th scope="col" width="30px">$messages.getString("skipped")&nbsp;&nbsp;&nbsp;</th>
+	    	<th scope="col" width="30px">$messages.getString("knownDefects")&nbsp;&nbsp;&nbsp;</th>
+	    	<th scope="col" width="30px">$messages.getString("fixed")&nbsp;&nbsp;&nbsp;</th>
+  		</tr>
+  	</thead>
+  	<tbody>
+  		$utils.getGroups($suites)
+  	</tbody>
+</table>
+</div>
+</body>
+</html>
