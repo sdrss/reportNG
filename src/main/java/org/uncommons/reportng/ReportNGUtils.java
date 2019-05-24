@@ -535,7 +535,7 @@ public class ReportNGUtils {
 			for (PackageDetailsDTO packageDTO : entry.getValue()) {
 				response += "<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">";
 				response += "<td></td>";
-				response += "<td>&nbsp;<a href=\"" + packageDTO.getUrl() + "\">" + packageDTO.getClassΝame() + "</a></td>";
+				response += "<td><a href=\"" + packageDTO.getUrl() + "\">" + packageDTO.getClassΝame() + "</a></td>";
 				response += "<td align=\"center\">" + packageDTO.getDuration() + "</td>";
 				if (packageDTO.getPass() > 0) {
 					response += "<td align=\"center\" class=\"passed number\">" + packageDTO.getPass() + "</td>";
