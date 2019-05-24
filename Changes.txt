@@ -1,15 +1,15 @@
-V2.4.0 * Group Results
+V2.4.0 * New Results menu. Results per Group
        *
 V2.3.1 * Links for Package Results
        * Remove sorting from run arguments page
        * Issue and general feature are not case sensitive
        *
-V2.3.0 * External Links in report
+V2.3.0 * New Results menu. Results per package 
+       * External Links in report
        * Hover for features and issues
        * Hover for Issues table in overview page
        * Tooltip text in overview page
        * Blue Color for expand/collapse features and issues
-       * New Results menu. Show results per package 
        * Various Fixes
        * 
 V2.2.2 * Sort Suites
