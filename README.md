@@ -98,4 +98,4 @@ Over-rides the default locale for localised messages in generated reports. If no
 	   <version>2.3.1</version>
       </dependency>
 
-Check Maven Repository releases See [here](https://mvnrepository.com/artifact/com.github.sdrss/reportng)
+Check Maven Repository releases [here](https://mvnrepository.com/artifact/com.github.sdrss/reportng)
