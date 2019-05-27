@@ -1081,6 +1081,17 @@ public class ReportNGUtils {
 		return Integer.toString(result.getMethod().getCurrentInvocationCount());
 	}
 
+	public boolean hasTimeOut(ITestResult result) {
+		if (result.getMethod().getTimeOut() > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	public String getTimeOut(ITestResult result) {
+		return Long.toString(result.getMethod().getTimeOut());
+	}
+
 	/**
 	 * Is there a Known Defect Description
 	 * 
