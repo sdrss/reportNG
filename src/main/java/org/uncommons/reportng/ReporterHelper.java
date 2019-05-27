@@ -401,7 +401,15 @@ public class ReporterHelper {
 								packageResults.setClassName(tempClass.getTestClass().getName());
 								packageResults.setUrl("suite" + suiteIndex + "_test" + testIndex + "_results.html");
 								if (packages.containsKey(packageResults.getPackageName())) {
-									packages.get(packageResults.getPackageName()).add(packageResults);
+									boolean found = false;
+									for (PackageDetailsDTO temp : packages.get(packageResults.getPackageName())) {
+										if (temp.getClassΝame().equals(packageResults.getClassΝame())) {
+											found = true;
+										}
+									}
+									if (!found) {
+										packages.get(packageResults.getPackageName()).add(packageResults);
+									}
 								} else {
 									packages.put(packageResults.getPackageName(), new ArrayList<>(Arrays.asList(packageResults)));
 								}
