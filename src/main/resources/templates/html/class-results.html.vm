@@ -70,6 +70,9 @@
 	#if ($utils.hasGroups($testResult))
 		<span class="description"><b>$messages.getString("groups"): </b><font color='green'>$utils.getGroups($testResult)</font></span><br>
 	#end
+	#if ($utils.hasInvocationCount($testResult))
+		<span class="description"><b>$messages.getString("invocationCount"): </b><font color='blue'>$utils.getInvocationCount($testResult)</font></span><br>
+	#end
 	<span class="duration"><b>$messages.getString("duration"): </b>$utils.formatDuration($testResult.startMillis,$testResult.endMillis)s</span><br>
 	</td>
 	<td class="result">

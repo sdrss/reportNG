@@ -1,5 +1,6 @@
 V2.4.0 * New Results menu. Results per Group
        * Various Fixes
+       * Show invocationCount per method
        * 
 V2.3.1 * Links for Package Results
        * Remove sorting from run arguments page

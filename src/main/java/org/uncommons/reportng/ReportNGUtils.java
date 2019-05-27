@@ -1070,6 +1070,17 @@ public class ReportNGUtils {
 		return "";
 	}
 
+	public boolean hasInvocationCount(ITestResult result) {
+		if (result.getMethod().getInvocationCount() > 1) {
+			return true;
+		}
+		return false;
+	}
+
+	public String getInvocationCount(ITestResult result) {
+		return Integer.toString(result.getMethod().getCurrentInvocationCount());
+	}
+
 	/**
 	 * Is there a Known Defect Description
 	 * 
