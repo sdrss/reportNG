@@ -286,40 +286,46 @@ public class ReporterHelper {
 		return issuesDTO;
 	}
 
-	public static ITestContext updateResults(ITestContext iTestContext) {
+	public static boolean knownDefectMode() {
 		String knownDefectsMode = System.getProperty(HTMLReporter.KWOWNDEFECTSMODE);
 		if (knownDefectsMode == null || knownDefectsMode.isEmpty()) {
 			knownDefectsMode = "false";
-		} else {
-			if (knownDefectsMode.equalsIgnoreCase("true")) {
-				IResultMap failedResultMap = iTestContext.getFailedTests();
-				IResultMap passedResultMap = iTestContext.getPassedTests();
-				Iterator<ITestResult> failedIterator = failedResultMap.getAllResults().iterator();
-				// This will process FAIL and KFAIL
-				while (failedIterator.hasNext()) {
-					ITestResult testResult = failedIterator.next();
-					java.lang.reflect.Method method = testResult.getMethod().getConstructorOrMethod().getMethod();
-					if (method.getAnnotation(KnownDefect.class) != null && !ReportNGUtils.KNOWN.equals(testResult.getAttribute(ReportNGUtils.TEST))) {
-						// This is a KFAIL result Remove this test from the
-						// failed list
-						failedResultMap.removeResult(testResult.getMethod());
-						// Mark this test as passed
-						testResult.setStatus(ITestResult.SUCCESS);
-						testResult.setAttribute(ReportNGUtils.TEST, ReportNGUtils.KNOWN);
-						// Add to PASS
-						passedResultMap.addResult(testResult, testResult.getMethod());
-					}
+		}
+		if (knownDefectsMode.equalsIgnoreCase("true")) {
+			return true;
+		}
+		return false;
+	}
+
+	public static ITestContext updateResults(ITestContext iTestContext) {
+		if (knownDefectMode()) {
+			IResultMap failedResultMap = iTestContext.getFailedTests();
+			IResultMap passedResultMap = iTestContext.getPassedTests();
+			Iterator<ITestResult> failedIterator = failedResultMap.getAllResults().iterator();
+			// This will process FAIL and KFAIL
+			while (failedIterator.hasNext()) {
+				ITestResult testResult = failedIterator.next();
+				java.lang.reflect.Method method = testResult.getMethod().getConstructorOrMethod().getMethod();
+				if (method.getAnnotation(KnownDefect.class) != null && !ReportNGUtils.KNOWN.equals(testResult.getAttribute(ReportNGUtils.TEST))) {
+					// This is a KFAIL result Remove this test from the
+					// failed list
+					failedResultMap.removeResult(testResult.getMethod());
+					// Mark this test as passed
+					testResult.setStatus(ITestResult.SUCCESS);
+					testResult.setAttribute(ReportNGUtils.TEST, ReportNGUtils.KNOWN);
+					// Add to PASS
+					passedResultMap.addResult(testResult, testResult.getMethod());
 				}
-				Iterator<ITestResult> passedIterator = passedResultMap.getAllResults().iterator();
-				// This will process PASS and KPASS
-				while (passedIterator.hasNext()) {
-					ITestResult testResult = passedIterator.next();
-					java.lang.reflect.Method method = testResult.getMethod().getConstructorOrMethod().getMethod();
-					if (method.getAnnotation(KnownDefect.class) != null &&
-							!ReportNGUtils.KNOWN.equals(testResult.getAttribute(ReportNGUtils.TEST)) &&
-							!ReportNGUtils.FIXED.equals(testResult.getAttribute(ReportNGUtils.TEST))) {
-						testResult.setAttribute(ReportNGUtils.TEST, ReportNGUtils.FIXED);
-					}
+			}
+			Iterator<ITestResult> passedIterator = passedResultMap.getAllResults().iterator();
+			// This will process PASS and KPASS
+			while (passedIterator.hasNext()) {
+				ITestResult testResult = passedIterator.next();
+				java.lang.reflect.Method method = testResult.getMethod().getConstructorOrMethod().getMethod();
+				if (method.getAnnotation(KnownDefect.class) != null &&
+						!ReportNGUtils.KNOWN.equals(testResult.getAttribute(ReportNGUtils.TEST)) &&
+						!ReportNGUtils.FIXED.equals(testResult.getAttribute(ReportNGUtils.TEST))) {
+					testResult.setAttribute(ReportNGUtils.TEST, ReportNGUtils.FIXED);
 				}
 			}
 		}

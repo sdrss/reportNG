@@ -1926,7 +1926,7 @@ public class ReportNGUtils {
 			Annotation[] annotation = getDeclaredAnnotations(tr);
 			boolean addResult = true;
 			for (Annotation tempAnnotation : annotation) {
-				if (tempAnnotation.toString().contains(KNOWNDEFECT) && tr.getStatus() == ITestResult.SUCCESS) {
+				if (tempAnnotation.toString().contains(KNOWNDEFECT) && tr.getStatus() == ITestResult.SUCCESS && ReporterHelper.knownDefectMode()) {
 					addResult = false;
 					break;
 				}
@@ -1951,7 +1951,7 @@ public class ReportNGUtils {
 			Annotation[] annotation = getDeclaredAnnotations(tr);
 			boolean addResult = true;
 			for (Annotation tempAnnotation : annotation) {
-				if (tempAnnotation.toString().contains(KNOWNDEFECT) && tr.getStatus() == ITestResult.FAILURE) {
+				if (tempAnnotation.toString().contains(KNOWNDEFECT) && tr.getStatus() == ITestResult.FAILURE && ReporterHelper.knownDefectMode()) {
 					addResult = false;
 					break;
 				}
@@ -1976,17 +1976,19 @@ public class ReportNGUtils {
 	public static IResultMap getKnownDefect(ITestContext iTestContext) {
 		iTestContext = ReporterHelper.updateResults(iTestContext);
 		IResultMap temp = new ResultMap();
-		for (ITestResult tr : iTestContext.getPassedTests().getAllResults()) {
-			Annotation[] annotation = getDeclaredAnnotations(tr);
-			boolean addResult = false;
-			for (Annotation tempAnnotation : annotation) {
-				if (tempAnnotation.toString().contains(KNOWNDEFECT) && KNOWN.equals(tr.getAttribute(TEST))) {
-					addResult = true;
-					break;
+		if (ReporterHelper.knownDefectMode()) {
+			for (ITestResult tr : iTestContext.getPassedTests().getAllResults()) {
+				Annotation[] annotation = getDeclaredAnnotations(tr);
+				boolean addResult = false;
+				for (Annotation tempAnnotation : annotation) {
+					if (tempAnnotation.toString().contains(KNOWNDEFECT) && KNOWN.equals(tr.getAttribute(TEST))) {
+						addResult = true;
+						break;
+					}
 				}
-			}
-			if (addResult) {
-				temp.addResult(tr, tr.getMethod());
+				if (addResult) {
+					temp.addResult(tr, tr.getMethod());
+				}
 			}
 		}
 		return temp;
@@ -2001,17 +2003,19 @@ public class ReportNGUtils {
 	public static IResultMap getFixed(ITestContext iTestContext) {
 		iTestContext = ReporterHelper.updateResults(iTestContext);
 		IResultMap temp = new ResultMap();
-		for (ITestResult tr : iTestContext.getPassedTests().getAllResults()) {
-			Annotation[] annotation = getDeclaredAnnotations(tr);
-			boolean addResult = false;
-			for (Annotation tempAnnotation : annotation) {
-				if (tempAnnotation.toString().contains(KNOWNDEFECT) && FIXED.equals(tr.getAttribute(TEST))) {
-					addResult = true;
-					break;
+		if (ReporterHelper.knownDefectMode()) {
+			for (ITestResult tr : iTestContext.getPassedTests().getAllResults()) {
+				Annotation[] annotation = getDeclaredAnnotations(tr);
+				boolean addResult = false;
+				for (Annotation tempAnnotation : annotation) {
+					if (tempAnnotation.toString().contains(KNOWNDEFECT) && FIXED.equals(tr.getAttribute(TEST))) {
+						addResult = true;
+						break;
+					}
 				}
-			}
-			if (addResult) {
-				temp.addResult(tr, tr.getMethod());
+				if (addResult) {
+					temp.addResult(tr, tr.getMethod());
+				}
 			}
 		}
 		return temp;
@@ -2019,38 +2023,42 @@ public class ReportNGUtils {
 
 	public static List<IssueDTO> getKnownIssues(String suiteName, String linkName, Set<ITestResult> results) {
 		List<IssueDTO> issues = new ArrayList<IssueDTO>();
-		for (ITestResult tempITestResult : results) {
-			for (ITestResult iTestResult : tempITestResult.getTestContext().getPassedTests().getAllResults()) {
-				Annotation[] annotation = getDeclaredAnnotations(iTestResult);
-				for (Annotation tempAnnotation : annotation) {
-					if (tempAnnotation.toString().contains(KNOWNDEFECT) && KNOWN.equals(iTestResult.getAttribute(TEST))) {
-						issues.add(new IssueDTO(suiteName, iTestResult.getTestContext().getName(), iTestResult.getInstanceName(), getDescription(tempAnnotation
-								.toString()), linkName, isRegression(iTestResult
-								.getTestContext())));
-						break;
+		if (ReporterHelper.knownDefectMode()) {
+			for (ITestResult tempITestResult : results) {
+				for (ITestResult iTestResult : tempITestResult.getTestContext().getPassedTests().getAllResults()) {
+					Annotation[] annotation = getDeclaredAnnotations(iTestResult);
+					for (Annotation tempAnnotation : annotation) {
+						if (tempAnnotation.toString().contains(KNOWNDEFECT) && KNOWN.equals(iTestResult.getAttribute(TEST))) {
+							issues.add(new IssueDTO(suiteName, iTestResult.getTestContext().getName(), iTestResult.getInstanceName(), getDescription(tempAnnotation
+									.toString()), linkName, isRegression(iTestResult
+									.getTestContext())));
+							break;
+						}
 					}
 				}
+				break;
 			}
-			break;
 		}
 		return issues;
 	}
 
 	public static List<IssueDTO> getFixedIssues(String suiteName, String linkName, Set<ITestResult> results) {
 		List<IssueDTO> issues = new ArrayList<IssueDTO>();
-		for (ITestResult tempITestResult : results) {
-			for (ITestResult iTestResult : tempITestResult.getTestContext().getPassedTests().getAllResults()) {
-				Annotation[] annotation = getDeclaredAnnotations(iTestResult);
-				for (Annotation tempAnnotation : annotation) {
-					if (tempAnnotation.toString().contains(KNOWNDEFECT) && FIXED.equals(iTestResult.getAttribute(TEST))) {
-						issues.add(new IssueDTO(suiteName, iTestResult.getTestContext().getName(), iTestResult.getInstanceName(), getDescription(tempAnnotation
-								.toString()), linkName, isRegression(iTestResult
-								.getTestContext())));
-						break;
+		if (ReporterHelper.knownDefectMode()) {
+			for (ITestResult tempITestResult : results) {
+				for (ITestResult iTestResult : tempITestResult.getTestContext().getPassedTests().getAllResults()) {
+					Annotation[] annotation = getDeclaredAnnotations(iTestResult);
+					for (Annotation tempAnnotation : annotation) {
+						if (tempAnnotation.toString().contains(KNOWNDEFECT) && FIXED.equals(iTestResult.getAttribute(TEST))) {
+							issues.add(new IssueDTO(suiteName, iTestResult.getTestContext().getName(), iTestResult.getInstanceName(), getDescription(tempAnnotation
+									.toString()), linkName, isRegression(iTestResult
+									.getTestContext())));
+							break;
+						}
 					}
 				}
+				break;
 			}
-			break;
 		}
 		return issues;
 	}
