@@ -58,14 +58,9 @@ public class ReporterHelper {
 		results.setTotalFixed(results.getNewFeaturesFixed() + results.getRegressionFixed());
 
 		// Calculate Summary
-		results.setSummaryRegression(
-				results.getRegressionFail() + results.getRegressionFixed() + results.getRegressionKnownDefect() + results.getRegressionPass()
-						+ results.getRegressionSkip());
-		results.setSummaryNewFeature(
-				results.getNewFeaturesFail() + results.getNewFeaturesFixed() + results.getNewFeaturesKnownDefect() + results.getNewFeaturesPass()
-						+ results.getNewFeaturesSkip());
-		results.setSummaryTotal(results.getTotalFail() + results.getTotalFixed() + results.getTotalKnownDefect() + results.getTotalPass()
-				+ results.getTotalSkip());
+		results.setSummaryRegression(results.getRegressionFail() + results.getRegressionFixed() + results.getRegressionKnownDefect() + results.getRegressionPass() + results.getRegressionSkip());
+		results.setSummaryNewFeature(results.getNewFeaturesFail() + results.getNewFeaturesFixed() + results.getNewFeaturesKnownDefect() + results.getNewFeaturesPass() + results.getNewFeaturesSkip());
+		results.setSummaryTotal(results.getTotalFail() + results.getTotalFixed() + results.getTotalKnownDefect() + results.getTotalPass() + results.getTotalSkip());
 
 		// Calculate Success Rate
 		double regression;
@@ -135,43 +130,43 @@ public class ReporterHelper {
 				String link = "suite" + suiteIndex + "_test" + testIndex + "_results.html";
 				// Calculate Known issues
 				List<IssueDTO> knownIssues = ReportNGUtils.getKnownIssues(tempISuite.getName(), link, result.getTestContext().getPassedTests().getAllResults());
-				for (IssueDTO tempIssueDTO : knownIssues) {
+				for (IssueDTO temp : knownIssues) {
 					String issueDescription = "null";
-					if (tempIssueDTO.getIssueDescription() != null) {
-						issueDescription = tempIssueDTO.getIssueDescription();
+					if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
+						issueDescription = temp.getIssueDescription().trim();
 					}
 					if (issuesDTO.getKnownIssues().containsKey(issueDescription)) {
-						issuesDTO.getKnownIssues().get(issueDescription).add(tempIssueDTO);
+						issuesDTO.getKnownIssues().get(issueDescription).add(temp);
 					} else {
-						issuesDTO.getKnownIssues().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(tempIssueDTO)));
+						issuesDTO.getKnownIssues().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
 					}
 				}
 				issuesDTO.setKnownIssuesAmount(issuesDTO.getKnownIssues().size());
 				// Calculate Fixed issues
 				List<IssueDTO> fixedIssues = ReportNGUtils.getFixedIssues(tempISuite.getName(), link, result.getTestContext().getPassedTests().getAllResults());
-				for (IssueDTO tempIssueDTO : fixedIssues) {
+				for (IssueDTO temp : fixedIssues) {
 					String issueDescription = "null";
-					if (tempIssueDTO.getIssueDescription() != null) {
-						issueDescription = tempIssueDTO.getIssueDescription();
+					if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
+						issueDescription = temp.getIssueDescription().trim();
 					}
 					if (issuesDTO.getFixedIssues().containsKey(issueDescription)) {
-						issuesDTO.getFixedIssues().get(issueDescription).add(tempIssueDTO);
+						issuesDTO.getFixedIssues().get(issueDescription).add(temp);
 					} else {
-						issuesDTO.getFixedIssues().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(tempIssueDTO)));
+						issuesDTO.getFixedIssues().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
 					}
 				}
 				issuesDTO.setFixedIssuesAmount(issuesDTO.getFixedIssues().size());
 				// Calculate New issues
 				List<IssueDTO> newIssues = ReportNGUtils.getNewIssues(tempISuite.getName(), link, result.getTestContext().getFailedTests().getAllResults());
-				for (IssueDTO tempIssueDTO : newIssues) {
+				for (IssueDTO temp : newIssues) {
 					String issueDescription = "null";
-					if (tempIssueDTO.getIssueDescription() != null) {
-						issueDescription = tempIssueDTO.getIssueDescription();
+					if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
+						issueDescription = temp.getIssueDescription().trim();
 					}
 					if (issuesDTO.getNewIssues().containsKey(issueDescription)) {
-						issuesDTO.getNewIssues().get(issueDescription).add(tempIssueDTO);
+						issuesDTO.getNewIssues().get(issueDescription).add(temp);
 					} else {
-						issuesDTO.getNewIssues().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(tempIssueDTO)));
+						issuesDTO.getNewIssues().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
 					}
 				}
 				issuesDTO.setNewIssuesAmount(issuesDTO.getNewIssues().size());
@@ -181,8 +176,8 @@ public class ReporterHelper {
 				if (!newFeature.isEmpty()) {
 					for (IssueDTO temp : newFeature) {
 						String issueDescription = "null";
-						if (temp.getIssueDescription() != null) {
-							issueDescription = temp.getIssueDescription();
+						if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
+							issueDescription = temp.getIssueDescription().trim();
 						}
 						if (issuesDTO.getNewFeature().containsKey(issueDescription)) {
 							issuesDTO.getNewFeature().get(issueDescription).add(temp);
@@ -196,8 +191,8 @@ public class ReporterHelper {
 				if (!feature.isEmpty()) {
 					for (IssueDTO temp : feature) {
 						String issueDescription = "null";
-						if (temp.getIssueDescription() != null) {
-							issueDescription = temp.getIssueDescription();
+						if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
+							issueDescription = temp.getIssueDescription().trim();
 						}
 						if (issuesDTO.getFeature().containsKey(issueDescription)) {
 							issuesDTO.getFeature().get(issueDescription).add(temp);
@@ -216,8 +211,8 @@ public class ReporterHelper {
 			Entry<String, List<IssueDTO>> pair = item.next();
 			for (IssueDTO temp : pair.getValue()) {
 				String issueDescription = "null";
-				if (temp.getIssueDescription() != null) {
-					issueDescription = temp.getIssueDescription();
+				if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
+					issueDescription = temp.getIssueDescription().trim();
 				}
 				if (temp.isRegression()) {
 					if (issuesDTO.getNewIssuesRegression().containsKey(issueDescription)) {
@@ -240,8 +235,8 @@ public class ReporterHelper {
 			Entry<String, List<IssueDTO>> pair = item.next();
 			for (IssueDTO temp : pair.getValue()) {
 				String issueDescription = "null";
-				if (temp.getIssueDescription() != null) {
-					issueDescription = temp.getIssueDescription();
+				if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
+					issueDescription = temp.getIssueDescription().trim();
 				}
 				if (temp.isRegression()) {
 					if (issuesDTO.getKnownIssuesRegression().containsKey(issueDescription)) {
@@ -265,8 +260,8 @@ public class ReporterHelper {
 			Entry<String, List<IssueDTO>> pair = item.next();
 			for (IssueDTO temp : pair.getValue()) {
 				String issueDescription = "null";
-				if (temp.getIssueDescription() != null) {
-					issueDescription = temp.getIssueDescription();
+				if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
+					issueDescription = temp.getIssueDescription().trim();
 				}
 				if (temp.isRegression()) {
 					if (issuesDTO.getFixedIssuesRegression().containsKey(issueDescription)) {
@@ -343,16 +338,15 @@ public class ReporterHelper {
 				for (Map.Entry<String, ISuiteResult> entry : results.entrySet()) {
 					for (XmlClass tempClass : entry.getValue().getTestContext().getCurrentXmlTest().getClasses()) {
 						if (tempClass.getName() != null && !tempClass.getName().isEmpty()) {
-							String packageName = tempClass.getName().substring(0, tempClass.getName().lastIndexOf("."));
 							PackageDetailsDTO packageResults = new PackageDetailsDTO();
-							packageResults.setPackageName(packageName);
+							packageResults.setPackageName(tempClass.getName().substring(0, tempClass.getName().lastIndexOf(".")).trim());
 							packageResults.setPass(ReportNGUtils.getPassed(entry.getValue().getTestContext()).size());
 							packageResults.setFail(ReportNGUtils.getFailed(entry.getValue().getTestContext()).size());
 							packageResults.setSkip(ReportNGUtils.getSkip(entry.getValue().getTestContext()).size());
 							packageResults.setKnown(ReportNGUtils.getKnownDefect(entry.getValue().getTestContext()).size());
 							packageResults.setFixed(ReportNGUtils.getFixed(entry.getValue().getTestContext()).size());
 							packageResults.setDuration(ReportNGUtils.formatDurationinMinutes(entry.getValue().getTestContext().getEndDate().getTime() - entry.getValue().getTestContext().getStartDate().getTime()));
-							packageResults.setClassName(tempClass.getName());
+							packageResults.setClassName(tempClass.getName().trim());
 							packageResults.setUrl("suite" + suiteIndex + "_test" + testIndex + "_results.html");
 							if (packages.containsKey(packageResults.getPackageName())) {
 								packages.get(packageResults.getPackageName()).add(packageResults);
@@ -395,29 +389,30 @@ public class ReporterHelper {
 					for (ITestNGMethod tempClass : entry.getValue().getTestContext().getAllTestMethods()) {
 						if (tempClass.getGroups() != null && tempClass.getGroups().length > 0) {
 							for (String tempGroup : tempClass.getGroups()) {
-								String packageName = tempGroup;
-								PackageDetailsDTO packageResults = new PackageDetailsDTO();
-								packageResults.setPackageName(packageName);
-								packageResults.setPass(ReportNGUtils.getPassed(entry.getValue().getTestContext()).size());
-								packageResults.setFail(ReportNGUtils.getFailed(entry.getValue().getTestContext()).size());
-								packageResults.setSkip(ReportNGUtils.getSkip(entry.getValue().getTestContext()).size());
-								packageResults.setKnown(ReportNGUtils.getKnownDefect(entry.getValue().getTestContext()).size());
-								packageResults.setFixed(ReportNGUtils.getFixed(entry.getValue().getTestContext()).size());
-								packageResults.setDuration(ReportNGUtils.formatDurationinMinutes(entry.getValue().getTestContext().getEndDate().getTime() - entry.getValue().getTestContext().getStartDate().getTime()));
-								packageResults.setClassName(tempClass.getTestClass().getName());
-								packageResults.setUrl("suite" + suiteIndex + "_test" + testIndex + "_results.html");
-								if (packages.containsKey(packageResults.getPackageName())) {
-									boolean found = false;
-									for (PackageDetailsDTO temp : packages.get(packageResults.getPackageName())) {
-										if (temp.getClassΝame().equals(packageResults.getClassΝame())) {
-											found = true;
+								if (tempGroup != null && !tempGroup.isEmpty()) {
+									PackageDetailsDTO packageResults = new PackageDetailsDTO();
+									packageResults.setPackageName(tempGroup.trim());
+									packageResults.setPass(ReportNGUtils.getPassed(entry.getValue().getTestContext()).size());
+									packageResults.setFail(ReportNGUtils.getFailed(entry.getValue().getTestContext()).size());
+									packageResults.setSkip(ReportNGUtils.getSkip(entry.getValue().getTestContext()).size());
+									packageResults.setKnown(ReportNGUtils.getKnownDefect(entry.getValue().getTestContext()).size());
+									packageResults.setFixed(ReportNGUtils.getFixed(entry.getValue().getTestContext()).size());
+									packageResults.setDuration(ReportNGUtils.formatDurationinMinutes(entry.getValue().getTestContext().getEndDate().getTime() - entry.getValue().getTestContext().getStartDate().getTime()));
+									packageResults.setClassName(tempClass.getTestClass().getName().trim());
+									packageResults.setUrl("suite" + suiteIndex + "_test" + testIndex + "_results.html");
+									if (packages.containsKey(packageResults.getPackageName())) {
+										boolean found = false;
+										for (PackageDetailsDTO temp : packages.get(packageResults.getPackageName())) {
+											if (temp.getClassΝame().equals(packageResults.getClassΝame())) {
+												found = true;
+											}
 										}
+										if (!found) {
+											packages.get(packageResults.getPackageName()).add(packageResults);
+										}
+									} else {
+										packages.put(packageResults.getPackageName(), new ArrayList<>(Arrays.asList(packageResults)));
 									}
-									if (!found) {
-										packages.get(packageResults.getPackageName()).add(packageResults);
-									}
-								} else {
-									packages.put(packageResults.getPackageName(), new ArrayList<>(Arrays.asList(packageResults)));
 								}
 							}
 						}
