@@ -734,42 +734,49 @@ public class ReportNGUtils {
 	}
 
 	public static String formatDurationinMinutes(String time1, String time2) {
-		String[] splitter1 = time1.split(":");
-		String[] splitter2 = time2.split(":");
-
-		int seconds = Integer.parseInt(splitter1[2]) + Integer.parseInt(splitter2[2]);
-		int minutes = Integer.parseInt(splitter1[1]) + Integer.parseInt(splitter2[1]);
-		int hours = Integer.parseInt(splitter1[0]) + Integer.parseInt(splitter2[0]);
-
-		if (seconds >= 60) {
-			minutes++;
-			seconds = seconds - 60;
-		}
-		if (minutes >= 60) {
-			hours++;
-			minutes = minutes - 60;
-		}
-
 		String hoursString = "00";
 		String minutesString = "00";
 		String secondsString = "00";
 
-		if (hours <= 9) {
-			hoursString = "0" + hours;
+		String[] splitter1 = time1.split(":");
+		String[] splitter2 = time2.split(":");
+		if (splitter1.length < 3 && splitter2.length < 3) {
+			// DO nothing
 		} else {
-			hoursString = Integer.toString(hours);
-		}
+			try {
+				int seconds = Integer.parseInt(splitter1[2]) + Integer.parseInt(splitter2[2]);
+				int minutes = Integer.parseInt(splitter1[1]) + Integer.parseInt(splitter2[1]);
+				int hours = Integer.parseInt(splitter1[0]) + Integer.parseInt(splitter2[0]);
 
-		if (minutes <= 9) {
-			minutesString = "0" + minutes;
-		} else {
-			minutesString = Integer.toString(minutes);
-		}
+				if (seconds >= 60) {
+					minutes++;
+					seconds = seconds - 60;
+				}
+				if (minutes >= 60) {
+					hours++;
+					minutes = minutes - 60;
+				}
 
-		if (seconds <= 9) {
-			secondsString = "0" + seconds;
-		} else {
-			secondsString = Integer.toString(seconds);
+				if (hours <= 9) {
+					hoursString = "0" + hours;
+				} else {
+					hoursString = Integer.toString(hours);
+				}
+
+				if (minutes <= 9) {
+					minutesString = "0" + minutes;
+				} else {
+					minutesString = Integer.toString(minutes);
+				}
+
+				if (seconds <= 9) {
+					secondsString = "0" + seconds;
+				} else {
+					secondsString = Integer.toString(seconds);
+				}
+			} catch (Exception ex) {
+
+			}
 		}
 		return hoursString + ":" + minutesString + ":" + secondsString;
 	}
