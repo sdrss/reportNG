@@ -1082,14 +1082,39 @@ public class ReportNGUtils {
 	}
 
 	public boolean hasTimeOut(ITestResult result) {
-		if (result.getMethod().getTimeOut() > 0) {
-			return true;
+		Annotation[] annottaions = getDeclaredAnnotations(result);
+		for (Annotation tempAnnotation : annottaions) {
+			try {
+				if (tempAnnotation.toString().contains("timeOut=")) {
+					String timeOut = tempAnnotation.toString().substring(tempAnnotation.toString().indexOf("timeOut="), tempAnnotation.toString().length());
+					timeOut = timeOut.substring(timeOut.indexOf('=') + 1, timeOut.indexOf(','));
+					if (Long.parseLong(timeOut) > 0) {
+						return true;
+					}
+				}
+			} catch (Exception ex) {
+
+			}
 		}
 		return false;
 	}
 
 	public String getTimeOut(ITestResult result) {
-		return Long.toString(result.getMethod().getTimeOut());
+		Annotation[] annottaions = getDeclaredAnnotations(result);
+		for (Annotation tempAnnotation : annottaions) {
+			try {
+				if (tempAnnotation.toString().contains("timeOut=")) {
+					String timeOut = tempAnnotation.toString().substring(tempAnnotation.toString().indexOf("timeOut="), tempAnnotation.toString().length());
+					timeOut = timeOut.substring(timeOut.indexOf('=') + 1, timeOut.indexOf(','));
+					if (Long.parseLong(timeOut) > 0) {
+						return timeOut;
+					}
+				}
+			} catch (Exception ex) {
+
+			}
+		}
+		return "0";
 	}
 
 	/**
