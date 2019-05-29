@@ -108,6 +108,10 @@ public class HTMLReporter extends AbstractReporter {
 		File outputDirectory = new File(outputDirectoryName, REPORT_DIRECTORY);
 		OUTPUTDIRECTORY_ABSOLUTE = outputDirectory.getAbsolutePath();
 		try {
+			System.out.println("****************************************");
+			System.out.println("Generate reportNG report");
+			System.out.println("****************************************");
+			System.out.println("Path : " + OUTPUTDIRECTORY_ABSOLUTE);
 			// Sort Suites
 			List<ISuite> sortedSuites = sortSuitesChronologicaly(suites);
 			sortedSuites = sortResultsChronologicaly(sortedSuites);
@@ -116,46 +120,62 @@ public class HTMLReporter extends AbstractReporter {
 			// Generate Directory
 			generateDirectory(outputDirectory);
 			// Copy Resources
+			System.out.println("Copy Resources");
 			copyResources(outputDirectory);
 			// Update results
+			System.out.println("Generate Results");
 			setResults(ReporterHelper.checkAttribute(sortedSuites));
 			setIssuesDTO(ReporterHelper.issues(sortedSuites));
 			setPackageDeatails(ReporterHelper.packageDetails(sortedSuites));
 			setGroupDetails(ReporterHelper.groupDetails(sortedSuites));
 			// Create Frames
+			System.out.println("Create Frames");
 			createFrameset(outputDirectory);
 			// Create Menu
+			System.out.println("Create Menu");
 			createMenu(sortedSuites, outputDirectory);
 			// Create Overview
+			System.out.println("Create Overview");
 			createOverview(sortedSuites, outputDirectory);
 			// Overview
-			createSuitesOverview(sortedSuites, outputDirectory);
+			System.out.println("Create Test Results");
+			createTestOverview(sortedSuites, outputDirectory);
 			// Suites
+			System.out.println("Create Suite Results");
 			createSuiteList(sortedSuites, outputDirectory);
 			// Groups
+			System.out.println("Create Groups");
 			createGroups(sortedSuites, outputDirectory);
 			// Results
-			createResults(sortedSuites, outputDirectory);
+			System.out.println("Create Test Results");
+			createTestResults(sortedSuites, outputDirectory);
 			// Graphs
-			createCanvasJs(sortedSuites, outputDirectory);
+			System.out.println("Create Graphs");
+			createGraphs(sortedSuites, outputDirectory);
 			// Issues
-			createIssues(sortedSuites, outputDirectory);
+			System.out.println("Create Issues Results");
+			createIssuesResults(sortedSuites, outputDirectory);
 			// Run Arguments
+			System.out.println("Create Arguments");
 			createRunArguments(sortedSuites, outputDirectory);
 			// Create Features
-			createFeatures(sortedSuites, outputDirectory);
+			System.out.println("Create Features Results");
+			createFeaturesResults(sortedSuites, outputDirectory);
 			// Packages
-			createPackagesView(sortedSuites, outputDirectory);
+			System.out.println("Create Packages Results");
+			createPackagesResults(sortedSuites, outputDirectory);
 			// Groups View
-			createGroupsView(sortedSuites, outputDirectory);
+			System.out.println("Create Group Results");
+			createGroupResults(sortedSuites, outputDirectory);
 			// Create Log
-			createLog(outputDirectory);
+			System.out.println("Create Report Log Output");
+			createReportLogOutput(outputDirectory);
 		} catch (Exception ex) {
 			throw new ReportNGException("Failed generating HTML report.", ex);
 		}
 	}
 
-	private void createLog(File outputDirectory) throws Exception {
+	private void createReportLogOutput(File outputDirectory) throws Exception {
 		VelocityContext context = createContext();
 		generateFile(new File(outputDirectory, OUTPUT_FILE), OUTPUT_FILE + TEMPLATE_EXTENSION, context);
 	}
@@ -166,14 +186,14 @@ public class HTMLReporter extends AbstractReporter {
 		generateFile(new File(outputDirectory, RUN_ARGUMENTS), RUN_ARGUMENTS + TEMPLATE_EXTENSION, context);
 	}
 
-	private void createFeatures(List<ISuite> suites, File outputDirectory) throws Exception {
+	private void createFeaturesResults(List<ISuite> suites, File outputDirectory) throws Exception {
 		VelocityContext context = createContext();
 		context.put(SUITES_KEY, suites);
 		generateFile(new File(outputDirectory, REGRESSION), REGRESSION + TEMPLATE_EXTENSION, context);
 		generateFile(new File(outputDirectory, FEATURES), FEATURES + TEMPLATE_EXTENSION, context);
 	}
 
-	private void createIssues(List<ISuite> suites, File outputDirectory) throws Exception {
+	private void createIssuesResults(List<ISuite> suites, File outputDirectory) throws Exception {
 		VelocityContext context = createContext();
 		context.put(SUITES_KEY, suites);
 		generateFile(new File(outputDirectory, ISSUES_NEW), ISSUES_NEW + TEMPLATE_EXTENSION, context);
@@ -198,7 +218,7 @@ public class HTMLReporter extends AbstractReporter {
 		generateFile(new File(outputDirectory, INDEX_FILE), INDEX_FILE + TEMPLATE_EXTENSION, context);
 	}
 
-	private void createSuitesOverview(List<ISuite> suites, File outputDirectory) throws Exception {
+	private void createTestOverview(List<ISuite> suites, File outputDirectory) throws Exception {
 		VelocityContext context = createContext();
 		context.put(SUITES_KEY, suites);
 		generateFile(new File(outputDirectory, SUITES_OVERVIEW_FILE), SUITES_OVERVIEW_FILE + TEMPLATE_EXTENSION, context);
@@ -210,7 +230,7 @@ public class HTMLReporter extends AbstractReporter {
 		generateFile(new File(outputDirectory, SUITES_FILE), SUITES_FILE + TEMPLATE_EXTENSION, context);
 	}
 
-	private void createResults(List<ISuite> suites, File outputDirectory) throws Exception {
+	private void createTestResults(List<ISuite> suites, File outputDirectory) throws Exception {
 		int index = 1;
 		for (ISuite suite : suites) {
 			int index2 = 1;
@@ -231,19 +251,19 @@ public class HTMLReporter extends AbstractReporter {
 		}
 	}
 
-	private void createPackagesView(List<ISuite> suites, File outputDirectory) throws Exception {
+	private void createPackagesResults(List<ISuite> suites, File outputDirectory) throws Exception {
 		VelocityContext context = createContext();
 		context.put(SUITES_KEY, suites);
 		generateFile(new File(outputDirectory, PACKAGES), PACKAGES + TEMPLATE_EXTENSION, context);
 	}
 
-	private void createGroupsView(List<ISuite> suites, File outputDirectory) throws Exception {
+	private void createGroupResults(List<ISuite> suites, File outputDirectory) throws Exception {
 		VelocityContext context = createContext();
 		context.put(SUITES_KEY, suites);
 		generateFile(new File(outputDirectory, GROUPS), GROUPS + TEMPLATE_EXTENSION, context);
 	}
 
-	protected void createCanvasJs(List<ISuite> suites, File outputDirectory) throws Exception {
+	protected void createGraphs(List<ISuite> suites, File outputDirectory) throws Exception {
 		VelocityContext context = createContext();
 		context.put(SUITES_KEY, suites);
 		generateFile(new File(outputDirectory, GRAPHS_TIME), GRAPHS_TIME + TEMPLATE_EXTENSION, context);
