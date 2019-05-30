@@ -1,6 +1,7 @@
 V2.4.1 * Fix issue with org.uncommons.reportng.knownDefectsMode : false
        * Fix Total Status issue
        * Show timeout per method if declared as annotation only
+       * Show always tables with regression and new features
        * 
 V2.4.0 * New Results menu. Results per Group
        * Various Fixes
