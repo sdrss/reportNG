@@ -32,7 +32,6 @@
 <body>
 <h3 class="fixedTitle">$messages.getString("fixedIssues")</h3>
 <div>
-	#if ($utils.issues($suites).getFixedIssuesRegression().size()>0)	
 	<div class="well well-large">
 	<h4>$messages.getString("regressionissues")</h4>
 		<table class="table table-bordered" width="100%;" id="features">
@@ -48,9 +47,7 @@
 			</tbody>
 	</table>
 	</div>
-	#end
 	
-	#if ($utils.issues($suites).getFixedIssuesNewFeature().size()>0)
 	<div class="well well-large">
 	<h4>$messages.getString("newissuesonFeatures")</h4>
 		<table class="table table-bordered" width="100%;" id="features">
@@ -66,24 +63,7 @@
 			</tbody>
 	</table>
 	</div>
-	#end
 	
-	#if ($utils.issues($suites).getFixedIssuesRegression().size()==0 && $utils.issues($suites).getFixedIssuesNewFeature().size()==0)
-		<div class="well well-large">
-		<table class="table table-bordered">
-			<thead>
-				<tr>
-					<th scope="col" width="30px">#</th>
-					<th scope="col">$messages.getString("issue")</th>
-					<th scope="col" colspan="2">$messages.getString("totalAffectedTests")</th>
-				</tr>
-			</thead>
-			<tbody>
-				$utils.getIssues($utils.issues($suites).getFixedIssuesNewFeature())
-			</tbody>
-		</table>
-		</div>
-	#end	
 </div>
 </body>
 </html>
