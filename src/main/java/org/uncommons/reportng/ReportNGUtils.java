@@ -538,27 +538,27 @@ public class ReportNGUtils {
 				response += "<td><a href=\"" + packageDTO.getUrl() + "\">" + packageDTO.getClassΝame() + "</a></td>";
 				response += "<td align=\"center\">" + packageDTO.getDuration() + "</td>";
 				if (packageDTO.getPass() > 0) {
-					response += "<td align=\"center\" class=\"passed number\">" + packageDTO.getPass() + "</td>";
+					response += "<td align=\"center\" class=\"passedCell\">" + packageDTO.getPass() + "</td>";
 				} else {
 					response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getPass() + "</td>";
 				}
 				if (packageDTO.getFail() > 0) {
-					response += "<td align=\"center\" class=\"failed number\">" + packageDTO.getFail() + "</td>";
+					response += "<td align=\"center\" class=\"failedCell\">" + packageDTO.getFail() + "</td>";
 				} else {
 					response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getFail() + "</td>";
 				}
 				if (packageDTO.getSkip() > 0) {
-					response += "<td align=\"center\" class=\"skipped number\">" + packageDTO.getSkip() + "</td>";
+					response += "<td align=\"center\" class=\"skippedCell\">" + packageDTO.getSkip() + "</td>";
 				} else {
 					response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getSkip() + "</td>";
 				}
 				if (packageDTO.getKnown() > 0) {
-					response += "<td align=\"center\" class=\"knownDefects number\">" + packageDTO.getKnown() + "</td>";
+					response += "<td align=\"center\" class=\"knownDefectsCell\">" + packageDTO.getKnown() + "</td>";
 				} else {
 					response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getKnown() + "</td>";
 				}
 				if (packageDTO.getFixed() > 0) {
-					response += "<td align=\"center\" class=\"fixed number\">" + packageDTO.getFixed() + "</td>";
+					response += "<td align=\"center\" class=\"fixedCell\">" + packageDTO.getFixed() + "</td>";
 				} else {
 					response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getFixed() + "</td>";
 				}
@@ -613,27 +613,27 @@ public class ReportNGUtils {
 					response += "<td><a href=\"" + packageDTO.getUrl() + "\">" + packageDTO.getClassΝame() + "</a></td>";
 					response += "<td align=\"center\">" + packageDTO.getDuration() + "</td>";
 					if (packageDTO.getPass() > 0) {
-						response += "<td align=\"center\" class=\"passed number\">" + packageDTO.getPass() + "</td>";
+						response += "<td align=\"center\" class=\"passedCell\">" + packageDTO.getPass() + "</td>";
 					} else {
 						response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getPass() + "</td>";
 					}
 					if (packageDTO.getFail() > 0) {
-						response += "<td align=\"center\" class=\"failed number\">" + packageDTO.getFail() + "</td>";
+						response += "<td align=\"center\" class=\"failedCell\">" + packageDTO.getFail() + "</td>";
 					} else {
 						response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getFail() + "</td>";
 					}
 					if (packageDTO.getSkip() > 0) {
-						response += "<td align=\"center\" class=\"skipped number\">" + packageDTO.getSkip() + "</td>";
+						response += "<td align=\"center\" class=\"skippedCell\">" + packageDTO.getSkip() + "</td>";
 					} else {
 						response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getSkip() + "</td>";
 					}
 					if (packageDTO.getKnown() > 0) {
-						response += "<td align=\"center\" class=\"knownDefects number\">" + packageDTO.getKnown() + "</td>";
+						response += "<td align=\"center\" class=\"knownDefectsCell\">" + packageDTO.getKnown() + "</td>";
 					} else {
 						response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getKnown() + "</td>";
 					}
 					if (packageDTO.getFixed() > 0) {
-						response += "<td align=\"center\" class=\"fixed number\">" + packageDTO.getFixed() + "</td>";
+						response += "<td align=\"center\" class=\"fixedCell\">" + packageDTO.getFixed() + "</td>";
 					} else {
 						response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getFixed() + "</td>";
 					}
@@ -671,6 +671,8 @@ public class ReportNGUtils {
 			status = ResultStatus.PASS_WITH_KNOWN_ISSUES;
 		} else if (pass > 0 && fixed > 0) {
 			status = ResultStatus.PASS_WITH_FIXED_ISSUES;
+		} else if (pass == 0 && skip > 0) {
+			status = ResultStatus.SKIP;
 		}
 		return status;
 	}
@@ -2121,7 +2123,7 @@ public class ReportNGUtils {
 			all.addAll(iResultMapFixed);
 			int totalNumberOfTests = getTotalNumberOfTests(iResultMapPass, iResultMapFail, iResultMapSkip, iResultMapKnown, iResultMapFixed);
 			String results = getFeatureResults(iResultMapPass, iResultMapFail, iResultMapSkip, iResultMapKnown, iResultMapFixed, linkName);
-			ResultStatus status = getStatus(iResultMapPass.size(), iResultMapFail.size(), iResultMapFail.size(), iResultMapKnown.size(), iResultMapFixed.size());
+			ResultStatus status = getStatus(iResultMapPass.size(), iResultMapFail.size(), iResultMapSkip.size(), iResultMapKnown.size(), iResultMapFixed.size());
 			for (ITestResult iTestResult : all) {
 				issues.add(new IssueDTO(suiteName, iTestResult.getTestContext().getName(), iTestResult.getInstanceName(), getFeatureDescription(iTestContext),
 						linkName, results, status, totalNumberOfTests));
@@ -2149,7 +2151,7 @@ public class ReportNGUtils {
 			all.addAll(iResultMapFixed);
 
 			String results = getFeatureResults(iResultMapPass, iResultMapFail, iResultMapSkip, iResultMapKnown, iResultMapFixed, linkName);
-			ResultStatus status = getStatus(iResultMapPass.size(), iResultMapFail.size(), iResultMapFail.size(), iResultMapKnown.size(), iResultMapFixed.size());
+			ResultStatus status = getStatus(iResultMapPass.size(), iResultMapFail.size(), iResultMapSkip.size(), iResultMapKnown.size(), iResultMapFixed.size());
 			for (ITestResult iTestResult : all) {
 				boolean alreadyExists = false;
 				for (IssueDTO tempIssueDTO : issues) {
@@ -2174,19 +2176,19 @@ public class ReportNGUtils {
 		String results = "<table>" + "\n";
 		results += "<tr>";
 		if (iResultMapPass.size() > 0) {
-			results += "<td class=\"passed number\" width=\"30px\"><a href=\"" + link + "\">" + iResultMapPass.size() + "</a></td>";
+			results += "<td class=\"passedCell\" width=\"30px\"><a href=\"" + link + "\">" + iResultMapPass.size() + "</a></td>";
 		}
 		if (iResultMapFail.size() > 0) {
-			results += "<td class=\"failed number\" width=\"30px\"><a href=\"" + link + "\">" + iResultMapFail.size() + "</a></td>";
+			results += "<td class=\"failedCell\" width=\"30px\"><a href=\"" + link + "\">" + iResultMapFail.size() + "</a></td>";
 		}
 		if (iResultMapSkip.size() > 0) {
-			results += "<td class=\"skipped number\" width=\"30px\"><a href=\"" + link + "\">" + iResultMapSkip.size() + "</a></td>";
+			results += "<td class=\"skippedCell\" width=\"30px\"><a href=\"" + link + "\">" + iResultMapSkip.size() + "</a></td>";
 		}
 		if (iResultMapKnown.size() > 0) {
-			results += "<td class=\"knownDefects number\" width=\"30px\"><a href=\"" + link + "\">" + iResultMapKnown.size() + "</a></td>";
+			results += "<td class=\"knownDefectsCell\" width=\"30px\"><a href=\"" + link + "\">" + iResultMapKnown.size() + "</a></td>";
 		}
 		if (iResultMapFixed.size() > 0) {
-			results += "<td class=\"fixed number\" width=\"30px\"><a href=\"" + link + "\">" + iResultMapFixed.size() + "</a></td>";
+			results += "<td class=\"fixedCell\" width=\"30px\"><a href=\"" + link + "\">" + iResultMapFixed.size() + "</a></td>";
 		}
 		results += "</tr>";
 		results += "</table>";

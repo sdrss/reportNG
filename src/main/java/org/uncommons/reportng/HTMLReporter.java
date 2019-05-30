@@ -110,7 +110,6 @@ public class HTMLReporter extends AbstractReporter {
 		try {
 			System.out.println("****************************************");
 			System.out.println("Generate reportNG report");
-			System.out.println("****************************************");
 			System.out.println("Path : " + OUTPUTDIRECTORY_ABSOLUTE);
 			// Sort Suites
 			List<ISuite> sortedSuites = sortSuitesChronologicaly(suites);
@@ -120,56 +119,41 @@ public class HTMLReporter extends AbstractReporter {
 			// Generate Directory
 			generateDirectory(outputDirectory);
 			// Copy Resources
-			System.out.println("Copy Resources");
 			copyResources(outputDirectory);
 			// Update results
-			System.out.println("Generate Results");
 			setResults(ReporterHelper.checkAttribute(sortedSuites));
 			setIssuesDTO(ReporterHelper.issues(sortedSuites));
 			setPackageDeatails(ReporterHelper.packageDetails(sortedSuites));
 			setGroupDetails(ReporterHelper.groupDetails(sortedSuites));
 			// Create Frames
-			System.out.println("Create Frames");
 			createFrameset(outputDirectory);
 			// Create Menu
-			System.out.println("Create Menu");
 			createMenu(sortedSuites, outputDirectory);
 			// Create Overview
-			System.out.println("Create Overview");
 			createOverview(sortedSuites, outputDirectory);
 			// Overview
-			System.out.println("Create Test Results");
 			createTestOverview(sortedSuites, outputDirectory);
 			// Suites
-			System.out.println("Create Suite Results");
 			createSuiteList(sortedSuites, outputDirectory);
 			// Groups
-			System.out.println("Create Groups");
 			createGroups(sortedSuites, outputDirectory);
 			// Results
-			System.out.println("Create Test Results");
 			createTestResults(sortedSuites, outputDirectory);
 			// Graphs
-			System.out.println("Create Graphs");
 			createGraphs(sortedSuites, outputDirectory);
 			// Issues
-			System.out.println("Create Issues Results");
 			createIssuesResults(sortedSuites, outputDirectory);
 			// Run Arguments
-			System.out.println("Create Arguments");
 			createRunArguments(sortedSuites, outputDirectory);
 			// Create Features
-			System.out.println("Create Features Results");
 			createFeaturesResults(sortedSuites, outputDirectory);
 			// Packages
-			System.out.println("Create Packages Results");
 			createPackagesResults(sortedSuites, outputDirectory);
 			// Groups View
-			System.out.println("Create Group Results");
 			createGroupResults(sortedSuites, outputDirectory);
 			// Create Log
-			System.out.println("Create Report Log Output");
 			createReportLogOutput(outputDirectory);
+			System.out.println("****************************************");
 		} catch (Exception ex) {
 			throw new ReportNGException("Failed generating HTML report.", ex);
 		}

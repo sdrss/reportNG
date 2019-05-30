@@ -631,3 +631,29 @@ table thead tr .headerSortDown {
 #features tr:hover {
     background-color: #c8c8ca;
 }
+
+.passedCell {
+    background-color: #8fe794;
+    text-align: center;
+    width:1em;
+}
+ .skippedCell {
+    background-color: #ffff77;
+    text-align: center;
+    width:1em;
+}
+ .failedCell {
+    background-color: #ff8888;
+    text-align: center;
+    width:1em;
+}
+ .fixedCell {
+    background-color: #0066FF;
+    text-align: center;
+    width:1em;
+}
+.knownDefectsCell {
+    background-color: #F5A755;
+    text-align: center;
+    width:1em;
+}
