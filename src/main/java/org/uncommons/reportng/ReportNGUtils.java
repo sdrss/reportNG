@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.UUID;
 
 import org.testng.IClass;
@@ -316,7 +317,8 @@ public class ReportNGUtils {
 	public String getIssues(Map<String, List<IssueDTO>> issues) {
 		String response = "";
 		if (issues != null && !issues.isEmpty()) {
-			Iterator<Entry<String, List<IssueDTO>>> it = issues.entrySet().iterator();
+			Map<String, List<IssueDTO>> map = new TreeMap<>(issues);
+			Iterator<Entry<String, List<IssueDTO>>> it = map.entrySet().iterator();
 			int indexCounter = 0;
 			while (it.hasNext()) {
 				Entry<String, List<IssueDTO>> pair = it.next();
