@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import org.testng.IResultMap;
 import org.testng.ISuite;
@@ -327,6 +328,12 @@ public class ReporterHelper {
 		return iTestContext;
 	}
 
+	private static Map<PackageDetailsDTO, List<PackageDetailsDTO>> sortItems(Map<PackageDetailsDTO, List<PackageDetailsDTO>> results) {
+		Map<PackageDetailsDTO, List<PackageDetailsDTO>> treeMap = new TreeMap<PackageDetailsDTO, List<PackageDetailsDTO>>(new ResultComparator());
+		treeMap.putAll(results);
+		return treeMap;
+	}
+
 	public static Map<PackageDetailsDTO, List<PackageDetailsDTO>> packageDetails(List<ISuite> sortedSuites) {
 		Map<PackageDetailsDTO, List<PackageDetailsDTO>> packagesFinal = new HashMap<>();
 		if (sortedSuites != null) {
@@ -374,7 +381,7 @@ public class ReporterHelper {
 				packagesFinal.put(packageDetailsDTO, entry.getValue());
 			}
 		}
-		return packagesFinal;
+		return sortItems(packagesFinal);
 	}
 
 	public static Map<PackageDetailsDTO, List<PackageDetailsDTO>> groupDetails(List<ISuite> sortedSuites) {
@@ -436,6 +443,6 @@ public class ReporterHelper {
 				packagesFinal.put(packageDetailsDTO, entry.getValue());
 			}
 		}
-		return packagesFinal;
+		return sortItems(packagesFinal);
 	}
 }
