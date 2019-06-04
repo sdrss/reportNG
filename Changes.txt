@@ -1,3 +1,9 @@
+V2.4.2 * Hover class Results for Package results 
+	   * Hover class Results for Group results
+       * Hover class Results for New, Known & Fixed issues results
+       * Hover class Results for Regression & New Feature results
+       * Hover class Results for Test results
+       *
 V2.4.1 * Fix issue with org.uncommons.reportng.knownDefectsMode : false
        * Fix Total Status issue
        * Show timeout per method if declared as annotation only

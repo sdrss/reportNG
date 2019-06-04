@@ -657,3 +657,11 @@ table thead tr .headerSortDown {
     text-align: center;
     width:1em;
 }
+.tipFrame {
+    display:none;
+    position:absolute;
+	resize: both;
+    overflow: auto;
+    width:60%;
+    height:60%;
+}
