@@ -19,7 +19,6 @@
 	                .css("cursor", "pointer")  
 	                .attr("title", "Click to expand/collapse")  
 	                .click();
-	            $(".tipReport").mouseover(function() {$(this).children(".tipFrame").show();}).mouseout(function() {$(this).children(".tipFrame").hide();});
 	    });
 	    function changeIcon(elementId) {
 			if ($('#'+elementId).hasClass('glyphicon glyphicon-minus')){
@@ -28,6 +27,8 @@
 				$('#'+elementId).removeClass('glyphicon glyphicon-plus').toggleClass('glyphicon glyphicon-minus');
 			}
 		}
+		function showReport(element,report){$(element).children(".tipFrame").attr('src', report).show();}
+		function hideReport(element){$(element).children(".tipFrame").hide();}
     </script>
 </head>
 <body>

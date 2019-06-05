@@ -12,9 +12,8 @@
   	<script type="text/javascript" src="js/reportng.js"></script>
   	<script type="text/javascript">$(document).ready(function(){$('.table').tablesorter({});});</script>
   	<script type="text/javascript">  
-    	$(document).ready(function () {  
-	            $(".tipReport").mouseover(function() {$(this).children(".tipFrame").show();}).mouseout(function() {$(this).children(".tipFrame").hide();});
-	    });
+    	function showReport(element,report){$(element).children(".tipFrame").attr('src', report).show();}
+		function hideReport(element){$(element).children(".tipFrame").hide();}
     </script>
 </head>
 <body onload="return false;" onkeypress="hidePass();">
@@ -77,7 +76,7 @@
 		  	#if (($onlyReportFailures && $failuresExist) || (!$onlyReportFailures))
   			<tr class="test">
   				<td width="100">$utils.getTime($result.testContext)</td>
-    			<td><a class='tipReport' href="suite${suiteId}_test${velocityCount}_results.html">${result.testContext.name}<iframe class='tipFrame' src='suite${suiteId}_test${velocityCount}_results.html'></iframe></a></td>
+    			<td><a href="suite${suiteId}_test${velocityCount}_results.html" onmouseover="showReport(this,'suite${suiteId}_test${velocityCount}_results.html')" onmouseout = "hideReport(this)">${result.testContext.name}<iframe class='tipFrame' src=''></iframe></a></td>
     			<td class="duration">$utils.isRegression($result.testContext)</td>
     			<td class="duration">$utils.formatDuration($utils.getDuration($result.testContext))</td>
     			#if ($utils.getPassed($result.testContext).size() > 0)
