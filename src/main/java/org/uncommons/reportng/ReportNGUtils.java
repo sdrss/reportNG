@@ -46,11 +46,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * Utility class that provides various helper methods that can be invoked from a
- * Velocity template.
+ * Utility class that provides various helper methods that can be invoked from a Velocity template.
  */
 public class ReportNGUtils {
-
+	
 	public static final String TEST = "test";
 	public static final String FIXED = "fixed";
 	public static final String KNOWN = "known";
@@ -58,7 +57,7 @@ public class ReportNGUtils {
 	private static final String KNOWNDEFECT = KnownDefect.class.getName();
 	private static final String NEW_FEATURE = NewFeature.class.getName();
 	private static final String FEATURE = Feature.class.getName();
-
+	
 	public static String getExternalLinks() {
 		String response = "";
 		String externalLinks = System.getProperty(HTMLReporter.EXTERNAL_LINKS);
@@ -83,7 +82,7 @@ public class ReportNGUtils {
 		}
 		return response;
 	}
-
+	
 	private static int getNumberofRegressionIssues(IssuesDTO issuesDTO) {
 		int regressionCounter = 0;
 		Iterator<Entry<String, List<IssueDTO>>> it = issuesDTO.getNewIssues().entrySet().iterator();
@@ -98,7 +97,7 @@ public class ReportNGUtils {
 		}
 		return regressionCounter;
 	}
-
+	
 	private static int getNumberofNewFeatureIssues(IssuesDTO issuesDTO) {
 		int regressionCounter = 0;
 		Iterator<Entry<String, List<IssueDTO>>> it = issuesDTO.getNewIssues().entrySet().iterator();
@@ -113,7 +112,7 @@ public class ReportNGUtils {
 		}
 		return regressionCounter;
 	}
-
+	
 	public static String getReleaseStatus(List<ISuite> suites) {
 		String status = "";
 		if ("true".equalsIgnoreCase(System.getProperty(HTMLReporter.SKIP_EXECUTION))) {
@@ -211,7 +210,7 @@ public class ReportNGUtils {
 									+ "\" style=\"color:yellow\">" + pair.getKey()
 									+ "</a>' has skip test cases and should not be announced !</li>";
 						}
-
+						
 					}
 					responseNewFeatures += "";
 				}
@@ -244,19 +243,19 @@ public class ReportNGUtils {
 					status += "</ul>";
 				}
 			}
-
+			
 		}
 		return status;
 	}
-
+	
 	public static ResultsDTO checkAttribute(List<ISuite> suites) {
 		return HTMLReporter.getResults();
 	}
-
+	
 	public static IssuesDTO issues(List<ISuite> suites) {
 		return HTMLReporter.getIssuesDTO();
 	}
-
+	
 	public String runArguments(List<ISuite> suites) {
 		String response = "";
 		// Get Listeners
@@ -276,7 +275,7 @@ public class ReportNGUtils {
 			response += "<td>" + listenersToString + "</td>\n";
 			response += "</tr>\n";
 		}
-
+		
 		// Get Include Groups
 		Set<String> includeGroups = new HashSet<String>();
 		if (suites != null && suites.size() > 0) {
@@ -313,7 +312,7 @@ public class ReportNGUtils {
 		}
 		return response;
 	}
-
+	
 	public String getIssues(Map<String, List<IssueDTO>> issues) {
 		String response = "";
 		if (issues != null && !issues.isEmpty()) {
@@ -322,7 +321,7 @@ public class ReportNGUtils {
 			int indexCounter = 0;
 			while (it.hasNext()) {
 				Entry<String, List<IssueDTO>> pair = it.next();
-
+				
 				UUID id = UUID.randomUUID();
 				response += "<tr class=\"parent\" id=\"row" + indexCounter
 						+ "\" title=\"Click to expand/collapse\" style=\"cursor: pointer;\" onclick=\"changeIcon('span-" + id + "'); \">\n";
@@ -342,7 +341,8 @@ public class ReportNGUtils {
 					response += "<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">";
 					response += "<td></td>";
 					response += "<td><a href=\"suites_overview.html#" + temp.getSuiteName() + "\">" + temp.getSuiteName() + "</a></td>";
-					response += "<td><a href=\"" + temp.getLink() + "\" onmouseover=\"showReport(this,'" + temp.getLink() + "')\" onmouseout = \"hideReport(this)\">" + temp.getTestName() + "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>";
+					response += "<td><a href=\"" + temp.getLink() + "\" onmouseover=\"showReport(this,'" + temp.getLink() + "')\" onmouseout = \"hideReport(this)\">" + temp.getTestName()
+							+ "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>";
 					response += "<td class=\"break-word\">" + temp.getTestClass() + "</td>";
 					response += "</tr>\n";
 				}
@@ -358,7 +358,7 @@ public class ReportNGUtils {
 		}
 		return response;
 	}
-
+	
 	public String getSuites(List<ISuite> suites) {
 		String response = "";
 		if (suites != null) {
@@ -375,7 +375,7 @@ public class ReportNGUtils {
 				try {
 					parentSuiteName = tempISuite.getXmlSuite().getParentSuite().getName();
 				} catch (Exception ex) {
-
+					
 				}
 				String parallel = "";
 				if (tempISuite.getParallel() != null && !tempISuite.getParallel().equalsIgnoreCase("none")) {
@@ -401,7 +401,7 @@ public class ReportNGUtils {
 				totalSkip += skip;
 				totalKnown += known;
 				totalFixed += fixed;
-
+				
 				Long startDate = null;
 				Long endDate = null;
 				for (IInvokedMethod tempIInvokedMethod : tempISuite.getAllInvokedMethods()) {
@@ -412,7 +412,7 @@ public class ReportNGUtils {
 						endDate = tempIInvokedMethod.getDate();
 					}
 				}
-
+				
 				if (totalStartDate == null || totalStartDate > startDate) {
 					totalStartDate = startDate;
 				}
@@ -496,7 +496,7 @@ public class ReportNGUtils {
 		}
 		return response;
 	}
-
+	
 	public String getPackages(List<ISuite> suites) {
 		String response = "";
 		int indexCounter = 0;
@@ -533,11 +533,12 @@ public class ReportNGUtils {
 				response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getFixed() + "</td>";
 			}
 			response += "</tr>\n";
-
+			
 			for (PackageDetailsDTO packageDTO : entry.getValue()) {
 				response += "<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">";
 				response += "<td></td>";
-				response += "<td><a href=\"" + packageDTO.getUrl() + "\" onmouseover=\"showReport(this,'" + packageDTO.getUrl() + "')\" onmouseout = \"hideReport(this)\">" + packageDTO.getClassΝame() + "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>";
+				response += "<td><a href=\"" + packageDTO.getUrl() + "\" onmouseover=\"showReport(this,'" + packageDTO.getUrl() + "')\" onmouseout = \"hideReport(this)\">" + packageDTO.getClassΝame()
+						+ "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>";
 				response += "<td align=\"center\">" + packageDTO.getDuration() + "</td>";
 				if (packageDTO.getPass() > 0) {
 					response += "<td align=\"center\" class=\"passedCell\">" + packageDTO.getPass() + "</td>";
@@ -570,7 +571,7 @@ public class ReportNGUtils {
 		response += "\n";
 		return response;
 	}
-
+	
 	public String getGroups(List<ISuite> suites) {
 		String response = "";
 		int indexCounter = 0;
@@ -608,7 +609,7 @@ public class ReportNGUtils {
 					response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getFixed() + "</td>";
 				}
 				response += "</tr>\n";
-
+				
 				for (PackageDetailsDTO packageDTO : entry.getValue()) {
 					response += "<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">";
 					response += "<td></td>";
@@ -658,12 +659,12 @@ public class ReportNGUtils {
 		response += "\n";
 		return response;
 	}
-
+	
 	private String getDate(ISuite tempISuite) {
 		Date date = new Date(getStartTime(tempISuite.getAllInvokedMethods()));
 		return DateFormat.getTimeInstance().format(date);
 	}
-
+	
 	private static ResultStatus getStatus(int pass, int fail, int skip, int known, int fixed) {
 		ResultStatus status = ResultStatus.PASS;
 		if (fail > 0) {
@@ -679,7 +680,7 @@ public class ReportNGUtils {
 		}
 		return status;
 	}
-
+	
 	private static String getStatusColor(ResultStatus status) {
 		if (ResultStatus.PASS.equals(status)) {
 			return "<font color=\"green\">" + ResultStatus.PASS + "</font>";
@@ -694,7 +695,7 @@ public class ReportNGUtils {
 		}
 		return status.toString();
 	}
-
+	
 	/**
 	 * Returns the aggregate of the elapsed times for each test result.
 	 * 
@@ -718,7 +719,7 @@ public class ReportNGUtils {
 		HTMLReporter.totalDuration = HTMLReporter.totalDuration + duration;
 		return duration;
 	}
-
+	
 	public String getTime(ITestContext context) {
 		String date = "";
 		if (context.getStartDate() != null) {
@@ -726,23 +727,23 @@ public class ReportNGUtils {
 		}
 		return date;
 	}
-
+	
 	public static String getTotalDuration() {
 		return formatDurationinMinutes(HTMLReporter.totalDuration);
 	}
-
+	
 	public static String formatDurationinMinutes(long elapsed) {
 		long seconds = (elapsed / 1000) % 60;
 		long minutes = (elapsed / (1000 * 60)) % 60;
 		long hours = (elapsed / (1000 * 60 * 60)) % 24;
 		return String.format("%02d:%02d:%02d", hours, minutes, seconds);
 	}
-
+	
 	public static String formatDurationinMinutes(String time1, String time2) {
 		String hoursString = "00";
 		String minutesString = "00";
 		String secondsString = "00";
-
+		
 		String[] splitter1 = time1.split(":");
 		String[] splitter2 = time2.split(":");
 		if (splitter1.length < 3 && splitter2.length < 3) {
@@ -752,7 +753,7 @@ public class ReportNGUtils {
 				int seconds = Integer.parseInt(splitter1[2]) + Integer.parseInt(splitter2[2]);
 				int minutes = Integer.parseInt(splitter1[1]) + Integer.parseInt(splitter2[1]);
 				int hours = Integer.parseInt(splitter1[0]) + Integer.parseInt(splitter2[0]);
-
+				
 				if (seconds >= 60) {
 					minutes++;
 					seconds = seconds - 60;
@@ -761,31 +762,31 @@ public class ReportNGUtils {
 					hours++;
 					minutes = minutes - 60;
 				}
-
+				
 				if (hours <= 9) {
 					hoursString = "0" + hours;
 				} else {
 					hoursString = Integer.toString(hours);
 				}
-
+				
 				if (minutes <= 9) {
 					minutesString = "0" + minutes;
 				} else {
 					minutesString = Integer.toString(minutes);
 				}
-
+				
 				if (seconds <= 9) {
 					secondsString = "0" + seconds;
 				} else {
 					secondsString = Integer.toString(seconds);
 				}
 			} catch (Exception ex) {
-
+				
 			}
 		}
 		return hoursString + ":" + minutesString + ":" + secondsString;
 	}
-
+	
 	/**
 	 * Returns the aggregate of the elapsed times for each test result.
 	 * 
@@ -800,7 +801,7 @@ public class ReportNGUtils {
 		}
 		return duration;
 	}
-
+	
 	public String getAnnotation(ITestResult result) {
 		String annotation = "";
 		try {
@@ -817,7 +818,7 @@ public class ReportNGUtils {
 				}
 			}
 		} catch (Exception ex) {
-
+			
 		}
 		if (annotation.isEmpty()) {
 			return annotation;
@@ -825,7 +826,7 @@ public class ReportNGUtils {
 			return "@" + annotation;
 		}
 	}
-
+	
 	private HashMap<String, String> getTestAnnotationAttributes(String annotation) {
 		HashMap<String, String> map = new HashMap<>();
 		try {
@@ -843,17 +844,17 @@ public class ReportNGUtils {
 		}
 		return map;
 	}
-
+	
 	public String formatDuration(long startMillis, long endMillis) {
 		long elapsed = endMillis - startMillis;
 		return formatDuration(elapsed);
 	}
-
+	
 	public String formatDuration(long elapsed) {
 		double seconds = (double) elapsed / 1000;
 		return DURATION_FORMAT.format(seconds);
 	}
-
+	
 	/**
 	 * Convert a Throwable into a list containing all of its causes.
 	 * 
@@ -871,12 +872,12 @@ public class ReportNGUtils {
 					causes.add(next);
 				}
 			} catch (NullPointerException ex) {
-
+				
 			}
 		}
 		return causes;
 	}
-
+	
 	/**
 	 * Retrieves all log messages associated with a particular test result.
 	 * 
@@ -887,10 +888,9 @@ public class ReportNGUtils {
 	public List<String> getTestOutput(ITestResult result) {
 		return Reporter.getOutput(result);
 	}
-
+	
 	/**
-	 * Retieves the output from all calls to
-	 * {@link org.testng.Reporter#log(String)} across all tests.
+	 * Retieves the output from all calls to {@link org.testng.Reporter#log(String)} across all tests.
 	 * 
 	 * @return A (possibly empty) list of log messages.
 	 */
@@ -901,11 +901,11 @@ public class ReportNGUtils {
 		return new ArrayList<String>(Arrays.asList("Param '" + HTMLReporter.LOG_OUTPUT_REPORT
 				+ "' has neen set to 'false' , so Report Output is not generated."));
 	}
-
+	
 	public boolean hasArguments(ITestResult result) {
 		return result.getParameters().length > 0;
 	}
-
+	
 	public String getClassName(ITestResult result) {
 		String name = result.getTestClass().getName();
 		String sub = "";
@@ -913,15 +913,15 @@ public class ReportNGUtils {
 			sub = name.substring(0, name.indexOf(".") + 1);
 			name = name.substring(name.lastIndexOf(".") + 1, name.length());
 		} catch (Exception ex) {
-
+			
 		}
 		return sub + ".." + name;
 	}
-
+	
 	public String getRealClassName(ITestResult result) {
 		return result.getTestClass().getName();
 	}
-
+	
 	public String getArguments(ITestResult result) {
 		Object[] arguments = result.getParameters();
 		List<String> argumentStrings = new ArrayList<String>(arguments.length);
@@ -930,7 +930,7 @@ public class ReportNGUtils {
 		}
 		return commaSeparate(argumentStrings);
 	}
-
+	
 	public boolean hasDescription(ITestResult result) {
 		String description = "";
 		try {
@@ -945,7 +945,7 @@ public class ReportNGUtils {
 		}
 		return false;
 	}
-
+	
 	public String getClassName2(ISuiteResult result) {
 		List<XmlClass> list = result.getTestContext().getCurrentXmlTest().getClasses();
 		String classNames = "";
@@ -958,26 +958,26 @@ public class ReportNGUtils {
 		}
 		return classNames;
 	}
-
+	
 	public String getTotalTime(ISuiteResult result) {
 		Date start = result.getTestContext().getStartDate();
 		Date end = result.getTestContext().getEndDate();
 		long diff = end.toInstant().toEpochMilli() - start.toInstant().toEpochMilli();
 		return formatDurationinMinutes(diff);
 	}
-
+	
 	public int getTotalSteps(ISuiteResult result) {
 		return result.getTestContext().getAllTestMethods().length;
 	}
-
+	
 	public String getSuiteName(ISuiteResult result) {
 		return result.getTestContext().getSuite().getName();
 	}
-
+	
 	public String getSuiteXMLName(ISuiteResult result) {
 		return result.getTestContext().getSuite().getXmlSuite().getFileName();
 	}
-
+	
 	public String getTestStatus(ISuiteResult result) {
 		if (result.getTestContext().getFailedTests().size() > 0) {
 			return getStatusColor(ResultStatus.FAIL);
@@ -987,7 +987,7 @@ public class ReportNGUtils {
 		}
 		return getStatusColor(ResultStatus.PASS);
 	}
-
+	
 	public String getSteps(ISuiteResult result) {
 		String steps = "<table><tr>";
 		Set<ITestResult> all = new HashSet<>();
@@ -1000,7 +1000,7 @@ public class ReportNGUtils {
 		if (result.getTestContext().getSkippedTests() != null && !result.getTestContext().getSkippedTests().getAllResults().isEmpty()) {
 			all.addAll(result.getTestContext().getSkippedTests().getAllResults());
 		}
-
+		
 		for (ITestResult temp : all) {
 			steps += "<td>";
 			if (temp.getStatus() == ITestResult.SUCCESS) {
@@ -1032,7 +1032,7 @@ public class ReportNGUtils {
 		steps += "</table>";
 		return steps;
 	}
-
+	
 	public boolean hasPriority(ITestResult result) {
 		int priority = 0;
 		try {
@@ -1047,7 +1047,7 @@ public class ReportNGUtils {
 		}
 		return false;
 	}
-
+	
 	public boolean hasGroups(ITestResult result) {
 		String[] groups = null;
 		try {
@@ -1062,7 +1062,7 @@ public class ReportNGUtils {
 		}
 		return false;
 	}
-
+	
 	public String getGroups(ITestResult result) {
 		String[] groups = null;
 		String foundGroups = "";
@@ -1081,18 +1081,18 @@ public class ReportNGUtils {
 		}
 		return "";
 	}
-
+	
 	public boolean hasInvocationCount(ITestResult result) {
 		if (result.getMethod().getInvocationCount() > 1) {
 			return true;
 		}
 		return false;
 	}
-
+	
 	public String getInvocationCount(ITestResult result) {
 		return Integer.toString(result.getMethod().getCurrentInvocationCount());
 	}
-
+	
 	public boolean hasTimeOut(ITestResult result) {
 		Annotation[] annottaions = getDeclaredAnnotations(result);
 		for (Annotation tempAnnotation : annottaions) {
@@ -1105,12 +1105,12 @@ public class ReportNGUtils {
 					}
 				}
 			} catch (Exception ex) {
-
+				
 			}
 		}
 		return false;
 	}
-
+	
 	public String getTimeOut(ITestResult result) {
 		Annotation[] annottaions = getDeclaredAnnotations(result);
 		for (Annotation tempAnnotation : annottaions) {
@@ -1123,12 +1123,12 @@ public class ReportNGUtils {
 					}
 				}
 			} catch (Exception ex) {
-
+				
 			}
 		}
 		return "0";
 	}
-
+	
 	/**
 	 * Is there a Known Defect Description
 	 * 
@@ -1143,7 +1143,7 @@ public class ReportNGUtils {
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Get Known Defect Description
 	 * 
@@ -1166,7 +1166,7 @@ public class ReportNGUtils {
 		}
 		return description;
 	}
-
+	
 	public boolean hasKnownDefect(ITestResult result) {
 		if (result.getAttribute(TEST) != null) {
 			if (KNOWN.equalsIgnoreCase(result.getAttribute(TEST).toString())) {
@@ -1175,7 +1175,7 @@ public class ReportNGUtils {
 		}
 		return false;
 	}
-
+	
 	public boolean hasFixed(ITestResult result) {
 		if (result.getAttribute(TEST) != null) {
 			if (FIXED.equalsIgnoreCase(result.getAttribute(TEST).toString())) {
@@ -1184,7 +1184,7 @@ public class ReportNGUtils {
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Parse Known Defect Description
 	 * 
@@ -1196,11 +1196,11 @@ public class ReportNGUtils {
 			String[] splitted = text.split("=");
 			return splitted[1].substring(0, splitted[1].length() - 1);
 		} catch (Exception ex) {
-
+			
 		}
 		return text;
 	}
-
+	
 	public List<ITestResult> getPassedConfigurations(IClass classTest, Map<IClass, List<ITestResult>> passedConfigurations) {
 		List<ITestResult> newmethods = new ArrayList<ITestResult>();
 		if ("true".equals(System.getProperty(HTMLReporter.SHOW_PASSED_CONFIGURATIONS))) {
@@ -1219,7 +1219,7 @@ public class ReportNGUtils {
 		}
 		return newmethods;
 	}
-
+	
 	public int getPriority(ITestResult result) {
 		int priority = 0;
 		try {
@@ -1230,14 +1230,13 @@ public class ReportNGUtils {
 				return 0;
 			}
 		} catch (NullPointerException ex) {
-
+			
 		}
 		return 0;
 	}
-
+	
 	/**
-	 * Decorate the string representation of an argument to give some hint as to
-	 * its type (e.g. render Strings in double quotes).
+	 * Decorate the string representation of an argument to give some hint as to its type (e.g. render Strings in double quotes).
 	 * 
 	 * @param argument
 	 *            The argument to render.
@@ -1254,7 +1253,7 @@ public class ReportNGUtils {
 			return argument.toString();
 		}
 	}
-
+	
 	/**
 	 * @param result
 	 *            The test result to be checked for dependent groups.
@@ -1263,16 +1262,15 @@ public class ReportNGUtils {
 	public boolean hasDependentGroups(ITestResult result) {
 		return result.getMethod().getGroupsDependedUpon().length > 0;
 	}
-
+	
 	/**
-	 * @return A comma-separated string listing all dependent groups. Returns an
-	 *         empty string it there are no dependent groups.
+	 * @return A comma-separated string listing all dependent groups. Returns an empty string it there are no dependent groups.
 	 */
 	public String getDependentGroups(ITestResult result) {
 		String[] groups = result.getMethod().getGroupsDependedUpon();
 		return commaSeparate(Arrays.asList(groups));
 	}
-
+	
 	/**
 	 * @param result
 	 *            The test result to be checked for dependent methods.
@@ -1281,28 +1279,27 @@ public class ReportNGUtils {
 	public boolean hasDependentMethods(ITestResult result) {
 		return result.getMethod().getMethodsDependedUpon().length > 0;
 	}
-
+	
 	/**
-	 * @return A comma-separated string listing all dependent methods. Returns
-	 *         an empty string it there are no dependent methods.
+	 * @return A comma-separated string listing all dependent methods. Returns an empty string it there are no dependent methods.
 	 */
 	public String getDependentMethods(ITestResult result) {
 		String[] methods = result.getMethod().getMethodsDependedUpon();
 		return commaSeparate(Arrays.asList(methods));
 	}
-
+	
 	public boolean hasSkipException(ITestResult result) {
 		return result.getThrowable() instanceof SkipException;
 	}
-
+	
 	public String getSkipExceptionMessage(ITestResult result) {
 		return hasSkipException(result) ? result.getThrowable().getMessage() : "";
 	}
-
+	
 	public boolean hasGroups(ISuite suite) {
 		return !suite.getMethodsByGroups().isEmpty();
 	}
-
+	
 	public String getClassName(ITestContext context) {
 		String name = "N/A";
 		try {
@@ -1311,10 +1308,9 @@ public class ReportNGUtils {
 		}
 		return name;
 	}
-
+	
 	/**
-	 * Takes a list of Strings and combines them into a single comma-separated
-	 * String.
+	 * Takes a list of Strings and combines them into a single comma-separated String.
 	 * 
 	 * @param strings
 	 *            The Strings to combine.
@@ -1332,12 +1328,10 @@ public class ReportNGUtils {
 		}
 		return buffer.toString();
 	}
-
+	
 	/**
-	 * Replace any angle brackets, quotes, apostrophes or ampersands with the
-	 * corresponding XML/HTML entities to avoid problems displaying the String
-	 * in an XML document. Assumes that the String does not already contain any
-	 * entities (otherwise the ampersands will be escaped again).
+	 * Replace any angle brackets, quotes, apostrophes or ampersands with the corresponding XML/HTML entities to avoid problems displaying the String in an XML document. Assumes that the String does
+	 * not already contain any entities (otherwise the ampersands will be escaped again).
 	 * 
 	 * @param s
 	 *            The String to escape.
@@ -1353,36 +1347,33 @@ public class ReportNGUtils {
 		}
 		return buffer.toString();
 	}
-
+	
 	/**
-	 * Converts a char into a String that can be inserted into an XML document,
-	 * replacing special characters with XML entities as required.
+	 * Converts a char into a String that can be inserted into an XML document, replacing special characters with XML entities as required.
 	 * 
 	 * @param character
 	 *            The character to convert.
-	 * @return An XML entity representing the character (or a String containing
-	 *         just the character if it does not need to be escaped).
+	 * @return An XML entity representing the character (or a String containing just the character if it does not need to be escaped).
 	 */
 	private static String escapeChar(char character) {
 		switch (character) {
-		case '<':
-			return "&lt;";
-		case '>':
-			return "&gt;";
-		case '"':
-			return "&quot;";
-		case '\'':
-			return "&apos;";
-		case '&':
-			return "&amp;";
-		default:
-			return String.valueOf(character);
+			case '<':
+				return "&lt;";
+			case '>':
+				return "&gt;";
+			case '"':
+				return "&quot;";
+			case '\'':
+				return "&apos;";
+			case '&':
+				return "&amp;";
+			default:
+				return String.valueOf(character);
 		}
 	}
-
+	
 	/**
-	 * Works like {@link #escapeString(String)} but also replaces line breaks
-	 * with &lt;br /&gt; tags and preserves significant whitespace.
+	 * Works like {@link #escapeString(String)} but also replaces line breaks with &lt;br /&gt; tags and preserves significant whitespace.
 	 * 
 	 * @param s
 	 *            The String to escape.
@@ -1396,30 +1387,28 @@ public class ReportNGUtils {
 		for (int i = 0; i < s.length(); i++) {
 			char ch = s.charAt(i);
 			switch (ch) {
-			case ' ':
-				// All spaces in a block of consecutive spaces are converted to
-				// non-breaking space (&nbsp;) except for the last one. This
-				// allows
-				// significant whitespace to be retained without prohibiting
-				// wrapping.
-				char nextCh = i + 1 < s.length() ? s.charAt(i + 1) : 0;
-				buffer.append(nextCh == ' ' ? "&nbsp;" : " ");
-				break;
-			case '\n':
-				buffer.append("<br/>\n");
-				break;
-			default:
-				buffer.append(escapeChar(ch));
+				case ' ':
+					// All spaces in a block of consecutive spaces are converted to
+					// non-breaking space (&nbsp;) except for the last one. This
+					// allows
+					// significant whitespace to be retained without prohibiting
+					// wrapping.
+					char nextCh = i + 1 < s.length() ? s.charAt(i + 1) : 0;
+					buffer.append(nextCh == ' ' ? "&nbsp;" : " ");
+					break;
+				case '\n':
+					buffer.append("<br/>\n");
+					break;
+				default:
+					buffer.append(escapeChar(ch));
 			}
 		}
 		return buffer.toString();
 	}
-
+	
 	/**
-	 * TestNG returns a compound thread ID that includes the thread name and its
-	 * numeric ID, separated by an 'at' sign. We only want to use the thread
-	 * name as the ID is mostly unimportant and it takes up too much space in
-	 * the generated report.
+	 * TestNG returns a compound thread ID that includes the thread name and its numeric ID, separated by an 'at' sign. We only want to use the thread name as the ID is mostly unimportant and it takes
+	 * up too much space in the generated report.
 	 * 
 	 * @param threadId
 	 *            The compound thread ID.
@@ -1433,7 +1422,7 @@ public class ReportNGUtils {
 			return index >= 0 ? threadId.substring(0, index) : threadId;
 		}
 	}
-
+	
 	/**
 	 * Find the earliest start time of the specified methods.
 	 * 
@@ -1448,7 +1437,7 @@ public class ReportNGUtils {
 		}
 		return startTime;
 	}
-
+	
 	public long getEndTime(ISuite suite, IInvokedMethod method, List<IInvokedMethod> methods) {
 		boolean found = false;
 		for (IInvokedMethod m : methods) {
@@ -1462,7 +1451,7 @@ public class ReportNGUtils {
 		}
 		return getEndTime(suite, method);
 	}
-
+	
 	public int getSuiteState(ISuite suite) {
 		int passed = 0;
 		int failed = 0;
@@ -1475,23 +1464,20 @@ public class ReportNGUtils {
 		}
 		return passed + failed + skip;
 	}
-
+	
 	public String getSuiteName(ISuite suite) {
 		if (suite != null)
 			return suite.getName().replaceAll(" ", "_").replaceAll(",", "_").replaceAll("\"", "_");
 		else
 			return "N/A";
 	}
-
+	
 	/**
-	 * Returns the timestamp for the time at which the suite finished executing.
-	 * This is determined by finding the latest end time for each of the
-	 * individual tests in the suite.
+	 * Returns the timestamp for the time at which the suite finished executing. This is determined by finding the latest end time for each of the individual tests in the suite.
 	 * 
 	 * @param suite
 	 *            The suite to find the end time of.
-	 * @return The end time (as a number of milliseconds since 00:00 1st January
-	 *         1970 UTC).
+	 * @return The end time (as a number of milliseconds since 00:00 1st January 1970 UTC).
 	 */
 	private long getEndTime(ISuite suite, IInvokedMethod method) {
 		// Find the latest end time for all tests in the suite.
@@ -1517,7 +1503,7 @@ public class ReportNGUtils {
 		}
 		throw new IllegalStateException("Could not find matching end time.");
 	}
-
+	
 	public static boolean isRegression(ITestContext context) {
 		for (ITestNGMethod tempTestMethod : context.getAllTestMethods()) {
 			Annotation[] annotations = tempTestMethod.getTestClass().getRealClass().getAnnotations();
@@ -1529,7 +1515,7 @@ public class ReportNGUtils {
 		}
 		return true;
 	}
-
+	
 	public static boolean isNewFeature(ITestContext context) {
 		for (ITestNGMethod tempTestMethod : context.getAllTestMethods()) {
 			Annotation[] annotations = tempTestMethod.getTestClass().getRealClass().getAnnotations();
@@ -1541,7 +1527,7 @@ public class ReportNGUtils {
 		}
 		return false;
 	}
-
+	
 	public static boolean isFeature(ITestContext iTestContext) {
 		for (ITestNGMethod tempTestMethod : iTestContext.getAllTestMethods()) {
 			Annotation[] annotations = tempTestMethod.getTestClass().getRealClass().getAnnotations();
@@ -1553,7 +1539,7 @@ public class ReportNGUtils {
 		}
 		return false;
 	}
-
+	
 	public static String getNewFeatureDescription(ITestContext iTestContext) {
 		for (ITestNGMethod tempTestMethod : iTestContext.getAllTestMethods()) {
 			Annotation[] annotations = tempTestMethod.getTestClass().getRealClass().getAnnotations();
@@ -1565,7 +1551,7 @@ public class ReportNGUtils {
 		}
 		return "";
 	}
-
+	
 	public static String getFeatureDescription(ITestContext context) {
 		for (ITestNGMethod tempTestMethod : context.getAllTestMethods()) {
 			Annotation[] annotations = tempTestMethod.getTestClass().getRealClass().getAnnotations();
@@ -1577,7 +1563,7 @@ public class ReportNGUtils {
 		}
 		return "";
 	}
-
+	
 	public String getDescription(ISuiteResult iSuiteResult) {
 		for (ITestNGMethod tempTestMethod : iSuiteResult.getTestContext().getAllTestMethods()) {
 			Annotation[] annotations = tempTestMethod.getTestClass().getRealClass().getAnnotations();
@@ -1589,7 +1575,7 @@ public class ReportNGUtils {
 		}
 		return "";
 	}
-
+	
 	public boolean hasDescription(ISuiteResult iSuiteResult) {
 		for (ITestNGMethod tempTestMethod : iSuiteResult.getTestContext().getAllTestMethods()) {
 			Annotation[] annotations = tempTestMethod.getTestClass().getRealClass().getAnnotations();
@@ -1601,7 +1587,7 @@ public class ReportNGUtils {
 		}
 		return false;
 	}
-
+	
 	public String getFeatures(Map<String, List<IssueDTO>> features) {
 		String response = "";
 		int indexCounter = 1;
@@ -1631,7 +1617,7 @@ public class ReportNGUtils {
 				response += "<tr class=\"parent\" id=\"row" + indexCounter
 						+ "\" title=\"Click to expand/collapse\" style=\"cursor: pointer;\" onclick=\"changeIcon('span-" + id + "'); \">\n";
 				response += "<td><span id=\"span-" + id + "\" class=\"glyphicon glyphicon-minus\" style=\"color:blue\"></span></td>\n";
-				response += "<td colspan=\"2\" id=\"" + pair.getKey() + "\">" + pair.getKey() + "</td>";
+				response += "<td colspan=\"2\" id=\"" + pair.getKey() + "\" class=\"break-word\">" + pair.getKey() + "</td>";
 				response += "<td colspan=\"1\">" + totalTests + "</td>";
 				response += "<td colspan=\"2\">" + getStatusColor(overAllStatus) + "</td>\n";
 				response += "</tr>";
@@ -1648,7 +1634,8 @@ public class ReportNGUtils {
 					response += "<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">";
 					response += "<td></td>";
 					response += "<td><a href=\"suites_overview.html#" + temp.getSuiteName() + "\">" + temp.getSuiteName() + "</a></td>\n";
-					response += "<td><a href=\"" + temp.getLink() + "\" onmouseover=\"showReport(this,'" + temp.getLink() + "')\" onmouseout = \"hideReport(this)\">" + temp.getTestName() + "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>";
+					response += "<td><a href=\"" + temp.getLink() + "\" onmouseover=\"showReport(this,'" + temp.getLink() + "')\" onmouseout = \"hideReport(this)\">" + temp.getTestName()
+							+ "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>";
 					response += "<td class=\"break-word\">" + temp.getTestClass() + "</td>\n";
 					response += "<td><div>" + temp.getResults() + "</div></td>\n";
 					response += "</tr>\n";
@@ -1666,11 +1653,11 @@ public class ReportNGUtils {
 		}
 		return response;
 	}
-
+	
 	public String getReportOutput() {
 		return HTMLReporter.OUTPUTDIRECTORY_ABSOLUTE;
 	}
-
+	
 	// Graphs
 	public String graphTime(List<ISuite> suites) {
 		String text = "";
@@ -1703,7 +1690,7 @@ public class ReportNGUtils {
 			}
 		}
 		text += "]}," + "\n";
-
+		
 		text += "{type: \"area\",showInLegend: true,name: \"Fixed\",markerType: \"square\",xValueFormatString: \"DD MMM hh:mm TT\",color: \"blue\",dataPoints: ["
 				+ "\n";
 		for (ISuite tempISuite : suites) {
@@ -1722,7 +1709,7 @@ public class ReportNGUtils {
 			}
 		}
 		text += "]}," + "\n";
-
+		
 		text += "{type: \"area\",showInLegend: true,name: \"Known Defects\",markerType: \"square\",xValueFormatString: \"DD MMM hh:mm TT\",color: \"orange\",dataPoints: ["
 				+ "\n";
 		for (ISuite tempISuite : suites) {
@@ -1741,7 +1728,7 @@ public class ReportNGUtils {
 			}
 		}
 		text += "]}," + "\n";
-
+		
 		text += "{type: \"area\",showInLegend: true,name: \"Fail\",markerType: \"square\",xValueFormatString: \"DD MMM hh:mm TT\",color: \"red\",dataPoints: ["
 				+ "\n";
 		for (ISuite tempISuite : suites) {
@@ -1760,7 +1747,7 @@ public class ReportNGUtils {
 			}
 		}
 		text += "]}," + "\n";
-
+		
 		text += "{type: \"area\",showInLegend: true,name: \"Skip\",markerType: \"square\",xValueFormatString: \"DD MMM hh:mm TT\",color: \"yellow\",dataPoints: ["
 				+ "\n";
 		for (ISuite tempISuite : suites) {
@@ -1782,7 +1769,7 @@ public class ReportNGUtils {
 		text += "]});" + "\n";
 		return text;
 	}
-
+	
 	public String graphClass(List<ISuite> suites) throws IOException {
 		String text = "";
 		text += "var chart = new CanvasJS.Chart(\"chartContainer\", {" + "\n";
@@ -1796,7 +1783,7 @@ public class ReportNGUtils {
 		text += "toolTip:{shared:true}, " + "\n";
 		text += "legend:{cursor:\"pointer\",verticalAlign: \"top\",horizontalAlign: \"left\",dockInsidePlotArea: false, fontSize: 16}," + "\n";
 		text += "data: [" + "\n";
-
+		
 		text += "{type: \"stackedBar\",showInLegend: true,name: \"Pass\",color: \"green\",dataPoints: [" + "\n";
 		for (ISuite tempISuite : suites) {
 			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
@@ -1808,7 +1795,7 @@ public class ReportNGUtils {
 			}
 		}
 		text += "]}," + "\n";
-
+		
 		text += "{type: \"stackedBar\",showInLegend: true,name: \"Fixed\",color: \"blue\",dataPoints: [" + "\n";
 		for (ISuite tempISuite : suites) {
 			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
@@ -1820,7 +1807,7 @@ public class ReportNGUtils {
 			}
 		}
 		text += "]}," + "\n";
-
+		
 		text += "{type: \"stackedBar\",showInLegend: true,name: \"Known Defects\",color: \"orange\",dataPoints: [" + "\n";
 		for (ISuite tempISuite : suites) {
 			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
@@ -1832,7 +1819,7 @@ public class ReportNGUtils {
 			}
 		}
 		text += "]}," + "\n";
-
+		
 		text += "{type: \"stackedBar\",showInLegend: true,name: \"Fail\",color: \"red\",dataPoints: [" + "\n";
 		for (ISuite tempISuite : suites) {
 			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
@@ -1844,7 +1831,7 @@ public class ReportNGUtils {
 			}
 		}
 		text += "]}," + "\n";
-
+		
 		text += "{type: \"stackedBar\",showInLegend: true,name: \"Skip\",color: \"yellow\",dataPoints: [" + "\n";
 		for (ISuite tempISuite : suites) {
 			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
@@ -1858,7 +1845,7 @@ public class ReportNGUtils {
 		text += "]});" + "\n";
 		return text;
 	}
-
+	
 	public String graphSuite(List<ISuite> suites) throws IOException {
 		String text = "";
 		text += "var chart = new CanvasJS.Chart(\"chartContainer\", {" + "\n";
@@ -1885,7 +1872,7 @@ public class ReportNGUtils {
 			text += "{ label: \"" + suiteName + "\"," + " y: " + counter + " }," + "\n";
 		}
 		text += "]}," + "\n";
-
+		
 		text += "{type: \"stackedBar\",showInLegend: true,name: \"Fixed\",color: \"blue\",dataPoints: [" + "\n";
 		for (ISuite tempISuite : suites) {
 			int counter = 0;
@@ -1900,7 +1887,7 @@ public class ReportNGUtils {
 			text += "{ label: \"" + suiteName + "\"," + " y: " + counter + " }," + "\n";
 		}
 		text += "]}," + "\n";
-
+		
 		text += "{type: \"stackedBar\",showInLegend: true,name: \"Known Defects\",color: \"orange\",dataPoints: [" + "\n";
 		for (ISuite tempISuite : suites) {
 			int counter = 0;
@@ -1915,7 +1902,7 @@ public class ReportNGUtils {
 			text += "{ label: \"" + suiteName + "\"," + " y: " + counter + " }," + "\n";
 		}
 		text += "]}," + "\n";
-
+		
 		text += "{type: \"stackedBar\",showInLegend: true,name: \"Fail\",color: \"red\",dataPoints: [" + "\n";
 		for (ISuite tempISuite : suites) {
 			int counter = 0;
@@ -1930,7 +1917,7 @@ public class ReportNGUtils {
 			text += "{ label: \"" + suiteName + "\"," + " y: " + counter + " }," + "\n";
 		}
 		text += "]}," + "\n";
-
+		
 		text += "{type: \"stackedBar\",showInLegend: true,name: \"Skip\",color: \"yellow\",dataPoints: [" + "\n";
 		for (ISuite tempISuite : suites) {
 			int counter = 0;
@@ -1948,7 +1935,7 @@ public class ReportNGUtils {
 		text += "]});" + "\n";
 		return text;
 	}
-
+	
 	// Used from Suite Listener
 	/**
 	 * Pass : Pass - Known
@@ -1974,7 +1961,7 @@ public class ReportNGUtils {
 		}
 		return temp;
 	}
-
+	
 	/**
 	 * Fail : Failed - Known
 	 * 
@@ -1999,11 +1986,11 @@ public class ReportNGUtils {
 		}
 		return temp;
 	}
-
+	
 	public static IResultMap getSkip(ITestContext iTestContext) {
 		return iTestContext.getSkippedTests();
 	}
-
+	
 	/**
 	 * Known : Fail with Known
 	 * 
@@ -2030,7 +2017,7 @@ public class ReportNGUtils {
 		}
 		return temp;
 	}
-
+	
 	/**
 	 * Fixed : Pass with Known
 	 * 
@@ -2057,7 +2044,7 @@ public class ReportNGUtils {
 		}
 		return temp;
 	}
-
+	
 	public static List<IssueDTO> getKnownIssues(String suiteName, String linkName, Set<ITestResult> results) {
 		List<IssueDTO> issues = new ArrayList<IssueDTO>();
 		if (ReporterHelper.knownDefectMode()) {
@@ -2067,8 +2054,9 @@ public class ReportNGUtils {
 					for (Annotation tempAnnotation : annotation) {
 						if (tempAnnotation.toString().contains(KNOWNDEFECT) && KNOWN.equals(iTestResult.getAttribute(TEST))) {
 							issues.add(new IssueDTO(suiteName, iTestResult.getTestContext().getName(), iTestResult.getInstanceName(), getDescription(tempAnnotation
-									.toString()), linkName, isRegression(iTestResult
-									.getTestContext())));
+									.toString()), linkName, isRegression(
+											iTestResult
+													.getTestContext())));
 							break;
 						}
 					}
@@ -2078,7 +2066,7 @@ public class ReportNGUtils {
 		}
 		return issues;
 	}
-
+	
 	public static List<IssueDTO> getFixedIssues(String suiteName, String linkName, Set<ITestResult> results) {
 		List<IssueDTO> issues = new ArrayList<IssueDTO>();
 		if (ReporterHelper.knownDefectMode()) {
@@ -2088,8 +2076,9 @@ public class ReportNGUtils {
 					for (Annotation tempAnnotation : annotation) {
 						if (tempAnnotation.toString().contains(KNOWNDEFECT) && FIXED.equals(iTestResult.getAttribute(TEST))) {
 							issues.add(new IssueDTO(suiteName, iTestResult.getTestContext().getName(), iTestResult.getInstanceName(), getDescription(tempAnnotation
-									.toString()), linkName, isRegression(iTestResult
-									.getTestContext())));
+									.toString()), linkName, isRegression(
+											iTestResult
+													.getTestContext())));
 							break;
 						}
 					}
@@ -2099,7 +2088,7 @@ public class ReportNGUtils {
 		}
 		return issues;
 	}
-
+	
 	public static List<IssueDTO> getNewIssues(String suiteName, String linkName, Set<ITestResult> results) {
 		List<IssueDTO> issues = new ArrayList<IssueDTO>();
 		for (ITestResult tr : results) {
@@ -2108,7 +2097,7 @@ public class ReportNGUtils {
 		}
 		return issues;
 	}
-
+	
 	public static List<IssueDTO> getFeatures(String suiteName, String linkName, ITestContext iTestContext) {
 		List<IssueDTO> issues = new ArrayList<IssueDTO>();
 		if (isFeature(iTestContext)) {
@@ -2117,7 +2106,7 @@ public class ReportNGUtils {
 			Set<ITestResult> iResultMapSkip = getSkip(iTestContext).getAllResults();
 			Set<ITestResult> iResultMapKnown = getKnownDefect(iTestContext).getAllResults();
 			Set<ITestResult> iResultMapFixed = getFixed(iTestContext).getAllResults();
-
+			
 			Set<ITestResult> all = new HashSet<ITestResult>();
 			all.addAll(iResultMapPass);
 			all.addAll(iResultMapFail);
@@ -2132,11 +2121,11 @@ public class ReportNGUtils {
 						linkName, results, status, totalNumberOfTests));
 				break;
 			}
-
+			
 		}
 		return issues;
 	}
-
+	
 	public static List<IssueDTO> getNewFeatures(String suiteName, String linkName, ITestContext iTestContext) {
 		List<IssueDTO> issues = new ArrayList<IssueDTO>();
 		if (isNewFeature(iTestContext)) {
@@ -2145,14 +2134,14 @@ public class ReportNGUtils {
 			Set<ITestResult> iResultMapSkip = getSkip(iTestContext).getAllResults();
 			Set<ITestResult> iResultMapKnown = getKnownDefect(iTestContext).getAllResults();
 			Set<ITestResult> iResultMapFixed = getFixed(iTestContext).getAllResults();
-
+			
 			Set<ITestResult> all = new HashSet<ITestResult>();
 			all.addAll(iResultMapPass);
 			all.addAll(iResultMapFail);
 			all.addAll(iResultMapSkip);
 			all.addAll(iResultMapKnown);
 			all.addAll(iResultMapFixed);
-
+			
 			String results = getFeatureResults(iResultMapPass, iResultMapFail, iResultMapSkip, iResultMapKnown, iResultMapFixed, linkName);
 			ResultStatus status = getStatus(iResultMapPass.size(), iResultMapFail.size(), iResultMapSkip.size(), iResultMapKnown.size(), iResultMapFixed.size());
 			for (ITestResult iTestResult : all) {
@@ -2173,7 +2162,7 @@ public class ReportNGUtils {
 		}
 		return issues;
 	}
-
+	
 	private static String getFeatureResults(Set<ITestResult> iResultMapPass, Set<ITestResult> iResultMapFail, Set<ITestResult> iResultMapSkip,
 			Set<ITestResult> iResultMapKnown, Set<ITestResult> iResultMapFixed, String link) {
 		String results = "<table>" + "\n";
@@ -2197,7 +2186,7 @@ public class ReportNGUtils {
 		results += "</table>";
 		return results;
 	}
-
+	
 	private static int getTotalNumberOfTests(Set<ITestResult> iResultMapPass, Set<ITestResult> iResultMapFail, Set<ITestResult> iResultMapSkip,
 			Set<ITestResult> iResultMapKnown, Set<ITestResult> iResultMapFixed) {
 		int totalNumberOfTests = 0;
@@ -2218,12 +2207,12 @@ public class ReportNGUtils {
 		}
 		return totalNumberOfTests;
 	}
-
+	
 	@SuppressWarnings("deprecation")
 	private static Annotation[] getDeclaredAnnotations(ITestResult result) {
 		return result.getMethod().getMethod().getDeclaredAnnotations();
 	}
-
+	
 	public String getProgress(double per) {
 		if (per == 100) {
 			return "<div class=\"progress\" role=\"progressbar\" style=\"width: 100%; background-color:green; color:white\">" + per + "%</div>";
@@ -2232,7 +2221,7 @@ public class ReportNGUtils {
 		}
 		return "<div class=\"progress\" role=\"progressbar\" style=\"width: 100%; background-color:red; color:white\">" + per + "%</div>";
 	}
-
+	
 	public String randomId() {
 		return UUID.randomUUID().toString();
 	}
