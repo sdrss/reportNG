@@ -76,7 +76,11 @@
 		  	#if (($onlyReportFailures && $failuresExist) || (!$onlyReportFailures))
   			<tr class="test">
   				<td width="100">$utils.getTime($result.testContext)</td>
-    			<td><a href="suite${suiteId}_test${velocityCount}_results.html" onmouseover="showReport(this,'suite${suiteId}_test${velocityCount}_results.html')" onmouseout = "hideReport(this)">${result.testContext.name}<iframe class='tipFrame' src=''></iframe></a></td>
+    			#if ($utils.showHideReportFeatureFlag)
+    				<td><a href="suite${suiteId}_test${velocityCount}_results.html" onmouseover="showReport(this,'suite${suiteId}_test${velocityCount}_results.html')" onmouseout = "hideReport(this)">${result.testContext.name}<iframe class='tipFrame' src=''></iframe></a></td>
+    			#else
+    				<td><a href="suite${suiteId}_test${velocityCount}_results.html">${result.testContext.name}<iframe class='tipFrame' src=''></iframe></a></td>
+    			#end
     			<td class="duration">$utils.isRegression($result.testContext)</td>
     			<td class="duration">$utils.formatDuration($utils.getDuration($result.testContext))</td>
     			#if ($utils.getPassed($result.testContext).size() > 0)

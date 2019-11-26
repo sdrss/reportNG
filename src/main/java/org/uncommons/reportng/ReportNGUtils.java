@@ -57,6 +57,7 @@ public class ReportNGUtils {
 	private static final String KNOWNDEFECT = KnownDefect.class.getName();
 	private static final String NEW_FEATURE = NewFeature.class.getName();
 	private static final String FEATURE = Feature.class.getName();
+	private static boolean showHideReportFeatureFlag = false;
 	
 	public static String getExternalLinks() {
 		String response = "";
@@ -341,8 +342,12 @@ public class ReportNGUtils {
 					response += "<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">";
 					response += "<td></td>";
 					response += "<td><a href=\"suites_overview.html#" + temp.getSuiteName() + "\">" + temp.getSuiteName() + "</a></td>";
-					response += "<td><a href=\"" + temp.getLink() + "\" onmouseover=\"showReport(this,'" + temp.getLink() + "')\" onmouseout = \"hideReport(this)\">" + temp.getTestName()
-							+ "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>";
+					if (showHideReportFeatureFlag) {
+						response += "<td><a href=\"" + temp.getLink() + "\" onmouseover=\"showReport(this,'" + temp.getLink() + "')\" onmouseout = \"hideReport(this)\">" + temp.getTestName()
+								+ "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>";
+					} else {
+						response += "<td><a href=\"" + temp.getLink() + "\">" + temp.getTestName() + "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>";
+					}
 					response += "<td class=\"break-word\">" + temp.getTestClass() + "</td>";
 					response += "</tr>\n";
 				}
@@ -537,8 +542,12 @@ public class ReportNGUtils {
 			for (PackageDetailsDTO packageDTO : entry.getValue()) {
 				response += "<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">";
 				response += "<td></td>";
-				response += "<td><a href=\"" + packageDTO.getUrl() + "\" onmouseover=\"showReport(this,'" + packageDTO.getUrl() + "')\" onmouseout = \"hideReport(this)\">" + packageDTO.getClassΝame()
-						+ "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>";
+				if (showHideReportFeatureFlag) {
+					response += "<td><a href=\"" + packageDTO.getUrl() + "\" onmouseover=\"showReport(this,'" + packageDTO.getUrl() + "')\" onmouseout = \"hideReport(this)\">" + packageDTO.getClassΝame()
+							+ "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>";
+				} else {
+					response += "<td><a href=\"" + packageDTO.getUrl() + "\">" + packageDTO.getClassΝame() + "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>";
+				}
 				response += "<td align=\"center\">" + packageDTO.getDuration() + "</td>";
 				if (packageDTO.getPass() > 0) {
 					response += "<td align=\"center\" class=\"passedCell\">" + packageDTO.getPass() + "</td>";
@@ -613,8 +622,12 @@ public class ReportNGUtils {
 				for (PackageDetailsDTO packageDTO : entry.getValue()) {
 					response += "<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">";
 					response += "<td></td>";
-					response += "<td><a href=\"" + packageDTO.getUrl() + "\" onmouseover=\"showReport(this,'" + packageDTO.getUrl() + "')\" onmouseout = \"hideReport(this)\">" + packageDTO.getClassΝame()
-							+ "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>";
+					if (showHideReportFeatureFlag) {
+						response += "<td><a href=\"" + packageDTO.getUrl() + "\" onmouseover=\"showReport(this,'" + packageDTO.getUrl() + "')\" onmouseout = \"hideReport(this)\">" + packageDTO.getClassΝame()
+								+ "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>";
+					} else {
+						response += "<td><a href=\"" + packageDTO.getUrl() + "\">" + packageDTO.getClassΝame() + "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>";
+					}
 					response += "<td align=\"center\">" + packageDTO.getDuration() + "</td>";
 					if (packageDTO.getPass() > 0) {
 						response += "<td align=\"center\" class=\"passedCell\">" + packageDTO.getPass() + "</td>";
@@ -1634,8 +1647,12 @@ public class ReportNGUtils {
 					response += "<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">";
 					response += "<td></td>";
 					response += "<td><a href=\"suites_overview.html#" + temp.getSuiteName() + "\">" + temp.getSuiteName() + "</a></td>\n";
-					response += "<td><a href=\"" + temp.getLink() + "\" onmouseover=\"showReport(this,'" + temp.getLink() + "')\" onmouseout = \"hideReport(this)\">" + temp.getTestName()
-							+ "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>";
+					if (showHideReportFeatureFlag) {
+						response += "<td><a href=\"" + temp.getLink() + "\" onmouseover=\"showReport(this,'" + temp.getLink() + "')\" onmouseout = \"hideReport(this)\">" + temp.getTestName()
+								+ "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>";
+					} else {
+						response += "<td><a href=\"" + temp.getLink() + "\">" + temp.getTestName() + "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>";
+					}
 					response += "<td class=\"break-word\">" + temp.getTestClass() + "</td>\n";
 					response += "<td><div>" + temp.getResults() + "</div></td>\n";
 					response += "</tr>\n";
