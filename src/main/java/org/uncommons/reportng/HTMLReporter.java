@@ -19,6 +19,8 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.apache.velocity.VelocityContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.IClass;
 import org.testng.IResultMap;
 import org.testng.ISuite;
@@ -45,6 +47,8 @@ public class HTMLReporter extends AbstractReporter {
 	public static final String SHOW_PASSED_CONFIGURATIONS = "org.uncommons.reportng.show-passed-configuration-methods";
 	public static final String TEMPLATES_PATH = "org/uncommons/reportng/templates/html/";
 	public static final String SKIP_EXECUTION = "org.uncommons.reportng.skip.execution";
+	public static final String TEST_TIMEOUT = "org.uncommons.reportng.timeout";
+	public static final String TEST_MAX_RETRY_COUNT = "org.uncommons.reportng.maxRetryCount";
 	
 	// HTML pages
 	public static final String INDEX_FILE = "index.html";
@@ -94,6 +98,8 @@ public class HTMLReporter extends AbstractReporter {
 	private static Map<PackageDetailsDTO, List<PackageDetailsDTO>> packageDeatails;
 	private static Map<PackageDetailsDTO, List<PackageDetailsDTO>> groupDetails;
 	
+	public static final Logger logger = LoggerFactory.getLogger(HTMLReporter.class);
+	
 	public HTMLReporter() {
 		super(TEMPLATES_PATH);
 	}
@@ -108,9 +114,9 @@ public class HTMLReporter extends AbstractReporter {
 		File outputDirectory = new File(outputDirectoryName, REPORT_DIRECTORY);
 		OUTPUTDIRECTORY_ABSOLUTE = outputDirectory.getAbsolutePath();
 		try {
-			System.out.println("****************************************");
-			System.out.println("Generate reportNG report");
-			System.out.println("Path : " + OUTPUTDIRECTORY_ABSOLUTE);
+			logger.info("****************************************");
+			logger.info("Generate reportNG report");
+			logger.info("Path : " + OUTPUTDIRECTORY_ABSOLUTE);
 			// Sort Suites
 			List<ISuite> sortedSuites = sortSuitesChronologicaly(suites);
 			sortedSuites = sortResultsChronologicaly(sortedSuites);
@@ -153,7 +159,7 @@ public class HTMLReporter extends AbstractReporter {
 			createGroupResults(sortedSuites, outputDirectory);
 			// Create Log
 			createReportLogOutput(outputDirectory);
-			System.out.println("****************************************");
+			logger.info("****************************************");
 		} catch (Exception ex) {
 			throw new ReportNGException("Failed generating HTML report.", ex);
 		}
