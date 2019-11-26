@@ -108,7 +108,8 @@ Over-rides the default locale for localised messages in generated reports. If no
     System.setProperty("org.uncommons.reportng.maxRetryCount", "2");
  
  Timeout is in milliseconds , in case of 0 the listener is not invoked.
- MaxRetryCount is the maximum number of retries until test is pass, in case of 0 the listener is not invoked.
+ 
+ MaxRetryCount is the maximum number of retries until test is pass, in case of 0 again the listener is not invoked.
   
  ## Mvn dependency : 
       
