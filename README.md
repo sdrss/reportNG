@@ -89,13 +89,38 @@ Over-rides the default locale for localised messages in generated reports. If no
     
   By enabling this system property all of the rest testNG tests will be skipped and the generated report will have on overview page the root cause of the failure providing the message "Skip Execution due to Skip Execution Mode".
   Alternative you can use this system property in your TestListener and Skip test execution on the first failure. This will work as Fail Fast Mode. See [Wiki](https://github.com/sdrss/reportNG/wiki) for example.
-     
+
+ ## Usage of embedded listeners
+  ReportNG has available to use a FailFast Listener,a Test Retry Listener & the Test Time out Listener.
+   To enable them you need to set the listeners attribute of the testng element. 
+
+  For fail fast mode : 
+
+    org.uncommons.reportng.listeners.FailFastListener
+   
+  For timeout and retry : 
+  
+    org.uncommons.reportng.listeners.Retry
+    org.uncommons.reportng.listeners.IAnnotationTransformerListener
+  
+  Both required for timeout and retry and both can be parameterized.
+  
+  As concerns the timeout by system property : 
+    
+    System.setProperty("org.uncommons.reportng.timeout", "6000");
+    
+    
+  As consers the retry by system property : 
+  
+    System.setProperty("org.uncommons.reportng.maxRetryCount", "2");
+ 
+  
  ## Mvn dependency : 
       
       <dependency>
 	   <groupId>com.github.sdrss</groupId>
 	   <artifactId>reportng</artifactId>
-	   <version>2.4.1</version>
+	   <version>2.4.2</version>
       </dependency>
 
 Check Maven Repository releases [here](https://mvnrepository.com/artifact/com.github.sdrss/reportng)
