@@ -4,8 +4,11 @@
  
 ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framework. It is intended as a replacement for the default TestNG HTML report.
 
+![GitHub Release Date](https://img.shields.io/github/release-date/sdrss/reportNG) ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/sdrss/reportNG)
+
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.sdrss/reportng?style=blue)](https://img.shields.io/maven-central/v/com.github.sdrss/reportng)
-![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/sdrss/reportNG)
+
+
 
 ## Based on ReportNG v1.1.4 this is a ReportNG with : ##
  - new HTML layout
