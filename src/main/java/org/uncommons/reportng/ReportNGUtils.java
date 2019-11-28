@@ -2225,9 +2225,21 @@ public class ReportNGUtils {
 		return totalNumberOfTests;
 	}
 	
-	@SuppressWarnings("deprecation")
 	private static Annotation[] getDeclaredAnnotations(ITestResult result) {
-		return result.getMethod().getMethod().getDeclaredAnnotations();
+		// Deprecated : result.getMethod().getMethod().getDeclaredAnnotations();
+		for (ITestNGMethod temp : result.getTestContext().getAllTestMethods()) {
+			if (temp.getMethodName().equals(result.getMethod().getMethodName())) {
+				return temp.getConstructorOrMethod().getMethod().getAnnotations();
+			}
+		}
+		return null;
+	}
+	
+	private static boolean hasKnownDefectAnnotation(ITestResult result) {
+		if (result.getTestContext().getAllTestMethods()[0].getConstructorOrMethod().getMethod().getAnnotation(org.uncommons.reportng.annotations.KnownDefect.class) != null) {
+			return true;
+		}
+		return false;
 	}
 	
 	public String getProgress(double per) {
