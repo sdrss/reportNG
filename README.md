@@ -121,7 +121,7 @@ Over-rides the default locale for localised messages in generated reports. If no
       <dependency>
 	   <groupId>com.github.sdrss</groupId>
 	   <artifactId>reportng</artifactId>
-	   <version>2.4.3</version>
+	   <version>2.4.4</version>
       </dependency>
 
 Check Maven Repository releases [here](https://mvnrepository.com/artifact/com.github.sdrss/reportng)
