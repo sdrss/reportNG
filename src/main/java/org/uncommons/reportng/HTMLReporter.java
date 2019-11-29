@@ -41,6 +41,7 @@ public class HTMLReporter extends AbstractReporter {
 	public static final String REPORTNG_TITLE = "org.uncommons.reportng.title";
 	public static final String ARGUMENTS_TITLE = "org.uncommons.reportng.arguments";
 	public static final String LOG_OUTPUT_REPORT = "org.uncommons.reportng.logOutputReport";
+	public static final String LOG_OUTPUT_REPORT_PATH = "org.uncommons.reportng.logOutputReport.path";
 	public static final String KWOWNDEFECTSMODE = "org.uncommons.reportng.knownDefectsMode";
 	public static final String EXTERNAL_LINKS = "org.uncommons.reportng.externalLinks";
 	public static final String ESCAPE_OUTPUT = "org.uncommons.reportng.escape-output";
@@ -83,7 +84,7 @@ public class HTMLReporter extends AbstractReporter {
 	public static final String FAILED_TESTS_KEY = "failedTests";
 	public static final String SKIPPED_TESTS_KEY = "skippedTests";
 	public static final String PASSED_TESTS_KEY = "passedTests";
-	public static final String REPORT_DIRECTORY = "html";
+	public static String REPORT_DIRECTORY = "html";
 	
 	public static final Comparator<ITestNGMethod> METHOD_COMPARATOR = new TestMethodComparator();
 	public static final Comparator<ITestResult> RESULT_COMPARATOR = new TestResultComparator();
@@ -111,6 +112,9 @@ public class HTMLReporter extends AbstractReporter {
 	public void generateReport(List<XmlSuite> xmlSuites, List<ISuite> suites, String outputDirectoryName) {
 		OUTPUTDIRECTORY = outputDirectoryName;
 		totalDuration = 0;
+		if (System.getProperty(LOG_OUTPUT_REPORT_PATH) != null) {
+			REPORT_DIRECTORY = System.getProperty(LOG_OUTPUT_REPORT_PATH);
+		}
 		File outputDirectory = new File(outputDirectoryName, REPORT_DIRECTORY);
 		OUTPUTDIRECTORY_ABSOLUTE = outputDirectory.getAbsolutePath();
 		try {
