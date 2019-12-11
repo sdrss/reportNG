@@ -5,7 +5,8 @@
 ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framework. It is intended as a replacement for the default TestNG HTML report.
 
 ![GitHub Release Date](https://img.shields.io/github/release-date/sdrss/reportNG) ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/sdrss/reportNG)
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.sdrss/reportng?style=blue)](https://img.shields.io/maven-central/v/com.github.sdrss/reportng)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.sdrss/reportng?style=blue)](https://img.shields.io/maven-central/v/com.github.sdrss/reportng) 
+[![Build](https://github.com/sdrss/reportNG/workflows/Java_CI/badge.svg)](https://github.com/sdrss/reportNG/workflows/Java_CI/badge.svg)
 
 
 
@@ -121,7 +122,7 @@ Over-rides the default locale for localised messages in generated reports. If no
       <dependency>
 	   <groupId>com.github.sdrss</groupId>
 	   <artifactId>reportng</artifactId>
-	   <version>2.4.3</version>
+	   <version>2.4.4</version>
       </dependency>
 
 Check Maven Repository releases [here](https://mvnrepository.com/artifact/com.github.sdrss/reportng)
