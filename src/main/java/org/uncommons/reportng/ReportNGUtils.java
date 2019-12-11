@@ -327,7 +327,7 @@ public class ReportNGUtils {
 				response += "<tr class=\"parent\" id=\"row" + indexCounter
 						+ "\" title=\"Click to expand/collapse\" style=\"cursor: pointer;\" onclick=\"changeIcon('span-" + id + "'); \">\n";
 				response += "<td><span id=\"span-" + id + "\" class=\"glyphicon glyphicon-minus\" style=\"color:blue\"></span></td>\n";
-				response += "<td>" + pair.getKey() + "</td>";
+				response += "<td class=\"break-word\">" + pair.getKey() + "</td>";
 				response += "<td>" + pair.getValue().size() + "</td>";
 				response += "<td></td>";
 				response += "</tr>";
