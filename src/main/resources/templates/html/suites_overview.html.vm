@@ -49,8 +49,10 @@
 	    		<th class="header" style="vertical-align:middle;text-align:center;">$messages.getString("duration")&nbsp;&nbsp;</th>
 	    		<th class="header" style="vertical-align:middle;text-align:center;">$messages.getString("passed")&nbsp;&nbsp;</th>
 	    		<th class="header" style="vertical-align:middle;text-align:center;">$messages.getString("skipped")&nbsp;&nbsp;</th>
-	    		<th class="header" style="vertical-align:middle;text-align:center;">$messages.getString("knownDefects")&nbsp;&nbsp;</th>
-	    		<th class="header" style="vertical-align:middle;text-align:center;">$messages.getString("fixed")&nbsp;&nbsp;</th>
+	    		#if ($utils.knownDefectMode())
+	    			<th class="header" style="vertical-align:middle;text-align:center;">$messages.getString("knownDefects")&nbsp;&nbsp;</th>
+	    			<th class="header" style="vertical-align:middle;text-align:center;">$messages.getString("fixed")&nbsp;&nbsp;</th>
+	    		#end
 	    		<th class="header" style="vertical-align:middle;text-align:center;">$messages.getString("failed")&nbsp;&nbsp;</th>
 	    		<th class="header" style="vertical-align:middle;text-align:center;">$messages.getString("passRate")&nbsp;&nbsp;</th>
   			</tr>
@@ -93,15 +95,17 @@
     			#else
     			<td class="zero number">0</td>
     			#end
-				#if ($utils.getKnownDefect($result.testContext).size() > 0)
-    			<td class="knownDefects number">$utils.getKnownDefect($result.testContext).size()</td>
-    			#else
-    			<td class="zero number">0</td>
-    			#end
-    			#if ($utils.getFixed($result.testContext).size() > 0)
-    			<td class="fixed number">$utils.getFixed($result.testContext).size()</td>
-    			#else
-    			<td class="zero number">0</td>
+    			#if ($utils.knownDefectMode())
+					#if ($utils.getKnownDefect($result.testContext).size() > 0)
+    				<td class="knownDefects number">$utils.getKnownDefect($result.testContext).size()</td>
+    				#else
+    				<td class="zero number">0</td>
+    				#end
+    				#if ($utils.getFixed($result.testContext).size() > 0)
+    				<td class="fixed number">$utils.getFixed($result.testContext).size()</td>
+    				#else
+    				<td class="zero number">0</td>
+    				#end
     			#end
     			#if ($result.testContext.failedTests.size() > 0)
     			<td class="failed number">$result.testContext.failedTests.size()</td>
@@ -135,15 +139,17 @@
     #else
     <td class="zero number">0</td>
     #end
- 	#if ($totalKnownDefects > 0)
-    <td class="knownDefects number">$totalKnownDefects</td>
-    #else
-    <td class="zero number">0</td>
-    #end
-    #if ($totalFixed > 0)
-    <td class="fixed number">$totalFixed</td>
-    #else
-    <td class="zero number">0</td>
+ 	#if ($utils.knownDefectMode())
+ 		#if ($totalKnownDefects > 0)
+    	<td class="knownDefects number">$totalKnownDefects</td>
+    	#else
+    	<td class="zero number">0</td>
+    	#end
+    	#if ($totalFixed > 0)
+    	<td class="fixed number">$totalFixed</td>
+    	#else
+    	<td class="zero number">0</td>
+    	#end
     #end
     #if ($totalFailed > 0)
     <td class="failed number">$totalFailed</td>

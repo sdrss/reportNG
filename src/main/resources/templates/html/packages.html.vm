@@ -50,10 +50,12 @@
    			<th scope="col" style="vertical-align:middle;text-align:left;">$messages.getString("package")</th>
    		 	<th scope="col" width="50px">$messages.getString("duration")&nbsp;&nbsp;&nbsp;</th>
    		 	<th scope="col" width="30px">$messages.getString("passed")&nbsp;&nbsp;&nbsp;</th>
-    		<th scope="col" width="30px">$messages.getString("failedTests")&nbsp;&nbsp;&nbsp;</th>
     		<th scope="col" width="30px">$messages.getString("skipped")&nbsp;&nbsp;&nbsp;</th>
-	    	<th scope="col" width="30px">$messages.getString("knownDefects")&nbsp;&nbsp;&nbsp;</th>
-	    	<th scope="col" width="30px">$messages.getString("fixed")&nbsp;&nbsp;&nbsp;</th>
+    		<th scope="col" width="30px">$messages.getString("failedTests")&nbsp;&nbsp;&nbsp;</th>
+	    	#if ($utils.knownDefectMode())
+	    		<th scope="col" width="30px">$messages.getString("knownDefects")&nbsp;&nbsp;&nbsp;</th>
+	    		<th scope="col" width="30px">$messages.getString("fixed")&nbsp;&nbsp;&nbsp;</th>
+	    	#end
   		</tr>
   	</thead>
   	<tbody>

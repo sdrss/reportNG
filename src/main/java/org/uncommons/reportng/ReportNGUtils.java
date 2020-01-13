@@ -440,15 +440,17 @@ public class ReportNGUtils {
 				} else {
 					response += "<td class=\"zero number\">" + skip + "</td>";
 				}
-				if (known > 0) {
-					response += "<td class=\"knownDefects number\">" + known + "</td>";
-				} else {
-					response += "<td class=\"zero number\">" + known + "</td>";
-				}
-				if (fixed > 0) {
-					response += "<td class=\"fixed number\">" + fixed + "</td>";
-				} else {
-					response += "<td class=\"zero number\">" + fixed + "</td>";
+				if (knownDefectMode()) {
+					if (known > 0) {
+						response += "<td class=\"knownDefects number\">" + known + "</td>";
+					} else {
+						response += "<td class=\"zero number\">" + known + "</td>";
+					}
+					if (fixed > 0) {
+						response += "<td class=\"fixed number\">" + fixed + "</td>";
+					} else {
+						response += "<td class=\"zero number\">" + fixed + "</td>";
+					}
 				}
 				if (fail > 0) {
 					response += "<td class=\"failed number\">" + fail + "</td>";
@@ -480,15 +482,17 @@ public class ReportNGUtils {
 			} else {
 				response += "<td class=\"zero number\">" + totalSkip + "</td>";
 			}
-			if (totalKnown > 0) {
-				response += "<td class=\"knownDefects number\">" + totalKnown + "</td>";
-			} else {
-				response += "<td class=\"zero number\">" + totalKnown + "</td>";
-			}
-			if (totalFixed > 0) {
-				response += "<td class=\"fixed number\">" + totalFixed + "</td>";
-			} else {
-				response += "<td class=\"zero number\">" + totalFixed + "</td>";
+			if (knownDefectMode()) {
+				if (totalKnown > 0) {
+					response += "<td class=\"knownDefects number\">" + totalKnown + "</td>";
+				} else {
+					response += "<td class=\"zero number\">" + totalKnown + "</td>";
+				}
+				if (totalFixed > 0) {
+					response += "<td class=\"fixed number\">" + totalFixed + "</td>";
+				} else {
+					response += "<td class=\"zero number\">" + totalFixed + "</td>";
+				}
 			}
 			if (totalFail > 0) {
 				response += "<td class=\"failed number\">" + totalFail + "</td>";
@@ -517,25 +521,27 @@ public class ReportNGUtils {
 			} else {
 				response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getPass() + "</td>";
 			}
-			if (entry.getKey().getFail() > 0) {
-				response += "<td align=\"center\" class=\"failed number\">" + entry.getKey().getFail() + "</td>";
-			} else {
-				response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getFail() + "</td>";
-			}
 			if (entry.getKey().getSkip() > 0) {
 				response += "<td align=\"center\" class=\"skipped number\">" + entry.getKey().getSkip() + "</td>";
 			} else {
 				response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getSkip() + "</td>";
 			}
-			if (entry.getKey().getKnown() > 0) {
-				response += "<td align=\"center\" class=\"knownDefects number\">" + entry.getKey().getKnown() + "</td>";
+			if (entry.getKey().getFail() > 0) {
+				response += "<td align=\"center\" class=\"failed number\">" + entry.getKey().getFail() + "</td>";
 			} else {
-				response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getKnown() + "</td>";
+				response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getFail() + "</td>";
 			}
-			if (entry.getKey().getFixed() > 0) {
-				response += "<td align=\"center\" class=\"fixed number\">" + entry.getKey().getFixed() + "</td>";
-			} else {
-				response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getFixed() + "</td>";
+			if (knownDefectMode()) {
+				if (entry.getKey().getKnown() > 0) {
+					response += "<td align=\"center\" class=\"knownDefects number\">" + entry.getKey().getKnown() + "</td>";
+				} else {
+					response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getKnown() + "</td>";
+				}
+				if (entry.getKey().getFixed() > 0) {
+					response += "<td align=\"center\" class=\"fixed number\">" + entry.getKey().getFixed() + "</td>";
+				} else {
+					response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getFixed() + "</td>";
+				}
 			}
 			response += "</tr>\n";
 			
@@ -554,25 +560,27 @@ public class ReportNGUtils {
 				} else {
 					response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getPass() + "</td>";
 				}
-				if (packageDTO.getFail() > 0) {
-					response += "<td align=\"center\" class=\"failedCell\">" + packageDTO.getFail() + "</td>";
-				} else {
-					response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getFail() + "</td>";
-				}
 				if (packageDTO.getSkip() > 0) {
 					response += "<td align=\"center\" class=\"skippedCell\">" + packageDTO.getSkip() + "</td>";
 				} else {
 					response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getSkip() + "</td>";
 				}
-				if (packageDTO.getKnown() > 0) {
-					response += "<td align=\"center\" class=\"knownDefectsCell\">" + packageDTO.getKnown() + "</td>";
+				if (packageDTO.getFail() > 0) {
+					response += "<td align=\"center\" class=\"failedCell\">" + packageDTO.getFail() + "</td>";
 				} else {
-					response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getKnown() + "</td>";
+					response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getFail() + "</td>";
 				}
-				if (packageDTO.getFixed() > 0) {
-					response += "<td align=\"center\" class=\"fixedCell\">" + packageDTO.getFixed() + "</td>";
-				} else {
-					response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getFixed() + "</td>";
+				if (knownDefectMode()) {
+					if (packageDTO.getKnown() > 0) {
+						response += "<td align=\"center\" class=\"knownDefectsCell\">" + packageDTO.getKnown() + "</td>";
+					} else {
+						response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getKnown() + "</td>";
+					}
+					if (packageDTO.getFixed() > 0) {
+						response += "<td align=\"center\" class=\"fixedCell\">" + packageDTO.getFixed() + "</td>";
+					} else {
+						response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getFixed() + "</td>";
+					}
 				}
 			}
 			indexCounter++;
@@ -597,25 +605,27 @@ public class ReportNGUtils {
 				} else {
 					response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getPass() + "</td>";
 				}
-				if (entry.getKey().getFail() > 0) {
-					response += "<td align=\"center\" class=\"failed number\">" + entry.getKey().getFail() + "</td>";
-				} else {
-					response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getFail() + "</td>";
-				}
 				if (entry.getKey().getSkip() > 0) {
 					response += "<td align=\"center\" class=\"skipped number\">" + entry.getKey().getSkip() + "</td>";
 				} else {
 					response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getSkip() + "</td>";
 				}
-				if (entry.getKey().getKnown() > 0) {
-					response += "<td align=\"center\" class=\"knownDefects number\">" + entry.getKey().getKnown() + "</td>";
+				if (entry.getKey().getFail() > 0) {
+					response += "<td align=\"center\" class=\"failed number\">" + entry.getKey().getFail() + "</td>";
 				} else {
-					response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getKnown() + "</td>";
+					response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getFail() + "</td>";
 				}
-				if (entry.getKey().getFixed() > 0) {
-					response += "<td align=\"center\" class=\"fixed number\">" + entry.getKey().getFixed() + "</td>";
-				} else {
-					response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getFixed() + "</td>";
+				if (knownDefectMode()) {
+					if (entry.getKey().getKnown() > 0) {
+						response += "<td align=\"center\" class=\"knownDefects number\">" + entry.getKey().getKnown() + "</td>";
+					} else {
+						response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getKnown() + "</td>";
+					}
+					if (entry.getKey().getFixed() > 0) {
+						response += "<td align=\"center\" class=\"fixed number\">" + entry.getKey().getFixed() + "</td>";
+					} else {
+						response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getFixed() + "</td>";
+					}
 				}
 				response += "</tr>\n";
 				
@@ -634,25 +644,27 @@ public class ReportNGUtils {
 					} else {
 						response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getPass() + "</td>";
 					}
-					if (packageDTO.getFail() > 0) {
-						response += "<td align=\"center\" class=\"failedCell\">" + packageDTO.getFail() + "</td>";
-					} else {
-						response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getFail() + "</td>";
-					}
 					if (packageDTO.getSkip() > 0) {
 						response += "<td align=\"center\" class=\"skippedCell\">" + packageDTO.getSkip() + "</td>";
 					} else {
 						response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getSkip() + "</td>";
 					}
-					if (packageDTO.getKnown() > 0) {
-						response += "<td align=\"center\" class=\"knownDefectsCell\">" + packageDTO.getKnown() + "</td>";
+					if (packageDTO.getFail() > 0) {
+						response += "<td align=\"center\" class=\"failedCell\">" + packageDTO.getFail() + "</td>";
 					} else {
-						response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getKnown() + "</td>";
+						response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getFail() + "</td>";
 					}
-					if (packageDTO.getFixed() > 0) {
-						response += "<td align=\"center\" class=\"fixedCell\">" + packageDTO.getFixed() + "</td>";
-					} else {
-						response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getFixed() + "</td>";
+					if (knownDefectMode()) {
+						if (packageDTO.getKnown() > 0) {
+							response += "<td align=\"center\" class=\"knownDefectsCell\">" + packageDTO.getKnown() + "</td>";
+						} else {
+							response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getKnown() + "</td>";
+						}
+						if (packageDTO.getFixed() > 0) {
+							response += "<td align=\"center\" class=\"fixedCell\">" + packageDTO.getFixed() + "</td>";
+						} else {
+							response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getFixed() + "</td>";
+						}
 					}
 				}
 				indexCounter++;
@@ -664,8 +676,10 @@ public class ReportNGUtils {
 			response += "<td>&nbsp;</td>";
 			response += "<td>&nbsp;</td>";
 			response += "<td>&nbsp;</td>\n";
-			response += "<td>&nbsp;</td>\n";
-			response += "<td>&nbsp;</td>\n";
+			if (knownDefectMode()) {
+				response += "<td>&nbsp;</td>\n";
+				response += "<td>&nbsp;</td>\n";
+			}
 			response += "<td>&nbsp;</td>\n";
 			response += "</tr>\n";
 		}
@@ -1967,7 +1981,7 @@ public class ReportNGUtils {
 			Annotation[] annotation = getDeclaredAnnotations(tr);
 			boolean addResult = true;
 			for (Annotation tempAnnotation : annotation) {
-				if (tempAnnotation.toString().contains(KNOWNDEFECT) && tr.getStatus() == ITestResult.SUCCESS && ReporterHelper.knownDefectMode()) {
+				if (tempAnnotation.toString().contains(KNOWNDEFECT) && tr.getStatus() == ITestResult.SUCCESS && knownDefectMode()) {
 					addResult = false;
 					break;
 				}
@@ -1992,7 +2006,7 @@ public class ReportNGUtils {
 			Annotation[] annotation = getDeclaredAnnotations(tr);
 			boolean addResult = true;
 			for (Annotation tempAnnotation : annotation) {
-				if (tempAnnotation.toString().contains(KNOWNDEFECT) && tr.getStatus() == ITestResult.FAILURE && ReporterHelper.knownDefectMode()) {
+				if (tempAnnotation.toString().contains(KNOWNDEFECT) && tr.getStatus() == ITestResult.FAILURE && knownDefectMode()) {
 					addResult = false;
 					break;
 				}
@@ -2017,7 +2031,7 @@ public class ReportNGUtils {
 	public static IResultMap getKnownDefect(ITestContext iTestContext) {
 		iTestContext = ReporterHelper.updateResults(iTestContext);
 		IResultMap temp = new ResultMap();
-		if (ReporterHelper.knownDefectMode()) {
+		if (knownDefectMode()) {
 			for (ITestResult tr : iTestContext.getPassedTests().getAllResults()) {
 				Annotation[] annotation = getDeclaredAnnotations(tr);
 				boolean addResult = false;
@@ -2044,7 +2058,7 @@ public class ReportNGUtils {
 	public static IResultMap getFixed(ITestContext iTestContext) {
 		iTestContext = ReporterHelper.updateResults(iTestContext);
 		IResultMap temp = new ResultMap();
-		if (ReporterHelper.knownDefectMode()) {
+		if (knownDefectMode()) {
 			for (ITestResult tr : iTestContext.getPassedTests().getAllResults()) {
 				Annotation[] annotation = getDeclaredAnnotations(tr);
 				boolean addResult = false;
@@ -2064,7 +2078,7 @@ public class ReportNGUtils {
 	
 	public static List<IssueDTO> getKnownIssues(String suiteName, String linkName, Set<ITestResult> results) {
 		List<IssueDTO> issues = new ArrayList<IssueDTO>();
-		if (ReporterHelper.knownDefectMode()) {
+		if (knownDefectMode()) {
 			for (ITestResult tempITestResult : results) {
 				for (ITestResult iTestResult : tempITestResult.getTestContext().getPassedTests().getAllResults()) {
 					Annotation[] annotation = getDeclaredAnnotations(iTestResult);
@@ -2086,7 +2100,7 @@ public class ReportNGUtils {
 	
 	public static List<IssueDTO> getFixedIssues(String suiteName, String linkName, Set<ITestResult> results) {
 		List<IssueDTO> issues = new ArrayList<IssueDTO>();
-		if (ReporterHelper.knownDefectMode()) {
+		if (knownDefectMode()) {
 			for (ITestResult tempITestResult : results) {
 				for (ITestResult iTestResult : tempITestResult.getTestContext().getPassedTests().getAllResults()) {
 					Annotation[] annotation = getDeclaredAnnotations(iTestResult);
@@ -2253,5 +2267,16 @@ public class ReportNGUtils {
 	
 	public String randomId() {
 		return UUID.randomUUID().toString();
+	}
+	
+	public static boolean knownDefectMode() {
+		String knownDefectsMode = System.getProperty(HTMLReporter.KWOWNDEFECTSMODE);
+		if (knownDefectsMode == null || knownDefectsMode.isEmpty()) {
+			knownDefectsMode = "false";
+		}
+		if (knownDefectsMode.equalsIgnoreCase("true")) {
+			return true;
+		}
+		return false;
 	}
 }

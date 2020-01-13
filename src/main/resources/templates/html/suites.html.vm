@@ -31,8 +31,10 @@
     		<th class="header" style="vertical-align:middle;width:6%">$messages.getString("duration")</th>
 	    	<th class="header" style="vertical-align:middle;width:6%">$messages.getString("passed")</th>
 	    	<th class="header" style="vertical-align:middle;width:6%">$messages.getString("skipped")</th>
+	    	#if ($utils.knownDefectMode())
 	    	<th class="header" style="vertical-align:middle;width:6%">$messages.getString("knownDefects")</th>
 	    	<th class="header" style="vertical-align:middle;width:6%">$messages.getString("fixed")</th>
+	    	#end
 	    	<th class="header" style="vertical-align:middle;width:6%">$messages.getString("failed")</th>
     		<th class="header" style="vertical-align:middle;width:6%">$messages.getString("overallstatus")</th>
   		</tr>
