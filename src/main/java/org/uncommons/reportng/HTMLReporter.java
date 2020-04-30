@@ -417,7 +417,7 @@ public class HTMLReporter extends AbstractReporter {
 		HTMLReporter.issuesDTO = issuesDTO;
 	}
 	
-	public static Map<PackageDetailsDTO, List<PackageDetailsDTO>> getPackageDeatails() {
+	public static Map<PackageDetailsDTO, List<PackageDetailsDTO>> getPackageDetails() {
 		return packageDeatails;
 	}
 	

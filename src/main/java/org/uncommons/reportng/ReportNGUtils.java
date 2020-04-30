@@ -509,7 +509,7 @@ public class ReportNGUtils {
 	public String getPackages(List<ISuite> suites) {
 		StringBuilder response = new StringBuilder("");
 		int indexCounter = 0;
-		for (Entry<PackageDetailsDTO, List<PackageDetailsDTO>> entry : HTMLReporter.getPackageDeatails().entrySet()) {
+		for (Entry<PackageDetailsDTO, List<PackageDetailsDTO>> entry : HTMLReporter.getPackageDetails().entrySet()) {
 			UUID id = UUID.randomUUID();
 			response.append("<tr class=\"parent\" id=\"row" + indexCounter
 					+ "\" title=\"Click to expand/collapse\" style=\"cursor: pointer;\" onclick=\"changeIcon('span-" + id + "'); \">\n");
@@ -2094,6 +2094,11 @@ public class ReportNGUtils {
 		return issues;
 	}
 	
+	public static boolean hasNewFeatures(List<ISuite> suites) {
+		// TODO
+		return true;
+	}
+	
 	public static List<IssueDTO> getFeatures(String suiteName, String linkName, ITestContext iTestContext) {
 		List<IssueDTO> issues = new ArrayList<>();
 		if (isFeature(iTestContext)) {
@@ -2222,11 +2227,11 @@ public class ReportNGUtils {
 	
 	public String getProgress(double per) {
 		if (per == 100) {
-			return "<div class=\"progress\" role=\"progressbar\" style=\"width: 100%; background-color:green; color:white\">" + per + "%</div>";
+			return "<div class=\"progress\" role=\"progressbar\" style=\"width:100%;background-color:green;color:white;font-weight:bold;\">" + per + "%</div>";
 		} else if (per == 0) {
 			return "";
 		}
-		return "<div class=\"progress\" role=\"progressbar\" style=\"width: 100%; background-color:red; color:white\">" + per + "%</div>";
+		return "<div class=\"progress\" role=\"progressbar\" style=\"width:100%;background-color:red;color:white;font-weight:bold;\">" + per + "%</div>";
 	}
 	
 	public String randomId() {
@@ -2243,6 +2248,6 @@ public class ReportNGUtils {
 		if (!Strings.isNullOrEmpty(knownDefectsMode) && knownDefectsMode.equalsIgnoreCase("true")) {
 			knownDefectsMode = "true";
 		}
-		return Boolean.getBoolean(knownDefectsMode);
+		return Boolean.valueOf(knownDefectsMode);
 	}
 }

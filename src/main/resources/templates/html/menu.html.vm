@@ -11,7 +11,7 @@
 <div class="sidebar-header">
 	<img src="images/testng.png" style="width:150px;height:70px;">
 </div>
-<div class="list-group">
+<div class="list-group" style="font-weight:bold">
 	<a href="overview.html" target="overview" class="list-group-item"><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;$messages.getString("overview")&nbsp;</a>
 	<a href="#pageSubmenuResults" class="list-group-item" data-toggle="collapse" aria-expanded="false"><span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;$messages.getString("results")&nbsp;</a>
 		<ul class="collapse list-unstyled" id="pageSubmenuResults">
@@ -28,11 +28,13 @@
         		<a href="fixedIssues.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("fixedIssues")&nbsp; ($utils.issues($suites).getFixedIssuesAmount())&nbsp;</a>
         	#end
         </ul>
+    #if ($utils.hasNewFeatures($suites))        
 	<a href="#pageSubmenuFeatures" class="list-group-item" data-toggle="collapse" aria-expanded="false"><span class="glyphicon glyphicon-th-large"></span>&nbsp;&nbsp;$messages.getString("features")&nbsp;</a>
 		<ul class="collapse list-unstyled" id="pageSubmenuFeatures">
 			<a href="regression.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("regression")&nbsp; ($utils.issues($suites).getFeature().size())&nbsp;</a>
         	<a href="newFeatures.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("newFeatures")&nbsp; ($utils.issues($suites).getNewFeature().size())&nbsp;</a>
         </ul>
+    #end
     <a href="runArguments.html" target="overview" class="list-group-item"><span class="glyphicon glyphicon-random"></span>&nbsp;&nbsp;$messages.getString("runArguments")&nbsp;</a>
     <a href="#pageSubmenu" class="list-group-item" data-toggle="collapse" aria-expanded="false"><span class="glyphicon glyphicon-equalizer"></span>&nbsp;&nbsp;$messages.getString("graphs")&nbsp;</a>
 		<ul class="collapse list-unstyled" id="pageSubmenu">
