@@ -183,7 +183,7 @@ public class HTMLReporter extends AbstractReporter {
 				File outputDirectory = new File(outputDirectoryName, REPORT_TITLE_DIRECTORY);
 				removeEmptyDirectories(outputDirectory);
 				generateDirectory(outputDirectory);
-				createFile(System.getProperty(REPORTNG_TITLE), outputDirectory.getAbsolutePath() + File.separator + "reportNGTitle");
+				createFile(System.getProperty(REPORTNG_TITLE), outputDirectory.getAbsolutePath() + File.separator + "reportNG.title");
 			} catch (IOException e) {
 				logger.error("Failed to create File with report Title");
 			}
