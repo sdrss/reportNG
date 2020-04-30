@@ -1,15 +1,15 @@
 ##  reportNG  ##
 
-![](https://github.com/sdrss/test/blob/master/SampleOverview.png)
- 
 ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framework. It is intended as a replacement for the default TestNG HTML report.
+
+[](https://github.com/sdrss/test/blob/master/SampleOverview.png)
 
 ![GitHub Release Date](https://img.shields.io/github/release-date/sdrss/reportNG) ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/sdrss/reportNG)
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.sdrss/reportng?style=blue)](https://img.shields.io/maven-central/v/com.github.sdrss/reportng) 
 [![Build](https://github.com/sdrss/reportNG/workflows/Java_CI/badge.svg)](https://github.com/sdrss/reportNG/workflows/Java_CI/badge.svg)
 
 [Sample report](https://sdrss.github.io/test/) / [Maven Repository](https://mvnrepository.com/artifact/com.github.sdrss/reportng) / 
-[Releases Notes](https://github.com/sdrss/reportNG/releases) / [Tips](https://github.com/sdrss/reportNG/wiki/Tips) & [How To](https://github.com/sdrss/reportNG/wiki/How-to)
+[Releases Notes](https://github.com/sdrss/reportNG/releases) / [Wiki](https://github.com/sdrss/reportNG/wiki/) 
 
 ## Based on ReportNG v1.1.4 this is a ReportNG with : ##
  - new HTML layout
