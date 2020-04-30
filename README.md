@@ -8,7 +8,8 @@ ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framewor
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.sdrss/reportng?style=blue)](https://img.shields.io/maven-central/v/com.github.sdrss/reportng) 
 [![Build](https://github.com/sdrss/reportNG/workflows/Java_CI/badge.svg)](https://github.com/sdrss/reportNG/workflows/Java_CI/badge.svg)
 
-
+[Sample report](https://sdrss.github.io/test/) / [Maven Repository](https://mvnrepository.com/artifact/com.github.sdrss/reportng) / 
+[Releases Notes](https://github.com/sdrss/reportNG/releases) / [Tips](https://github.com/sdrss/reportNG/wiki/Tips) & [How To](https://github.com/sdrss/reportNG/wiki/How-to)
 
 ## Based on ReportNG v1.1.4 this is a ReportNG with : ##
  - new HTML layout
@@ -16,14 +17,6 @@ ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framewor
  - summary report for Regression and New Features tests
  - graphs of Test Execution
  - and various fixes
- 
-[Sample report](https://sdrss.github.io/test/)
-
-[Maven Repository](https://mvnrepository.com/artifact/com.github.sdrss/reportng)
-
-[Releases Notes](https://github.com/sdrss/reportNG/releases)
-
-[Tips](https://github.com/sdrss/reportNG/wiki/Tips) & [How To](https://github.com/sdrss/reportNG/wiki/How-to)
 
  ## Supported System Properties ##
  * org.uncommons.reportng.escape-output : Used to turn off escaping for log output in the reports (not recommended). The default is for output to be escaped, since this prevents characters such as '<' and '&' from causing mark-up problems. If escaping is turned off, then log text is included as raw HTML/XML, which allows for the insertion of hyperlinks and other nasty hacks.
