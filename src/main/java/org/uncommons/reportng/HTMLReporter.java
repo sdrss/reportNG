@@ -1,5 +1,6 @@
 package org.uncommons.reportng;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.apache.commons.io.output.FileWriterWithEncoding;
 import org.apache.velocity.VelocityContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +33,8 @@ import org.testng.xml.XmlSuite;
 import org.uncommons.reportng.dto.IssuesDTO;
 import org.uncommons.reportng.dto.PackageDetailsDTO;
 import org.uncommons.reportng.dto.ResultsDTO;
+
+import com.google.common.base.Strings;
 
 /**
  * Enhanced HTML reporter for TestNG that uses Velocity templates to generate its output.
@@ -85,6 +89,7 @@ public class HTMLReporter extends AbstractReporter {
 	public static final String SKIPPED_TESTS_KEY = "skippedTests";
 	public static final String PASSED_TESTS_KEY = "passedTests";
 	public static String REPORT_DIRECTORY = "html";
+	public static final String REPORT_TITLE_DIRECTORY = "title";
 	
 	public static final Comparator<ITestNGMethod> METHOD_COMPARATOR = new TestMethodComparator();
 	public static final Comparator<ITestResult> RESULT_COMPARATOR = new TestResultComparator();
@@ -163,9 +168,42 @@ public class HTMLReporter extends AbstractReporter {
 			createGroupResults(sortedSuites, outputDirectory);
 			// Create Log
 			createReportLogOutput(outputDirectory);
+			// Create File with Html Report Title
+			createHTMLReportTitleFile(OUTPUTDIRECTORY);
 			logger.info("****************************************");
 		} catch (Exception ex) {
 			throw new ReportNGException("Failed generating HTML report.", ex);
+		}
+	}
+	
+	private void createHTMLReportTitleFile(String outputDirectoryName) {
+		if (!Strings.isNullOrEmpty(System.getProperty(REPORTNG_TITLE))) {
+			// Create File
+			try {
+				File outputDirectory = new File(outputDirectoryName, REPORT_TITLE_DIRECTORY);
+				removeEmptyDirectories(outputDirectory);
+				generateDirectory(outputDirectory);
+				createFile(System.getProperty(REPORTNG_TITLE), outputDirectory.getAbsolutePath() + File.separator + "reportNGTitle");
+			} catch (IOException e) {
+				logger.error("Failed to create File with report Title");
+			}
+		}
+	}
+	
+	public static void createFile(String content, String fileName) throws IOException {
+		FileWriterWithEncoding fstream = null;
+		BufferedWriter out = null;
+		try {
+			fstream = new FileWriterWithEncoding(fileName, "UTF8", false);
+			out = new BufferedWriter(fstream);
+			out.write(content);
+		} finally {
+			if (out != null) {
+				out.close();
+			}
+			if (fstream != null) {
+				fstream.close();
+			}
 		}
 	}
 	
