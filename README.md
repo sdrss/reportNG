@@ -1,4 +1,4 @@
-##  reportNG  ##
+##  ReportNG  ##
 
 ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framework. It is intended as a replacement for the default TestNG HTML report.
 
