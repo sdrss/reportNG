@@ -319,11 +319,11 @@ public class HTMLReporter extends AbstractReporter {
 	}
 	
 	private SortedMap<IClass, List<ITestResult>> sortByTestClass(IResultMap results) {
-		SortedMap<IClass, List<ITestResult>> sortedResults = new TreeMap<IClass, List<ITestResult>>(CLASS_COMPARATOR);
+		SortedMap<IClass, List<ITestResult>> sortedResults = new TreeMap<>(CLASS_COMPARATOR);
 		for (ITestResult result : results.getAllResults()) {
 			List<ITestResult> resultsForClass = sortedResults.get(result.getTestClass());
 			if (resultsForClass == null) {
-				resultsForClass = new ArrayList<ITestResult>();
+				resultsForClass = new ArrayList<>();
 				sortedResults.put(result.getTestClass(), resultsForClass);
 			}
 			resultsForClass.add(0, result);
@@ -332,9 +332,9 @@ public class HTMLReporter extends AbstractReporter {
 	}
 	
 	private SortedMap<String, SortedSet<ITestNGMethod>> sortGroups(Map<String, Collection<ITestNGMethod>> groups) {
-		SortedMap<String, SortedSet<ITestNGMethod>> sortedGroups = new TreeMap<String, SortedSet<ITestNGMethod>>();
+		SortedMap<String, SortedSet<ITestNGMethod>> sortedGroups = new TreeMap<>();
 		for (Map.Entry<String, Collection<ITestNGMethod>> entry : groups.entrySet()) {
-			SortedSet<ITestNGMethod> methods = new TreeSet<ITestNGMethod>(METHOD_COMPARATOR);
+			SortedSet<ITestNGMethod> methods = new TreeSet<>(METHOD_COMPARATOR);
 			methods.addAll(entry.getValue());
 			sortedGroups.put(entry.getKey(), methods);
 		}
@@ -369,8 +369,8 @@ public class HTMLReporter extends AbstractReporter {
 	}
 	
 	private List<ISuite> sortSuitesChronologicaly(List<ISuite> suites) {
-		List<ISuite> sortedSuites = new ArrayList<ISuite>();
-		Map<Date, ISuite> dates = new HashMap<Date, ISuite>();
+		List<ISuite> sortedSuites = new ArrayList<>();
+		Map<Date, ISuite> dates = new HashMap<>();
 		for (ISuite temp : suites) {
 			Map<String, ISuiteResult> allResults = temp.getResults();
 			Iterator<Entry<String, ISuiteResult>> iter = allResults.entrySet().iterator();
@@ -379,7 +379,7 @@ public class HTMLReporter extends AbstractReporter {
 				dates.put(mEntry.getValue().getTestContext().getStartDate(), temp);
 			}
 		}
-		Map<Date, ISuite> treeMap = new TreeMap<Date, ISuite>(dates);
+		Map<Date, ISuite> treeMap = new TreeMap<>(dates);
 		Iterator<Entry<Date, ISuite>> iter = treeMap.entrySet().iterator();
 		while (iter.hasNext()) {
 			Map.Entry<Date, ISuite> mEntry = iter.next();
@@ -392,10 +392,9 @@ public class HTMLReporter extends AbstractReporter {
 		for (ISuite temp : suites) {
 			Map<String, ISuiteResult> allResults = temp.getResults();
 			Iterator<Entry<String, ISuiteResult>> iter = allResults.entrySet().iterator();
-			List<ITestNGMethod> iTestNGMethod = new ArrayList<ITestNGMethod>();
 			if (iter.hasNext()) {
 				Map.Entry<String, ISuiteResult> mEntry = iter.next();
-				iTestNGMethod = Arrays.asList(mEntry.getValue().getTestContext().getAllTestMethods());
+				List<ITestNGMethod> iTestNGMethod = Arrays.asList(mEntry.getValue().getTestContext().getAllTestMethods());
 				Collections.sort(iTestNGMethod, METHOD_COMPARATOR);
 			}
 		}

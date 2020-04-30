@@ -1,6 +1,5 @@
 package org.uncommons.reportng;
 
-import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
@@ -44,6 +43,7 @@ import org.uncommons.reportng.dto.ResultsDTO;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Strings;
 
 /**
  * Utility class that provides various helper methods that can be invoked from a Velocity template.
@@ -60,7 +60,7 @@ public class ReportNGUtils {
 	private static boolean showHideReportFeatureFlag = false;
 	
 	public static String getExternalLinks() {
-		String response = "";
+		StringBuilder response = new StringBuilder();
 		String externalLinks = System.getProperty(HTMLReporter.EXTERNAL_LINKS);
 		if (externalLinks != null && !externalLinks.isEmpty()) {
 			// Serialize
@@ -68,20 +68,20 @@ public class ReportNGUtils {
 			try {
 				Map<String, String> resultMap = mapper.readValue(externalLinks, new TypeReference<Map<String, String>>() {
 				});
-				response += "<a href=\"#pageSubmenuExtLinks\" class=\"list-group-item\" data-toggle=\"collapse\" aria-expanded=\"false\">\n";
-				response += "<span class=\"glyphicon glyphicon-paperclip\"></span>&nbsp;&nbsp;External Links</a>\n";
-				response += "<ul class=\"collapse list-unstyled\" id=\"pageSubmenuExtLinks\">\n";
+				response.append("<a href=\"#pageSubmenuExtLinks\" class=\"list-group-item\" data-toggle=\"collapse\" aria-expanded=\"false\">\n");
+				response.append("<span class=\"glyphicon glyphicon-paperclip\"></span>&nbsp;&nbsp;External Links</a>\n");
+				response.append("<ul class=\"collapse list-unstyled\" id=\"pageSubmenuExtLinks\">\n");
 				Iterator<Map.Entry<String, String>> itr = resultMap.entrySet().iterator();
 				while (itr.hasNext()) {
 					Map.Entry<String, String> entry = itr.next();
-					response += "<a href=\"" + entry.getValue() + "\" class=\"list-group-item\" target=\"overview\">&nbsp;&nbsp;&nbsp;" + entry.getKey()
-							+ "</a>" + "\n";
+					response.append("<a href=\"" + entry.getValue() +
+							"\" class=\"list-group-item\" target=\"overview\">&nbsp;&nbsp;&nbsp;" + entry.getKey() + "</a>" + "\n");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		return response;
+		return response.toString();
 	}
 	
 	private static int getNumberofRegressionIssues(IssuesDTO issuesDTO) {
@@ -115,15 +115,15 @@ public class ReportNGUtils {
 	}
 	
 	public static String getReleaseStatus(List<ISuite> suites) {
-		String status = "";
+		StringBuilder status = new StringBuilder();
 		if ("true".equalsIgnoreCase(System.getProperty(HTMLReporter.SKIP_EXECUTION))) {
-			status += "<b><font color=\"red\">Skip Execution due to \"Skip Execution Mode\".</font></b><br>";
+			status.append("<b><font color=\"red\">Skip Execution due to \"Skip Execution Mode\".</font></b><br>");
 		} else {
 			boolean releaseRegression = true;
 			boolean emptyReport = false;
 			boolean skippedReport = false;
-			String responseStatus = "";
-			String responseNewFeatures = "";
+			StringBuilder responseStatus = new StringBuilder("");
+			StringBuilder responseNewFeatures = new StringBuilder("");
 			ResultsDTO resultsDTO = HTMLReporter.getResults();
 			IssuesDTO issuesDTO = HTMLReporter.getIssuesDTO();
 			if (resultsDTO.getSummaryTotal() == 0) {
@@ -137,23 +137,23 @@ public class ReportNGUtils {
 			} else {
 				int numberofRegressionIssues = getNumberofRegressionIssues(issuesDTO);
 				if (numberofRegressionIssues == 1) {
-					responseStatus += "<li>There is <a href=\"newIssues.html\"/>one</a> regression failure, affecting ";
+					responseStatus.append("<li>There is <a href=\"newIssues.html\"/>one</a> regression failure, affecting ");
 					if (resultsDTO.getRegressionFail() == 1) {
-						responseStatus += resultsDTO.getRegressionFail() + " test.</li>";
+						responseStatus.append(resultsDTO.getRegressionFail() + " test.</li>");
 					} else {
-						responseStatus += resultsDTO.getRegressionFail() + " tests.</li>";
+						responseStatus.append(resultsDTO.getRegressionFail() + " tests.</li>");
 					}
 					releaseRegression = false;
 				} else if (numberofRegressionIssues > 1) {
-					responseStatus += "<li>There are <a href=\"newIssues.html\"/>" + numberofRegressionIssues + "</a> regression failures, affecting ";
+					responseStatus.append("<li>There are <a href=\"newIssues.html\"/>" + numberofRegressionIssues + "</a> regression failures, affecting ");
 					if (resultsDTO.getRegressionFail() == 1) {
-						responseStatus += resultsDTO.getRegressionFail() + " test.</li>";
+						responseStatus.append(resultsDTO.getRegressionFail() + " test.</li>");
 					} else {
-						responseStatus += resultsDTO.getRegressionFail() + " tests.</li>";
+						responseStatus.append(resultsDTO.getRegressionFail() + " tests.</li>");
 					}
 					releaseRegression = false;
 				} else if (resultsDTO.getRegressionFail() == 0 && resultsDTO.getRegressionPass() > 0) {
-					responseStatus += "<li>There are no Regression Issues.</li>";
+					responseStatus.append("<li>There are no Regression Issues.</li>");
 				}
 				if (resultsDTO.getNewFeatures() > 0) {
 					int numberofNewFeatureIssues = getNumberofNewFeatureIssues(issuesDTO);
@@ -161,24 +161,23 @@ public class ReportNGUtils {
 						releaseRegression = false;
 					}
 					if (numberofNewFeatureIssues == 1) {
-						responseStatus += "<li>There is <a href=\"newIssues.html\"/>one</a> failure related with new features, affecting ";
+						responseStatus.append("<li>There is <a href=\"newIssues.html\"/>one</a> failure related with new features, affecting ");
 						if (resultsDTO.getNewFeaturesFail() == 1) {
-							responseStatus += resultsDTO.getNewFeaturesFail() + " test.</li>";
+							responseStatus.append(resultsDTO.getNewFeaturesFail() + " test.</li>");
 						} else {
-							responseStatus += resultsDTO.getNewFeaturesFail() + " tests.</li>";
+							responseStatus.append(resultsDTO.getNewFeaturesFail() + " tests.</li>");
 						}
 					} else if (numberofNewFeatureIssues > 1) {
-						responseStatus += "<li>There are <a href=\"newIssues.html\"/>" + numberofNewFeatureIssues
-								+ "</a> failures related with new features, affecting ";
+						responseStatus.append("<li>There are <a href=\"newIssues.html\"/>" + numberofNewFeatureIssues
+								+ "</a> failures related with new features, affecting ");
 						if (resultsDTO.getNewFeaturesFail() == 1) {
-							responseStatus += resultsDTO.getNewFeaturesFail() + " test.</li>";
+							responseStatus.append(resultsDTO.getNewFeaturesFail() + " test.</li>");
 						} else {
-							responseStatus += resultsDTO.getNewFeaturesFail() + " tests.</li>";
+							responseStatus.append(resultsDTO.getNewFeaturesFail() + " tests.</li>");
 						}
 					} else if (resultsDTO.getNewFeaturesFail() == 0 && resultsDTO.getNewFeaturesPass() > 0) {
 					}
 					Iterator<Entry<String, List<IssueDTO>>> it = issuesDTO.getNewFeature().entrySet().iterator();
-					responseNewFeatures += "";
 					while (it.hasNext()) {
 						Entry<String, List<IssueDTO>> pair = it.next();
 						ResultStatus overAllStatus = ResultStatus.PASS;
@@ -194,59 +193,60 @@ public class ReportNGUtils {
 							}
 						}
 						if (ResultStatus.PASS.equals(overAllStatus) || ResultStatus.PASS_WITH_FIXED_ISSUES.equals(overAllStatus)) {
-							responseNewFeatures += "<li>The new feature with description '<a href=\"" + HTMLReporter.FEATURES + "#" + pair.getKey()
+							responseNewFeatures.append("<li>The new feature with description '<a href=\"" + HTMLReporter.FEATURES + "#" + pair.getKey()
 									+ "\" style=\"color:green\">" + pair.getKey()
-									+ "</a>' has no failures and can be announced !</li>";
+									+ "</a>' has no failures and can be announced !</li>");
 						} else if (ResultStatus.FAIL.equals(overAllStatus)) {
-							responseNewFeatures += "<li>The new feature with description '<a href=\"" + HTMLReporter.FEATURES + "#" + pair.getKey()
+							responseNewFeatures.append("<li>The new feature with description '<a href=\"" + HTMLReporter.FEATURES + "#" + pair.getKey()
 									+ "\" style=\"color:red\">"
 									+ pair.getKey()
-									+ "</a>' has failures and should not be announced !</li>";
+									+ "</a>' has failures and should not be announced !</li>");
 						} else if (ResultStatus.PASS_WITH_KNOWN_ISSUES.equals(overAllStatus)) {
-							responseNewFeatures += "<li>The new feature with description '<a href=\"" + HTMLReporter.FEATURES + "#" + pair.getKey()
+							responseNewFeatures.append("<li>The new feature with description '<a href=\"" + HTMLReporter.FEATURES + "#" + pair.getKey()
 									+ "\" style=\"color:orange\">" + pair.getKey()
-									+ "</a>' has Known issues and should not be announced !</li>";
+									+ "</a>' has Known issues and should not be announced !</li>");
 						} else if (ResultStatus.SKIP.equals(overAllStatus)) {
-							responseNewFeatures += "<li>The new feature with description '<a href=\"" + HTMLReporter.FEATURES + "#" + pair.getKey()
+							responseNewFeatures.append("<li>The new feature with description '<a href=\"" + HTMLReporter.FEATURES + "#" + pair.getKey()
 									+ "\" style=\"color:yellow\">" + pair.getKey()
-									+ "</a>' has skip test cases and should not be announced !</li>";
+									+ "</a>' has skip test cases and should not be announced !</li>");
 						}
 						
 					}
-					responseNewFeatures += "";
+					responseNewFeatures.append("");
 				}
 			}
-			responseStatus += "";
+			responseStatus.append("");
 			if (releaseRegression) {
-				status += "<font color=\"green\">You can Proceed with a new Release !</font><br>";
-				status += "<ul>";
-				status += responseStatus;
-				status += responseNewFeatures;
-				status += "</ul>";
+				status.append("<font color=\"green\">You can Proceed with a new Release !</font><br>");
+				status.append("<ul>");
+				status.append(responseStatus);
+				status.append(responseNewFeatures);
+				status.append("</ul>");
 			} else {
 				if (emptyReport) {
-					status += "<font color=\"black\">Empty Report !</font><br>";
-					status += "<ul>";
-					status += responseStatus;
-					status += responseNewFeatures;
-					status += "</ul>";
+					status.append("<font color=\"black\">Empty Report !</font><br>");
+					status.append("<ul>");
+					status.append(responseStatus);
+					status.append(responseNewFeatures);
+					status.append("</ul>");
 				} else if (skippedReport) {
-					status += "<font color=\"red\">All test are Skipped !</font><br>";
-					status += "<ul>";
-					status += responseStatus;
-					status += responseNewFeatures;
-					status += "</ul>";
+					status.append("<font color=\"red\">All test are Skipped !</font><br>");
+					status.append("<ul>");
+					status.append(responseStatus);
+					status.append(responseNewFeatures);
+					status.append("</ul>");
 				} else {
-					status += "<font color=\"red\">You should not Proceed with a new Release !</font><br>";
-					status += "<ul>";
-					status += responseStatus;
-					status += responseNewFeatures;
-					status += "</ul>";
+					status.append("<font color=\"red\">You should not Proceed with a new Release !</font><br>");
+					status.append("<ul>");
+					status.append(responseStatus);
+					status.append(responseNewFeatures);
+					status.append("</ul>");
 				}
 			}
 			
 		}
-		return status;
+		return status.toString();
+		
 	}
 	
 	public static ResultsDTO checkAttribute(List<ISuite> suites) {
@@ -258,64 +258,64 @@ public class ReportNGUtils {
 	}
 	
 	public String runArguments(List<ISuite> suites) {
-		String response = "";
+		StringBuilder response = new StringBuilder();
 		// Get Listeners
-		Set<String> listeners = new HashSet<String>();
-		if (suites != null && suites.size() > 0) {
+		Set<String> listeners = new HashSet<>();
+		if (suites != null && !suites.isEmpty()) {
 			for (ISuite tempISuite : suites) {
 				listeners.addAll(tempISuite.getXmlSuite().getListeners());
 			}
 		}
-		String listenersToString = "";
+		StringBuilder listenersToString = new StringBuilder();
 		for (String temp : listeners) {
-			listenersToString += temp + "<br>";
+			listenersToString.append(temp + "<br>");
 		}
-		if (!listenersToString.isEmpty()) {
-			response += "<tr>\n";
-			response += "<td>Listeners</td>\n";
-			response += "<td>" + listenersToString + "</td>\n";
-			response += "</tr>\n";
+		if (listenersToString != null && !Strings.isNullOrEmpty(listenersToString.toString())) {
+			response.append("<tr>\n");
+			response.append("<td>Listeners</td>\n");
+			response.append("<td>" + listenersToString.toString() + "</td>\n");
+			response.append("</tr>\n");
 		}
 		
 		// Get Include Groups
 		Set<String> includeGroups = new HashSet<String>();
-		if (suites != null && suites.size() > 0) {
+		if (suites != null && !suites.isEmpty()) {
 			for (ISuite tempISuite : suites) {
 				includeGroups.addAll(tempISuite.getXmlSuite().getIncludedGroups());
 			}
 		}
-		String includeGroupsToString = "";
+		StringBuilder includeGroupsToString = new StringBuilder();
 		for (String temp : includeGroups) {
-			includeGroupsToString += temp + "<br>";
+			includeGroupsToString.append(temp + "<br>");
 		}
-		if (!includeGroupsToString.isEmpty()) {
-			response += "<tr>\n";
-			response += "<td>Include Groups</td>\n";
-			response += "<td>" + includeGroupsToString + "</td>\n";
-			response += "</tr>\n";
+		if (includeGroupsToString != null && !Strings.isNullOrEmpty(includeGroupsToString.toString())) {
+			response.append("<tr>\n");
+			response.append("<td>Include Groups</td>\n");
+			response.append("<td>" + includeGroupsToString + "</td>\n");
+			response.append("</tr>\n");
 		}
 		// Get Exclude Groups
 		Set<String> excludeGroups = new HashSet<String>();
-		if (suites != null && suites.size() > 0) {
+		if (suites != null && !suites.isEmpty()) {
 			for (ISuite tempISuite : suites) {
 				excludeGroups.addAll(tempISuite.getXmlSuite().getExcludedGroups());
 			}
 		}
-		String excludeGroupsToString = "";
+		StringBuilder excludeGroupsToString = new StringBuilder();
 		for (String temp : excludeGroups) {
-			excludeGroupsToString += temp + "<br>";
+			excludeGroupsToString.append(temp + "<br>");
 		}
-		if (!excludeGroupsToString.isEmpty()) {
-			response += "<tr>\n";
-			response += "<td>Exclude Groups</td>\n";
-			response += "<td>" + excludeGroupsToString + "</td>\n";
-			response += "</tr>\n";
+		if (excludeGroupsToString != null && !Strings.isNullOrEmpty(excludeGroupsToString.toString())) {
+			response.append("<tr>\n");
+			response.append("<td>Exclude Groups</td>\n");
+			response.append("<td>" + excludeGroupsToString + "</td>\n");
+			response.append("</tr>\n");
 		}
-		return response;
+		return response.toString();
 	}
 	
 	public String getIssues(Map<String, List<IssueDTO>> issues) {
-		String response = "";
+		StringBuilder response = new StringBuilder("");
 		if (issues != null && !issues.isEmpty()) {
 			Map<String, List<IssueDTO>> map = new TreeMap<>(issues);
 			Iterator<Entry<String, List<IssueDTO>>> it = map.entrySet().iterator();
@@ -324,48 +324,48 @@ public class ReportNGUtils {
 				Entry<String, List<IssueDTO>> pair = it.next();
 				
 				UUID id = UUID.randomUUID();
-				response += "<tr class=\"parent\" id=\"row" + indexCounter
-						+ "\" title=\"Click to expand/collapse\" style=\"cursor: pointer;\" onclick=\"changeIcon('span-" + id + "'); \">\n";
-				response += "<td><span id=\"span-" + id + "\" class=\"glyphicon glyphicon-minus\" style=\"color:blue\"></span></td>\n";
-				response += "<td class=\"break-word\">" + pair.getKey() + "</td>";
-				response += "<td>" + pair.getValue().size() + "</td>";
-				response += "<td></td>";
-				response += "</tr>";
+				response.append("<tr class=\"parent\" id=\"row" + indexCounter
+						+ "\" title=\"Click to expand/collapse\" style=\"cursor: pointer;\" onclick=\"changeIcon('span-" + id + "'); \">\n");
+				response.append("<td><span id=\"span-" + id + "\" class=\"glyphicon glyphicon-minus\" style=\"color:blue\"></span></td>\n");
+				response.append("<td class=\"break-word\">" + pair.getKey() + "</td>");
+				response.append("<td>" + pair.getValue().size() + "</td>");
+				response.append("<td></td>");
+				response.append("</tr>");
 				//
-				response += "<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">";
-				response += "<td></td>";
-				response += "<td><i>Suite Name</i></td>";
-				response += "<td><i>Test Name</i></td>";
-				response += "<td><i>Class Name</i></td>";
-				response += "</tr>";
+				response.append("<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">");
+				response.append("<td></td>");
+				response.append("<td><i>Suite Name</i></td>");
+				response.append("<td><i>Test Name</i></td>");
+				response.append("<td><i>Class Name</i></td>");
+				response.append("</tr>");
 				for (IssueDTO temp : pair.getValue()) {
-					response += "<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">";
-					response += "<td></td>";
-					response += "<td><a href=\"suites_overview.html#" + temp.getSuiteName() + "\">" + temp.getSuiteName() + "</a></td>";
+					response.append("<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">");
+					response.append("<td></td>");
+					response.append("<td><a href=\"suites_overview.html#" + temp.getSuiteName() + "\">" + temp.getSuiteName() + "</a></td>");
 					if (showHideReportFeatureFlag) {
-						response += "<td><a href=\"" + temp.getLink() + "\" onmouseover=\"showReport(this,'" + temp.getLink() + "')\" onmouseout = \"hideReport(this)\">" + temp.getTestName()
-								+ "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>";
+						response.append("<td><a href=\"" + temp.getLink() + "\" onmouseover=\"showReport(this,'" + temp.getLink() + "')\" onmouseout = \"hideReport(this)\">" + temp.getTestName()
+								+ "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>");
 					} else {
-						response += "<td><a href=\"" + temp.getLink() + "\">" + temp.getTestName() + "</a></td>";
+						response.append("<td><a href=\"" + temp.getLink() + "\">" + temp.getTestName() + "</a></td>");
 					}
-					response += "<td class=\"break-word\">" + temp.getTestClass() + "</td>";
-					response += "</tr>\n";
+					response.append("<td class=\"break-word\">" + temp.getTestClass() + "</td>");
+					response.append("</tr>\n");
 				}
 				indexCounter++;
 			}
 		} else {
-			response += "<tr style=\"display: table-row;\">";
-			response += "<td>&nbsp;</td>";
-			response += "<td>&nbsp;</td>";
-			response += "<td>&nbsp;</td>";
-			response += "<td>&nbsp;</td>";
-			response += "</tr>\n";
+			response.append("<tr style=\"display: table-row;\">");
+			response.append("<td>&nbsp;</td>");
+			response.append("<td>&nbsp;</td>");
+			response.append("<td>&nbsp;</td>");
+			response.append("<td>&nbsp;</td>");
+			response.append("</tr>\n");
 		}
-		return response;
+		return response.toString();
 	}
 	
 	public String getSuites(List<ISuite> suites) {
-		String response = "";
+		StringBuilder response = new StringBuilder("");
 		if (suites != null) {
 			int totalPass = 0;
 			int totalFail = 0;
@@ -424,45 +424,45 @@ public class ReportNGUtils {
 				if (totalEndDate == null || totalEndDate < endDate) {
 					totalEndDate = endDate;
 				}
-				response += "<tr class=\"test\">\n";
-				response += "<td>" + getDate(tempISuite) + "</td>";
-				response += "<td>" + parentSuiteName + "</td>";
-				response += "<td><a href=\"suites_overview.html#" + suiteName + "\">" + suiteName + "</a></td>";
-				response += "<td class=\"duration\">" + parallel + "</td>";
-				response += "<td class=\"duration\">" + formatDurationinMinutes(endDate - startDate) + "</td>";
+				response.append("<tr class=\"test\">\n");
+				response.append("<td>" + getDate(tempISuite) + "</td>");
+				response.append("<td>" + parentSuiteName + "</td>");
+				response.append("<td><a href=\"suites_overview.html#" + suiteName + "\">" + suiteName + "</a></td>");
+				response.append("<td class=\"duration\">" + parallel + "</td>");
+				response.append("<td class=\"duration\">" + formatDurationinMinutes(endDate - startDate) + "</td>");
 				if (pass > 0) {
-					response += "<td class=\"passed number\">" + pass + "</td>";
+					response.append("<td class=\"passed number\">" + pass + "</td>");
 				} else {
-					response += "<td class=\"zero number\">" + pass + "</td>";
+					response.append("<td class=\"zero number\">" + pass + "</td>");
 				}
 				if (skip > 0) {
-					response += "<td class=\"skipped number\">" + skip + "</td>";
+					response.append("<td class=\"skipped number\">" + skip + "</td>");
 				} else {
-					response += "<td class=\"zero number\">" + skip + "</td>";
+					response.append("<td class=\"zero number\">" + skip + "</td>");
 				}
 				if (knownDefectMode()) {
 					if (known > 0) {
-						response += "<td class=\"knownDefects number\">" + known + "</td>";
+						response.append("<td class=\"knownDefects number\">" + known + "</td>");
 					} else {
-						response += "<td class=\"zero number\">" + known + "</td>";
+						response.append("<td class=\"zero number\">" + known + "</td>");
 					}
 					if (fixed > 0) {
-						response += "<td class=\"fixed number\">" + fixed + "</td>";
+						response.append("<td class=\"fixed number\">" + fixed + "</td>");
 					} else {
-						response += "<td class=\"zero number\">" + fixed + "</td>";
+						response.append("<td class=\"zero number\">" + fixed + "</td>");
 					}
 				}
 				if (fail > 0) {
-					response += "<td class=\"failed number\">" + fail + "</td>";
+					response.append("<td class=\"failed number\">" + fail + "</td>");
 				} else {
-					response += "<td class=\"zero number\">" + fail + "</td>";
+					response.append("<td class=\"zero number\">" + fail + "</td>");
 				}
-				response += "<td class=\"zero number\">" + getStatusColor(getStatus(pass, fail, skip, known, fixed)) + "</td>";
-				response += "</tr>\n";
+				response.append("<td class=\"zero number\">" + getStatusColor(getStatus(pass, fail, skip, known, fixed)) + "</td>");
+				response.append("</tr>\n");
 			}
-			response += "<tbody class=\"avoid-sort\">";
-			response += "<tr class=\"suite\">\n";
-			response += "<td colspan=\"4\">Total</td>";
+			response.append("<tbody class=\"avoid-sort\">");
+			response.append("<tr class=\"suite\">\n");
+			response.append("<td colspan=\"4\">Total</td>");
 			// In case of suite with no tests totalEndDate & totalStartDate are
 			// null
 			if (totalEndDate == null) {
@@ -471,220 +471,220 @@ public class ReportNGUtils {
 			if (totalStartDate == null) {
 				totalStartDate = 0L;
 			}
-			response += "<td class=\"duration\">" + formatDurationinMinutes(totalEndDate - totalStartDate) + "</td>";
+			response.append("<td class=\"duration\">" + formatDurationinMinutes(totalEndDate - totalStartDate) + "</td>");
 			if (totalPass > 0) {
-				response += "<td class=\"passed number\">" + totalPass + "</td>";
+				response.append("<td class=\"passed number\">" + totalPass + "</td>");
 			} else {
-				response += "<td class=\"zero number\">" + totalPass + "</td>";
+				response.append("<td class=\"zero number\">" + totalPass + "</td>");
 			}
 			if (totalSkip > 0) {
-				response += "<td class=\"skipped number\">" + totalSkip + "</td>";
+				response.append("<td class=\"skipped number\">" + totalSkip + "</td>");
 			} else {
-				response += "<td class=\"zero number\">" + totalSkip + "</td>";
+				response.append("<td class=\"zero number\">" + totalSkip + "</td>");
 			}
 			if (knownDefectMode()) {
 				if (totalKnown > 0) {
-					response += "<td class=\"knownDefects number\">" + totalKnown + "</td>";
+					response.append("<td class=\"knownDefects number\">" + totalKnown + "</td>");
 				} else {
-					response += "<td class=\"zero number\">" + totalKnown + "</td>";
+					response.append("<td class=\"zero number\">" + totalKnown + "</td>");
 				}
 				if (totalFixed > 0) {
-					response += "<td class=\"fixed number\">" + totalFixed + "</td>";
+					response.append("<td class=\"fixed number\">" + totalFixed + "</td>");
 				} else {
-					response += "<td class=\"zero number\">" + totalFixed + "</td>";
+					response.append("<td class=\"zero number\">" + totalFixed + "</td>");
 				}
 			}
 			if (totalFail > 0) {
-				response += "<td class=\"failed number\">" + totalFail + "</td>";
+				response.append("<td class=\"failed number\">" + totalFail + "</td>");
 			} else {
-				response += "<td class=\"zero number\">" + totalFail + "</td>";
+				response.append("<td class=\"zero number\">" + totalFail + "</td>");
 			}
-			response += "<td class=\"zero number\">" + getStatusColor(getStatus(totalPass, totalFail, totalSkip, totalKnown, totalFixed)) + "</td>";
-			response += "</tr>\n";
-			response += "</tbody>\n";
+			response.append("<td class=\"zero number\">" + getStatusColor(getStatus(totalPass, totalFail, totalSkip, totalKnown, totalFixed)) + "</td>");
+			response.append("</tr>\n");
+			response.append("</tbody>\n");
 		}
-		return response;
+		return response.toString();
 	}
 	
 	public String getPackages(List<ISuite> suites) {
-		String response = "";
+		StringBuilder response = new StringBuilder("");
 		int indexCounter = 0;
 		for (Entry<PackageDetailsDTO, List<PackageDetailsDTO>> entry : HTMLReporter.getPackageDeatails().entrySet()) {
 			UUID id = UUID.randomUUID();
-			response += "<tr class=\"parent\" id=\"row" + indexCounter
-					+ "\" title=\"Click to expand/collapse\" style=\"cursor: pointer;\" onclick=\"changeIcon('span-" + id + "'); \">\n";
-			response += "<td><span id=\"span-" + id + "\" class=\"glyphicon glyphicon-minus\" style=\"color:blue\"></span></td>\n";
-			response += "<td align=\"left\">" + entry.getKey().getPackageName() + "</td>";
-			response += "<td align=\"center\">" + entry.getKey().getDuration() + "</td>";
+			response.append("<tr class=\"parent\" id=\"row" + indexCounter
+					+ "\" title=\"Click to expand/collapse\" style=\"cursor: pointer;\" onclick=\"changeIcon('span-" + id + "'); \">\n");
+			response.append("<td><span id=\"span-" + id + "\" class=\"glyphicon glyphicon-minus\" style=\"color:blue\"></span></td>\n");
+			response.append("<td align=\"left\">" + entry.getKey().getPackageName() + "</td>");
+			response.append("<td align=\"center\">" + entry.getKey().getDuration() + "</td>");
 			if (entry.getKey().getPass() > 0) {
-				response += "<td align=\"center\" class=\"passed number\">" + entry.getKey().getPass() + "</td>";
+				response.append("<td align=\"center\" class=\"passed number\">" + entry.getKey().getPass() + "</td>");
 			} else {
-				response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getPass() + "</td>";
+				response.append("<td align=\"center\" class=\"zero number\">" + entry.getKey().getPass() + "</td>");
 			}
 			if (entry.getKey().getSkip() > 0) {
-				response += "<td align=\"center\" class=\"skipped number\">" + entry.getKey().getSkip() + "</td>";
+				response.append("<td align=\"center\" class=\"skipped number\">" + entry.getKey().getSkip() + "</td>");
 			} else {
-				response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getSkip() + "</td>";
+				response.append("<td align=\"center\" class=\"zero number\">" + entry.getKey().getSkip() + "</td>");
 			}
 			if (entry.getKey().getFail() > 0) {
-				response += "<td align=\"center\" class=\"failed number\">" + entry.getKey().getFail() + "</td>";
+				response.append("<td align=\"center\" class=\"failed number\">" + entry.getKey().getFail() + "</td>");
 			} else {
-				response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getFail() + "</td>";
+				response.append("<td align=\"center\" class=\"zero number\">" + entry.getKey().getFail() + "</td>");
 			}
 			if (knownDefectMode()) {
 				if (entry.getKey().getKnown() > 0) {
-					response += "<td align=\"center\" class=\"knownDefects number\">" + entry.getKey().getKnown() + "</td>";
+					response.append("<td align=\"center\" class=\"knownDefects number\">" + entry.getKey().getKnown() + "</td>");
 				} else {
-					response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getKnown() + "</td>";
+					response.append("<td align=\"center\" class=\"zero number\">" + entry.getKey().getKnown() + "</td>");
 				}
 				if (entry.getKey().getFixed() > 0) {
-					response += "<td align=\"center\" class=\"fixed number\">" + entry.getKey().getFixed() + "</td>";
+					response.append("<td align=\"center\" class=\"fixed number\">" + entry.getKey().getFixed() + "</td>");
 				} else {
-					response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getFixed() + "</td>";
+					response.append("<td align=\"center\" class=\"zero number\">" + entry.getKey().getFixed() + "</td>");
 				}
 			}
-			response += "</tr>\n";
+			response.append("</tr>\n");
 			
 			for (PackageDetailsDTO packageDTO : entry.getValue()) {
-				response += "<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">";
-				response += "<td></td>";
+				response.append("<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">");
+				response.append("<td></td>");
 				if (showHideReportFeatureFlag) {
-					response += "<td><a href=\"" + packageDTO.getUrl() + "\" onmouseover=\"showReport(this,'" + packageDTO.getUrl() + "')\" onmouseout = \"hideReport(this)\">" + packageDTO.getClassΝame()
-							+ "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>";
+					response.append("<td><a href=\"" + packageDTO.getUrl() + "\" onmouseover=\"showReport(this,'" + packageDTO.getUrl() + "')\" onmouseout = \"hideReport(this)\">" + packageDTO.getClassΝame()
+							+ "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>");
 				} else {
-					response += "<td><a href=\"" + packageDTO.getUrl() + "\">" + packageDTO.getClassΝame() + "</a></td>";
+					response.append("<td><a href=\"" + packageDTO.getUrl() + "\">" + packageDTO.getClassΝame() + "</a></td>");
 				}
-				response += "<td align=\"center\">" + packageDTO.getDuration() + "</td>";
+				response.append("<td align=\"center\">" + packageDTO.getDuration() + "</td>");
 				if (packageDTO.getPass() > 0) {
-					response += "<td align=\"center\" class=\"passedCell\">" + packageDTO.getPass() + "</td>";
+					response.append("<td align=\"center\" class=\"passedCell\">" + packageDTO.getPass() + "</td>");
 				} else {
-					response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getPass() + "</td>";
+					response.append("<td align=\"center\" class=\"zero number\">" + packageDTO.getPass() + "</td>");
 				}
 				if (packageDTO.getSkip() > 0) {
-					response += "<td align=\"center\" class=\"skippedCell\">" + packageDTO.getSkip() + "</td>";
+					response.append("<td align=\"center\" class=\"skippedCell\">" + packageDTO.getSkip() + "</td>");
 				} else {
-					response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getSkip() + "</td>";
+					response.append("<td align=\"center\" class=\"zero number\">" + packageDTO.getSkip() + "</td>");
 				}
 				if (packageDTO.getFail() > 0) {
-					response += "<td align=\"center\" class=\"failedCell\">" + packageDTO.getFail() + "</td>";
+					response.append("<td align=\"center\" class=\"failedCell\">" + packageDTO.getFail() + "</td>");
 				} else {
-					response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getFail() + "</td>";
+					response.append("<td align=\"center\" class=\"zero number\">" + packageDTO.getFail() + "</td>");
 				}
 				if (knownDefectMode()) {
 					if (packageDTO.getKnown() > 0) {
-						response += "<td align=\"center\" class=\"knownDefectsCell\">" + packageDTO.getKnown() + "</td>";
+						response.append("<td align=\"center\" class=\"knownDefectsCell\">" + packageDTO.getKnown() + "</td>");
 					} else {
-						response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getKnown() + "</td>";
+						response.append("<td align=\"center\" class=\"zero number\">" + packageDTO.getKnown() + "</td>");
 					}
 					if (packageDTO.getFixed() > 0) {
-						response += "<td align=\"center\" class=\"fixedCell\">" + packageDTO.getFixed() + "</td>";
+						response.append("<td align=\"center\" class=\"fixedCell\">" + packageDTO.getFixed() + "</td>");
 					} else {
-						response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getFixed() + "</td>";
+						response.append("<td align=\"center\" class=\"zero number\">" + packageDTO.getFixed() + "</td>");
 					}
 				}
 			}
 			indexCounter++;
 		}
-		response += "\n";
-		return response;
+		response.append("\n");
+		return response.toString();
 	}
 	
 	public String getGroups(List<ISuite> suites) {
-		String response = "";
+		StringBuilder response = new StringBuilder("");
 		int indexCounter = 0;
 		if (!HTMLReporter.getGroupDetails().isEmpty()) {
 			for (Entry<PackageDetailsDTO, List<PackageDetailsDTO>> entry : HTMLReporter.getGroupDetails().entrySet()) {
 				UUID id = UUID.randomUUID();
-				response += "<tr class=\"parent\" id=\"row" + indexCounter
-						+ "\" title=\"Click to expand/collapse\" style=\"cursor: pointer;\" onclick=\"changeIcon('span-" + id + "'); \">\n";
-				response += "<td><span id=\"span-" + id + "\" class=\"glyphicon glyphicon-minus\" style=\"color:blue\"></span></td>\n";
-				response += "<td align=\"left\">" + entry.getKey().getPackageName() + "</td>";
-				response += "<td align=\"center\">" + entry.getKey().getDuration() + "</td>";
+				response.append("<tr class=\"parent\" id=\"row" + indexCounter
+						+ "\" title=\"Click to expand/collapse\" style=\"cursor: pointer;\" onclick=\"changeIcon('span-" + id + "'); \">\n");
+				response.append("<td><span id=\"span-" + id + "\" class=\"glyphicon glyphicon-minus\" style=\"color:blue\"></span></td>\n");
+				response.append("<td align=\"left\">" + entry.getKey().getPackageName() + "</td>");
+				response.append("<td align=\"center\">" + entry.getKey().getDuration() + "</td>");
 				if (entry.getKey().getPass() > 0) {
-					response += "<td align=\"center\" class=\"passed number\">" + entry.getKey().getPass() + "</td>";
+					response.append("<td align=\"center\" class=\"passed number\">" + entry.getKey().getPass() + "</td>");
 				} else {
-					response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getPass() + "</td>";
+					response.append("<td align=\"center\" class=\"zero number\">" + entry.getKey().getPass() + "</td>");
 				}
 				if (entry.getKey().getSkip() > 0) {
-					response += "<td align=\"center\" class=\"skipped number\">" + entry.getKey().getSkip() + "</td>";
+					response.append("<td align=\"center\" class=\"skipped number\">" + entry.getKey().getSkip() + "</td>");
 				} else {
-					response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getSkip() + "</td>";
+					response.append("<td align=\"center\" class=\"zero number\">" + entry.getKey().getSkip() + "</td>");
 				}
 				if (entry.getKey().getFail() > 0) {
-					response += "<td align=\"center\" class=\"failed number\">" + entry.getKey().getFail() + "</td>";
+					response.append("<td align=\"center\" class=\"failed number\">" + entry.getKey().getFail() + "</td>");
 				} else {
-					response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getFail() + "</td>";
+					response.append("<td align=\"center\" class=\"zero number\">" + entry.getKey().getFail() + "</td>");
 				}
 				if (knownDefectMode()) {
 					if (entry.getKey().getKnown() > 0) {
-						response += "<td align=\"center\" class=\"knownDefects number\">" + entry.getKey().getKnown() + "</td>";
+						response.append("<td align=\"center\" class=\"knownDefects number\">" + entry.getKey().getKnown() + "</td>");
 					} else {
-						response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getKnown() + "</td>";
+						response.append("<td align=\"center\" class=\"zero number\">" + entry.getKey().getKnown() + "</td>");
 					}
 					if (entry.getKey().getFixed() > 0) {
-						response += "<td align=\"center\" class=\"fixed number\">" + entry.getKey().getFixed() + "</td>";
+						response.append("<td align=\"center\" class=\"fixed number\">" + entry.getKey().getFixed() + "</td>");
 					} else {
-						response += "<td align=\"center\" class=\"zero number\">" + entry.getKey().getFixed() + "</td>";
+						response.append("<td align=\"center\" class=\"zero number\">" + entry.getKey().getFixed() + "</td>");
 					}
 				}
-				response += "</tr>\n";
+				response.append("</tr>\n");
 				
 				for (PackageDetailsDTO packageDTO : entry.getValue()) {
-					response += "<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">";
-					response += "<td></td>";
+					response.append("<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">");
+					response.append("<td></td>");
 					if (showHideReportFeatureFlag) {
-						response += "<td><a href=\"" + packageDTO.getUrl() + "\" onmouseover=\"showReport(this,'" + packageDTO.getUrl() + "')\" onmouseout = \"hideReport(this)\">" + packageDTO.getClassΝame()
-								+ "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>";
+						response.append("<td><a href=\"" + packageDTO.getUrl() + "\" onmouseover=\"showReport(this,'" + packageDTO.getUrl() + "')\" onmouseout = \"hideReport(this)\">" + packageDTO.getClassΝame()
+								+ "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>");
 					} else {
-						response += "<td><a href=\"" + packageDTO.getUrl() + "\">" + packageDTO.getClassΝame() + "</a></td>";
+						response.append("<td><a href=\"" + packageDTO.getUrl() + "\">" + packageDTO.getClassΝame() + "</a></td>");
 					}
-					response += "<td align=\"center\">" + packageDTO.getDuration() + "</td>";
+					response.append("<td align=\"center\">" + packageDTO.getDuration() + "</td>");
 					if (packageDTO.getPass() > 0) {
-						response += "<td align=\"center\" class=\"passedCell\">" + packageDTO.getPass() + "</td>";
+						response.append("<td align=\"center\" class=\"passedCell\">" + packageDTO.getPass() + "</td>");
 					} else {
-						response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getPass() + "</td>";
+						response.append("<td align=\"center\" class=\"zero number\">" + packageDTO.getPass() + "</td>");
 					}
 					if (packageDTO.getSkip() > 0) {
-						response += "<td align=\"center\" class=\"skippedCell\">" + packageDTO.getSkip() + "</td>";
+						response.append("<td align=\"center\" class=\"skippedCell\">" + packageDTO.getSkip() + "</td>");
 					} else {
-						response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getSkip() + "</td>";
+						response.append("<td align=\"center\" class=\"zero number\">" + packageDTO.getSkip() + "</td>");
 					}
 					if (packageDTO.getFail() > 0) {
-						response += "<td align=\"center\" class=\"failedCell\">" + packageDTO.getFail() + "</td>";
+						response.append("<td align=\"center\" class=\"failedCell\">" + packageDTO.getFail() + "</td>");
 					} else {
-						response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getFail() + "</td>";
+						response.append("<td align=\"center\" class=\"zero number\">" + packageDTO.getFail() + "</td>");
 					}
 					if (knownDefectMode()) {
 						if (packageDTO.getKnown() > 0) {
-							response += "<td align=\"center\" class=\"knownDefectsCell\">" + packageDTO.getKnown() + "</td>";
+							response.append("<td align=\"center\" class=\"knownDefectsCell\">" + packageDTO.getKnown() + "</td>");
 						} else {
-							response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getKnown() + "</td>";
+							response.append("<td align=\"center\" class=\"zero number\">" + packageDTO.getKnown() + "</td>");
 						}
 						if (packageDTO.getFixed() > 0) {
-							response += "<td align=\"center\" class=\"fixedCell\">" + packageDTO.getFixed() + "</td>";
+							response.append("<td align=\"center\" class=\"fixedCell\">" + packageDTO.getFixed() + "</td>");
 						} else {
-							response += "<td align=\"center\" class=\"zero number\">" + packageDTO.getFixed() + "</td>";
+							response.append("<td align=\"center\" class=\"zero number\">" + packageDTO.getFixed() + "</td>");
 						}
 					}
 				}
 				indexCounter++;
 			}
 		} else {
-			response += "<tr>\n";
-			response += "<td>&nbsp;</td>\n";
-			response += "<td>&nbsp;</td>";
-			response += "<td>&nbsp;</td>";
-			response += "<td>&nbsp;</td>";
-			response += "<td>&nbsp;</td>\n";
+			response.append("<tr>\n");
+			response.append("<td>&nbsp;</td>\n");
+			response.append("<td>&nbsp;</td>");
+			response.append("<td>&nbsp;</td>");
+			response.append("<td>&nbsp;</td>");
+			response.append("<td>&nbsp;</td>\n");
 			if (knownDefectMode()) {
-				response += "<td>&nbsp;</td>\n";
-				response += "<td>&nbsp;</td>\n";
+				response.append("<td>&nbsp;</td>\n");
+				response.append("<td>&nbsp;</td>\n");
 			}
-			response += "<td>&nbsp;</td>\n";
-			response += "</tr>\n";
+			response.append("<td>&nbsp;</td>\n");
+			response.append("</tr>\n");
 		}
-		response += "\n";
-		return response;
+		response.append("\n");
+		return response.toString();
 	}
 	
 	private String getDate(ISuite tempISuite) {
@@ -702,7 +702,7 @@ public class ReportNGUtils {
 			status = ResultStatus.PASS_WITH_KNOWN_ISSUES;
 		} else if (pass > 0 && fixed > 0) {
 			status = ResultStatus.PASS_WITH_FIXED_ISSUES;
-		} else if (pass == 0 && skip > 0) {
+		} else if (pass == 0 && skip == 0) {
 			status = ResultStatus.SKIP;
 		}
 		return status;
@@ -890,7 +890,7 @@ public class ReportNGUtils {
 	 * @return A (possibly empty) list of {@link Throwable}s.
 	 */
 	public List<Throwable> getCauses(Throwable t) {
-		List<Throwable> causes = new LinkedList<Throwable>();
+		List<Throwable> causes = new LinkedList<>();
 		if (t != null) {
 			Throwable next = t;
 			try {
@@ -937,8 +937,8 @@ public class ReportNGUtils {
 		String name = result.getTestClass().getName();
 		String sub = "";
 		try {
-			sub = name.substring(0, name.indexOf(".") + 1);
-			name = name.substring(name.lastIndexOf(".") + 1, name.length());
+			sub = name.substring(0, name.indexOf('.') + 1);
+			name = name.substring(name.lastIndexOf('.') + 1, name.length());
 		} catch (Exception ex) {
 			
 		}
@@ -1016,7 +1016,7 @@ public class ReportNGUtils {
 	}
 	
 	public String getSteps(ISuiteResult result) {
-		String steps = "<table><tr>";
+		StringBuilder steps = new StringBuilder("<table><tr>");
 		Set<ITestResult> all = new HashSet<>();
 		if (result.getTestContext().getFailedTests() != null && !result.getTestContext().getFailedTests().getAllResults().isEmpty()) {
 			all.addAll(result.getTestContext().getFailedTests().getAllResults());
@@ -1029,35 +1029,35 @@ public class ReportNGUtils {
 		}
 		
 		for (ITestResult temp : all) {
-			steps += "<td>";
+			steps.append("<td>");
 			if (temp.getStatus() == ITestResult.SUCCESS) {
 				boolean isFixed = false;
 				boolean isKnown = false;
 				Annotation[] annotation = getDeclaredAnnotations(temp);
 				for (Annotation tempAnnotation : annotation) {
 					if (tempAnnotation.toString().contains(KNOWNDEFECT) && FIXED.equals(temp.getAttribute(TEST))) {
-						steps += "F";
+						steps.append("F");
 						isFixed = true;
 						break;
 					} else if (tempAnnotation.toString().contains(KNOWNDEFECT) && KNOWN.equals(temp.getAttribute(TEST))) {
-						steps += "K";
+						steps.append("K");
 						isKnown = true;
 					}
 				}
 				if (!isFixed && !isKnown) {
-					steps += "P";
+					steps.append("P");
 				}
 			}
 			if (temp.getStatus() == ITestResult.FAILURE) {
-				steps += "F";
+				steps.append("F");
 			}
 			if (temp.getStatus() == ITestResult.SKIP) {
-				steps += "S";
+				steps.append("S");
 			}
-			steps += "</td>";
+			steps.append("</td>");
 		}
-		steps += "</table>";
-		return steps;
+		steps.append("</table>");
+		return steps.toString();
 	}
 	
 	public boolean hasPriority(ITestResult result) {
@@ -1065,10 +1065,9 @@ public class ReportNGUtils {
 		try {
 			if (result.getMethod().isTest()) {
 				priority = result.getMethod().getPriority();
-				if (priority != 0)
+				if (priority != 0) {
 					return true;
-				else
-					return false;
+				}
 			}
 		} catch (NullPointerException ex) {
 		}
@@ -1163,10 +1162,8 @@ public class ReportNGUtils {
 	 * @return
 	 */
 	public boolean hasKnownDefectsDescription(ITestResult result) {
-		if (result.getAttribute(TEST) != null) {
-			if (KNOWN.equalsIgnoreCase(result.getAttribute(TEST).toString()) || FIXED.equalsIgnoreCase(result.getAttribute(TEST).toString())) {
-				return true;
-			}
+		if (result.getAttribute(TEST) != null && (KNOWN.equalsIgnoreCase(result.getAttribute(TEST).toString()) || FIXED.equalsIgnoreCase(result.getAttribute(TEST).toString()))) {
+			return true;
 		}
 		return false;
 	}
@@ -1195,19 +1192,15 @@ public class ReportNGUtils {
 	}
 	
 	public boolean hasKnownDefect(ITestResult result) {
-		if (result.getAttribute(TEST) != null) {
-			if (KNOWN.equalsIgnoreCase(result.getAttribute(TEST).toString())) {
-				return true;
-			}
+		if (result.getAttribute(TEST) != null && KNOWN.equalsIgnoreCase(result.getAttribute(TEST).toString())) {
+			return true;
 		}
 		return false;
 	}
 	
 	public boolean hasFixed(ITestResult result) {
-		if (result.getAttribute(TEST) != null) {
-			if (FIXED.equalsIgnoreCase(result.getAttribute(TEST).toString())) {
-				return true;
-			}
+		if (result.getAttribute(TEST) != null && FIXED.equalsIgnoreCase(result.getAttribute(TEST).toString())) {
+			return true;
 		}
 		return false;
 	}
@@ -1229,7 +1222,7 @@ public class ReportNGUtils {
 	}
 	
 	public List<ITestResult> getPassedConfigurations(IClass classTest, Map<IClass, List<ITestResult>> passedConfigurations) {
-		List<ITestResult> newmethods = new ArrayList<ITestResult>();
+		List<ITestResult> newmethods = new ArrayList<>();
 		if ("true".equals(System.getProperty(HTMLReporter.SHOW_PASSED_CONFIGURATIONS))) {
 			Method[] methodsInClass = classTest.getRealClass().getDeclaredMethods();
 			List<ITestResult> methods = passedConfigurations.get(classTest);
@@ -1493,10 +1486,10 @@ public class ReportNGUtils {
 	}
 	
 	public String getSuiteName(ISuite suite) {
-		if (suite != null)
+		if (suite != null) {
 			return suite.getName().replaceAll(" ", "_").replaceAll(",", "_").replaceAll("\"", "_");
-		else
-			return "N/A";
+		}
+		return "N/A";
 	}
 	
 	/**
@@ -1535,7 +1528,7 @@ public class ReportNGUtils {
 		for (ITestNGMethod tempTestMethod : context.getAllTestMethods()) {
 			Annotation[] annotations = tempTestMethod.getTestClass().getRealClass().getAnnotations();
 			for (Annotation tempAnnotation : annotations) {
-				if (tempAnnotation.toString().contains(NEW_FEATURE.toString())) {
+				if (tempAnnotation.toString().contains(NEW_FEATURE)) {
 					return false;
 				}
 			}
@@ -1547,7 +1540,7 @@ public class ReportNGUtils {
 		for (ITestNGMethod tempTestMethod : context.getAllTestMethods()) {
 			Annotation[] annotations = tempTestMethod.getTestClass().getRealClass().getAnnotations();
 			for (Annotation tempAnnotation : annotations) {
-				if (tempAnnotation.toString().contains(NEW_FEATURE.toString())) {
+				if (tempAnnotation.toString().contains(NEW_FEATURE)) {
 					return true;
 				}
 			}
@@ -1559,7 +1552,7 @@ public class ReportNGUtils {
 		for (ITestNGMethod tempTestMethod : iTestContext.getAllTestMethods()) {
 			Annotation[] annotations = tempTestMethod.getTestClass().getRealClass().getAnnotations();
 			for (Annotation tempAnnotation : annotations) {
-				if (tempAnnotation.toString().contains(FEATURE.toString())) {
+				if (tempAnnotation.toString().contains(FEATURE)) {
 					return true;
 				}
 			}
@@ -1571,7 +1564,7 @@ public class ReportNGUtils {
 		for (ITestNGMethod tempTestMethod : iTestContext.getAllTestMethods()) {
 			Annotation[] annotations = tempTestMethod.getTestClass().getRealClass().getAnnotations();
 			for (Annotation tempAnnotation : annotations) {
-				if (tempAnnotation.toString().contains(NEW_FEATURE.toString())) {
+				if (tempAnnotation.toString().contains(NEW_FEATURE)) {
 					return getDescription(tempAnnotation.toString());
 				}
 			}
@@ -1583,7 +1576,7 @@ public class ReportNGUtils {
 		for (ITestNGMethod tempTestMethod : context.getAllTestMethods()) {
 			Annotation[] annotations = tempTestMethod.getTestClass().getRealClass().getAnnotations();
 			for (Annotation tempAnnotation : annotations) {
-				if (tempAnnotation.toString().contains(FEATURE.toString())) {
+				if (tempAnnotation.toString().contains(FEATURE)) {
 					return getDescription(tempAnnotation.toString());
 				}
 			}
@@ -1595,7 +1588,7 @@ public class ReportNGUtils {
 		for (ITestNGMethod tempTestMethod : iSuiteResult.getTestContext().getAllTestMethods()) {
 			Annotation[] annotations = tempTestMethod.getTestClass().getRealClass().getAnnotations();
 			for (Annotation tempAnnotation : annotations) {
-				if (tempAnnotation.toString().contains(FEATURE.toString()) || tempAnnotation.toString().contains(NEW_FEATURE.toString())) {
+				if (tempAnnotation.toString().contains(FEATURE) || tempAnnotation.toString().contains(NEW_FEATURE)) {
 					return getDescription(tempAnnotation.toString());
 				}
 			}
@@ -1607,7 +1600,7 @@ public class ReportNGUtils {
 		for (ITestNGMethod tempTestMethod : iSuiteResult.getTestContext().getAllTestMethods()) {
 			Annotation[] annotations = tempTestMethod.getTestClass().getRealClass().getAnnotations();
 			for (Annotation tempAnnotation : annotations) {
-				if (tempAnnotation.toString().contains(FEATURE.toString()) || tempAnnotation.toString().contains(NEW_FEATURE.toString())) {
+				if (tempAnnotation.toString().contains(FEATURE) || tempAnnotation.toString().contains(NEW_FEATURE)) {
 					return true;
 				}
 			}
@@ -1616,7 +1609,7 @@ public class ReportNGUtils {
 	}
 	
 	public String getFeatures(Map<String, List<IssueDTO>> features) {
-		String response = "";
+		StringBuilder response = new StringBuilder("");
 		int indexCounter = 1;
 		if (features != null && !features.isEmpty()) {
 			Iterator<Entry<String, List<IssueDTO>>> it = features.entrySet().iterator();
@@ -1641,48 +1634,48 @@ public class ReportNGUtils {
 					totalTests += temp.getTotalNumberOfTests();
 				}
 				UUID id = UUID.randomUUID();
-				response += "<tr class=\"parent\" id=\"row" + indexCounter
-						+ "\" title=\"Click to expand/collapse\" style=\"cursor: pointer;\" onclick=\"changeIcon('span-" + id + "'); \">\n";
-				response += "<td><span id=\"span-" + id + "\" class=\"glyphicon glyphicon-minus\" style=\"color:blue\"></span></td>\n";
-				response += "<td colspan=\"2\" id=\"" + pair.getKey() + "\" class=\"break-word\">" + pair.getKey() + "</td>";
-				response += "<td colspan=\"1\">" + totalTests + "</td>";
-				response += "<td colspan=\"2\">" + getStatusColor(overAllStatus) + "</td>\n";
-				response += "</tr>";
+				response.append("<tr class=\"parent\" id=\"row" + indexCounter
+						+ "\" title=\"Click to expand/collapse\" style=\"cursor: pointer;\" onclick=\"changeIcon('span-" + id + "'); \">\n");
+				response.append("<td><span id=\"span-" + id + "\" class=\"glyphicon glyphicon-minus\" style=\"color:blue\"></span></td>\n");
+				response.append("<td colspan=\"2\" id=\"" + pair.getKey() + "\" class=\"break-word\">" + pair.getKey() + "</td>");
+				response.append("<td colspan=\"1\">" + totalTests + "</td>");
+				response.append("<td colspan=\"2\">" + getStatusColor(overAllStatus) + "</td>\n");
+				response.append("</tr>");
 				//
-				response += "<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">";
-				response += "<td></td>";
-				response += "<td><i>Suite Name</i></td>";
-				response += "<td><i>Test Name</i></td>";
-				response += "<td><i>Class Name</i></td>";
-				response += "<td><i>Tests</i></td>";
-				response += "</tr>";
+				response.append("<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">");
+				response.append("<td></td>");
+				response.append("<td><i>Suite Name</i></td>");
+				response.append("<td><i>Test Name</i></td>");
+				response.append("<td><i>Class Name</i></td>");
+				response.append("<td><i>Tests</i></td>");
+				response.append("</tr>");
 				//
 				for (IssueDTO temp : pair.getValue()) {
-					response += "<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">";
-					response += "<td></td>";
-					response += "<td><a href=\"suites_overview.html#" + temp.getSuiteName() + "\">" + temp.getSuiteName() + "</a></td>\n";
+					response.append("<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">");
+					response.append("<td></td>");
+					response.append("<td><a href=\"suites_overview.html#" + temp.getSuiteName() + "\">" + temp.getSuiteName() + "</a></td>\n");
 					if (showHideReportFeatureFlag) {
-						response += "<td><a href=\"" + temp.getLink() + "\" onmouseover=\"showReport(this,'" + temp.getLink() + "')\" onmouseout = \"hideReport(this)\">" + temp.getTestName()
-								+ "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>";
+						response.append("<td><a href=\"" + temp.getLink() + "\" onmouseover=\"showReport(this,'" + temp.getLink() + "')\" onmouseout = \"hideReport(this)\">" + temp.getTestName()
+								+ "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>");
 					} else {
-						response += "<td><a href=\"" + temp.getLink() + "\">" + temp.getTestName() + "</a></td>";
+						response.append("<td><a href=\"" + temp.getLink() + "\">" + temp.getTestName() + "</a></td>");
 					}
-					response += "<td class=\"break-word\">" + temp.getTestClass() + "</td>\n";
-					response += "<td><div>" + temp.getResults() + "</div></td>\n";
-					response += "</tr>\n";
+					response.append("<td class=\"break-word\">" + temp.getTestClass() + "</td>\n");
+					response.append("<td><div>" + temp.getResults() + "</div></td>\n");
+					response.append("</tr>\n");
 				}
 				indexCounter++;
 			}
 		} else {
-			response += "<tr style=\"display: table-row;\">";
-			response += "<td>&nbsp;</td>";
-			response += "<td>&nbsp;</td>\n";
-			response += "<td>&nbsp;</td>\n";
-			response += "<td>&nbsp;</td>\n";
-			response += "<td>&nbsp;</td>\n";
-			response += "</tr>\n";
+			response.append("<tr style=\"display: table-row;\">");
+			response.append("<td>&nbsp;</td>");
+			response.append("<td>&nbsp;</td>\n");
+			response.append("<td>&nbsp;</td>\n");
+			response.append("<td>&nbsp;</td>\n");
+			response.append("<td>&nbsp;</td>\n");
+			response.append("</tr>\n");
 		}
-		return response;
+		return response.toString();
 	}
 	
 	public String getReportOutput() {
@@ -1691,205 +1684,163 @@ public class ReportNGUtils {
 	
 	// Graphs
 	public String graphTime(List<ISuite> suites) {
-		String text = "";
-		text += "var chart = new CanvasJS.Chart(\"chartContainer\", {" + "\n";
-		text += "animationEnabled: true," + "\n";
-		text += "height: 600," + "\n";
-		text += "indexLabelFontSize: 16," + "\n";
-		text += "theme: \"light2\"," + "\n";
-		text += "title:{text: \"\"}," + "\n";
-		text += "axisX:{title: \"Time \", valueFormatString: \"DD MMM hh:mm TT\"}," + "\n";
-		text += "axisY: {title: \"Number of Tests\"}," + "\n";
-		text += "toolTip:{shared:true}, " + "\n";
-		text += "legend:{cursor:\"pointer\",verticalAlign: \"top\",horizontalAlign: \"left\",dockInsidePlotArea: false, fontSize: 16}," + "\n";
-		text += "data: [" + "\n";
-		text += "{type: \"area\",showInLegend: true,name: \"Pass\",markerType: \"square\",xValueFormatString: \"DD MMM hh:mm TT\",color: \"green\",dataPoints: ["
-				+ "\n";
+		StringBuilder text = generateGraph("title: \"Time \", valueFormatString: \"DD MMM hh:mm TT\"", "title: \"Number of Tests\"",
+				"\"area\",showInLegend: true,name: \"Pass\",markerType: \"square\",xValueFormatString: \"DD MMM hh:mm TT\",color: \"green\",dataPoints: [");
 		for (ISuite tempISuite : suites) {
 			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry<String, ISuiteResult> pair = (it.next());
 				ISuiteResult iSuiteResult = pair.getValue();
 				Date date = iSuiteResult.getTestContext().getStartDate();
-				text += "{ x: new Date(" +
+				text.append("{ x: new Date(" +
 						(1900 + date.getYear()) + ", " +
 						date.getMonth() + ", " +
 						date.getDate() + ", " +
 						date.getHours() + ", " +
 						date.getMinutes() + ", " +
-						date.getSeconds() + "), y: " + getPassed(iSuiteResult.getTestContext()).size() + " }," + "\n";
+						date.getSeconds() + "), y: " + getPassed(iSuiteResult.getTestContext()).size() + " }," + "\n");
 			}
 		}
-		text += "]}," + "\n";
+		text.append("]}," + "\n");
 		
-		text += "{type: \"area\",showInLegend: true,name: \"Fixed\",markerType: \"square\",xValueFormatString: \"DD MMM hh:mm TT\",color: \"blue\",dataPoints: ["
-				+ "\n";
+		text.append("{type: \"area\",showInLegend: true,name: \"Fixed\",markerType: \"square\",xValueFormatString: \"DD MMM hh:mm TT\",color: \"blue\",dataPoints: ["
+				+ "\n");
 		for (ISuite tempISuite : suites) {
 			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry<String, ISuiteResult> pair = (it.next());
 				ISuiteResult iSuiteResult = pair.getValue();
 				Date date = iSuiteResult.getTestContext().getStartDate();
-				text += "{ x: new Date(" +
+				text.append("{ x: new Date(" +
 						(1900 + date.getYear()) + ", " +
 						date.getMonth() + ", " +
 						date.getDate() + ", " +
 						date.getHours() + ", " +
 						date.getMinutes() + ", " +
-						date.getSeconds() + "), y: " + getFixed(iSuiteResult.getTestContext()).size() + " }," + "\n";
+						date.getSeconds() + "), y: " + getFixed(iSuiteResult.getTestContext()).size() + " }," + "\n");
 			}
 		}
-		text += "]}," + "\n";
+		text.append("]}," + "\n");
 		
-		text += "{type: \"area\",showInLegend: true,name: \"Known Defects\",markerType: \"square\",xValueFormatString: \"DD MMM hh:mm TT\",color: \"orange\",dataPoints: ["
-				+ "\n";
+		text.append("{type: \"area\",showInLegend: true,name: \"Known Defects\",markerType: \"square\",xValueFormatString: \"DD MMM hh:mm TT\",color: \"orange\",dataPoints: ["
+				+ "\n");
 		for (ISuite tempISuite : suites) {
 			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry<String, ISuiteResult> pair = (it.next());
 				ISuiteResult iSuiteResult = pair.getValue();
 				Date date = iSuiteResult.getTestContext().getStartDate();
-				text += "{ x: new Date(" +
+				text.append("{ x: new Date(" +
 						(1900 + date.getYear()) + ", " +
 						date.getMonth() + ", " +
 						date.getDate() + ", " +
 						date.getHours() + ", " +
 						date.getMinutes() + ", " +
-						date.getSeconds() + "), y: " + getKnownDefect(iSuiteResult.getTestContext()).size() + " }," + "\n";
+						date.getSeconds() + "), y: " + getKnownDefect(iSuiteResult.getTestContext()).size() + " }," + "\n");
 			}
 		}
-		text += "]}," + "\n";
+		text.append("]}," + "\n");
 		
-		text += "{type: \"area\",showInLegend: true,name: \"Fail\",markerType: \"square\",xValueFormatString: \"DD MMM hh:mm TT\",color: \"red\",dataPoints: ["
-				+ "\n";
+		text.append("{type: \"area\",showInLegend: true,name: \"Fail\",markerType: \"square\",xValueFormatString: \"DD MMM hh:mm TT\",color: \"red\",dataPoints: [" + "\n");
 		for (ISuite tempISuite : suites) {
 			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry<String, ISuiteResult> pair = (it.next());
 				ISuiteResult iSuiteResult = pair.getValue();
 				Date date = iSuiteResult.getTestContext().getStartDate();
-				text += "{ x: new Date(" +
+				text.append("{ x: new Date(" +
 						(1900 + date.getYear()) + ", " +
 						date.getMonth() + ", " +
 						date.getDate() + ", " +
 						date.getHours() + ", " +
 						date.getMinutes() + ", " +
-						date.getSeconds() + "), y: " + getFailed(iSuiteResult.getTestContext()).size() + " }," + "\n";
+						date.getSeconds() + "), y: " + getFailed(iSuiteResult.getTestContext()).size() + " }," + "\n");
 			}
 		}
-		text += "]}," + "\n";
+		text.append("]}," + "\n");
 		
-		text += "{type: \"area\",showInLegend: true,name: \"Skip\",markerType: \"square\",xValueFormatString: \"DD MMM hh:mm TT\",color: \"yellow\",dataPoints: ["
-				+ "\n";
+		text.append("{type: \"area\",showInLegend: true,name: \"Skip\",markerType: \"square\",xValueFormatString: \"DD MMM hh:mm TT\",color: \"yellow\",dataPoints: [" + "\n");
 		for (ISuite tempISuite : suites) {
 			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry<String, ISuiteResult> pair = (it.next());
 				ISuiteResult iSuiteResult = pair.getValue();
 				Date date = iSuiteResult.getTestContext().getStartDate();
-				text += "{ x: new Date(" +
+				text.append("{ x: new Date(" +
 						(1900 + date.getYear()) + ", " +
 						date.getMonth() + ", " +
 						date.getDate() + ", " +
 						date.getHours() + ", " +
 						date.getMinutes() + ", " +
-						date.getSeconds() + "), y: " + getSkip(iSuiteResult.getTestContext()).size() + " }," + "\n";
+						date.getSeconds() + "), y: " + getSkip(iSuiteResult.getTestContext()).size() + " }," + "\n");
 			}
 		}
-		text += "]}" + "\n";
-		text += "]});" + "\n";
-		return text;
+		text.append("]}" + "\n");
+		text.append("]});" + "\n");
+		return text.toString();
 	}
 	
-	public String graphClass(List<ISuite> suites) throws IOException {
-		String text = "";
-		text += "var chart = new CanvasJS.Chart(\"chartContainer\", {" + "\n";
-		text += "animationEnabled: true," + "\n";
-		text += "indexLabelFontSize: 16," + "\n";
-		text += "height: 600," + "\n";
-		text += "theme: \"light2\"," + "\n";
-		text += "title:{text: \"\"}," + "\n";
-		text += "axisX:{}," + "\n";
-		text += "axisY: {title: \"Class\"}," + "\n";
-		text += "toolTip:{shared:true}, " + "\n";
-		text += "legend:{cursor:\"pointer\",verticalAlign: \"top\",horizontalAlign: \"left\",dockInsidePlotArea: false, fontSize: 16}," + "\n";
-		text += "data: [" + "\n";
-		
-		text += "{type: \"stackedBar\",showInLegend: true,name: \"Pass\",color: \"green\",dataPoints: [" + "\n";
+	public String graphClass(List<ISuite> suites) {
+		StringBuilder text = generateGraph("", "title: \"Class\"", "\"stackedBar\",showInLegend: true,name: \"Pass\",color: \"green\",dataPoints: [");
 		for (ISuite tempISuite : suites) {
 			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry<String, ISuiteResult> pair = (it.next());
 				ISuiteResult iSuiteResult = pair.getValue();
-				text += "{ label: \"" + iSuiteResult.getTestContext().getName() + "\"," + " y: " + getPassed(iSuiteResult.getTestContext()).size() + " },"
-						+ "\n";
+				text.append("{ label: \"" + iSuiteResult.getTestContext().getName() + "\"," + " y: " + getPassed(iSuiteResult.getTestContext()).size() + " }," + "\n");
 			}
 		}
-		text += "]}," + "\n";
+		text.append("]}," + "\n");
 		
-		text += "{type: \"stackedBar\",showInLegend: true,name: \"Fixed\",color: \"blue\",dataPoints: [" + "\n";
+		text.append("{type: \"stackedBar\",showInLegend: true,name: \"Fixed\",color: \"blue\",dataPoints: [" + "\n");
 		for (ISuite tempISuite : suites) {
 			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry<String, ISuiteResult> pair = (it.next());
 				ISuiteResult iSuiteResult = pair.getValue();
-				text += "{ label: \"" + iSuiteResult.getTestContext().getName() + "\"," + " y: " + getFixed(iSuiteResult.getTestContext()).size() + " },"
-						+ "\n";
+				text.append("{ label: \"" + iSuiteResult.getTestContext().getName() + "\"," + " y: " + getFixed(iSuiteResult.getTestContext()).size() + " }," + "\n");
 			}
 		}
-		text += "]}," + "\n";
+		text.append("]}," + "\n");
 		
-		text += "{type: \"stackedBar\",showInLegend: true,name: \"Known Defects\",color: \"orange\",dataPoints: [" + "\n";
+		text.append("{type: \"stackedBar\",showInLegend: true,name: \"Known Defects\",color: \"orange\",dataPoints: [" + "\n");
 		for (ISuite tempISuite : suites) {
 			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry<String, ISuiteResult> pair = (it.next());
 				ISuiteResult iSuiteResult = pair.getValue();
-				text += "{ label: \"" + iSuiteResult.getTestContext().getName() + "\"," + " y: " + getKnownDefect(iSuiteResult.getTestContext()).size() + " },"
-						+ "\n";
+				text.append("{ label: \"" + iSuiteResult.getTestContext().getName() + "\"," + " y: " + getKnownDefect(iSuiteResult.getTestContext()).size() + " }," + "\n");
 			}
 		}
-		text += "]}," + "\n";
+		text.append("]}," + "\n");
 		
-		text += "{type: \"stackedBar\",showInLegend: true,name: \"Fail\",color: \"red\",dataPoints: [" + "\n";
+		text.append("{type: \"stackedBar\",showInLegend: true,name: \"Fail\",color: \"red\",dataPoints: [" + "\n");
 		for (ISuite tempISuite : suites) {
 			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry<String, ISuiteResult> pair = (it.next());
 				ISuiteResult iSuiteResult = pair.getValue();
-				text += "{ label: \"" + iSuiteResult.getTestContext().getName() + "\"," + " y: " + getFailed(iSuiteResult.getTestContext()).size() + " },"
-						+ "\n";
+				text.append("{ label: \"" + iSuiteResult.getTestContext().getName() + "\"," + " y: " + getFailed(iSuiteResult.getTestContext()).size() + " }," + "\n");
 			}
 		}
-		text += "]}," + "\n";
+		text.append("]}," + "\n");
 		
-		text += "{type: \"stackedBar\",showInLegend: true,name: \"Skip\",color: \"yellow\",dataPoints: [" + "\n";
+		text.append("{type: \"stackedBar\",showInLegend: true,name: \"Skip\",color: \"yellow\",dataPoints: [" + "\n");
 		for (ISuite tempISuite : suites) {
 			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry<String, ISuiteResult> pair = (it.next());
 				ISuiteResult iSuiteResult = pair.getValue();
-				text += "{ label: \"" + iSuiteResult.getTestContext().getName() + "\"," + " y: " + getSkip(iSuiteResult.getTestContext()).size() + " }," + "\n";
+				text.append("{ label: \"" + iSuiteResult.getTestContext().getName() + "\"," + " y: " + getSkip(iSuiteResult.getTestContext()).size() + " }," + "\n");
 			}
 		}
-		text += "]}" + "\n";
-		text += "]});" + "\n";
-		return text;
+		text.append("]}" + "\n");
+		text.append("]});" + "\n");
+		return text.toString();
 	}
 	
-	public String graphSuite(List<ISuite> suites) throws IOException {
-		String text = "";
-		text += "var chart = new CanvasJS.Chart(\"chartContainer\", {" + "\n";
-		text += "animationEnabled: true," + "\n";
-		text += "indexLabelFontSize: 16," + "\n";
-		text += "height: 600," + "\n";
-		text += "theme: \"light2\"," + "\n";
-		text += "title:{text: \"\"}," + "\n";
-		text += "axisX:{}," + "\n";
-		text += "axisY: {title: \"Suite\"}," + "\n";
-		text += "legend:{cursor:\"pointer\",verticalAlign: \"top\",horizontalAlign: \"left\",dockInsidePlotArea: false, fontSize: 16}," + "\n";
-		text += "data: [" + "\n";
-		text += "{type: \"stackedBar\",showInLegend: true,name: \"Pass\",color: \"green\",dataPoints: [" + "\n";
+	public String graphSuite(List<ISuite> suites) {
+		StringBuilder text = generateGraph("", "title: \"Suite\"", "stackedBar\",showInLegend: true,name: \"Pass\",color: \"green\",dataPoints: [");
 		for (ISuite tempISuite : suites) {
 			int counter = 0;
 			String suiteName = null;
@@ -1900,11 +1851,11 @@ public class ReportNGUtils {
 				ISuiteResult iSuiteResult = pair.getValue();
 				counter += getPassed(iSuiteResult.getTestContext()).size();
 			}
-			text += "{ label: \"" + suiteName + "\"," + " y: " + counter + " }," + "\n";
+			text.append("{ label: \"" + suiteName + "\"," + " y: " + counter + " }," + "\n");
 		}
-		text += "]}," + "\n";
+		text.append("]}," + "\n");
 		
-		text += "{type: \"stackedBar\",showInLegend: true,name: \"Fixed\",color: \"blue\",dataPoints: [" + "\n";
+		text.append("{type: \"stackedBar\",showInLegend: true,name: \"Fixed\",color: \"blue\",dataPoints: [" + "\n");
 		for (ISuite tempISuite : suites) {
 			int counter = 0;
 			String suiteName = null;
@@ -1915,11 +1866,11 @@ public class ReportNGUtils {
 				ISuiteResult iSuiteResult = pair.getValue();
 				counter += getFixed(iSuiteResult.getTestContext()).size();
 			}
-			text += "{ label: \"" + suiteName + "\"," + " y: " + counter + " }," + "\n";
+			text.append("{ label: \"" + suiteName + "\"," + " y: " + counter + " }," + "\n");
 		}
-		text += "]}," + "\n";
+		text.append("]}," + "\n");
 		
-		text += "{type: \"stackedBar\",showInLegend: true,name: \"Known Defects\",color: \"orange\",dataPoints: [" + "\n";
+		text.append("{type: \"stackedBar\",showInLegend: true,name: \"Known Defects\",color: \"orange\",dataPoints: [" + "\n");
 		for (ISuite tempISuite : suites) {
 			int counter = 0;
 			String suiteName = null;
@@ -1930,11 +1881,11 @@ public class ReportNGUtils {
 				ISuiteResult iSuiteResult = pair.getValue();
 				counter += getKnownDefect(iSuiteResult.getTestContext()).size();
 			}
-			text += "{ label: \"" + suiteName + "\"," + " y: " + counter + " }," + "\n";
+			text.append("{ label: \"" + suiteName + "\"," + " y: " + counter + " }," + "\n");
 		}
-		text += "]}," + "\n";
+		text.append("]}," + "\n");
 		
-		text += "{type: \"stackedBar\",showInLegend: true,name: \"Fail\",color: \"red\",dataPoints: [" + "\n";
+		text.append("{type: \"stackedBar\",showInLegend: true,name: \"Fail\",color: \"red\",dataPoints: [" + "\n");
 		for (ISuite tempISuite : suites) {
 			int counter = 0;
 			String suiteName = null;
@@ -1945,11 +1896,11 @@ public class ReportNGUtils {
 				ISuiteResult iSuiteResult = pair.getValue();
 				counter += getFailed(iSuiteResult.getTestContext()).size();
 			}
-			text += "{ label: \"" + suiteName + "\"," + " y: " + counter + " }," + "\n";
+			text.append("{ label: \"" + suiteName + "\"," + " y: " + counter + " }," + "\n");
 		}
-		text += "]}," + "\n";
+		text.append("]}," + "\n");
 		
-		text += "{type: \"stackedBar\",showInLegend: true,name: \"Skip\",color: \"yellow\",dataPoints: [" + "\n";
+		text.append("{type: \"stackedBar\",showInLegend: true,name: \"Skip\",color: \"yellow\",dataPoints: [" + "\n");
 		for (ISuite tempISuite : suites) {
 			int counter = 0;
 			String suiteName = null;
@@ -1960,11 +1911,29 @@ public class ReportNGUtils {
 				ISuiteResult iSuiteResult = pair.getValue();
 				counter += getSkip(iSuiteResult.getTestContext()).size();
 			}
-			text += "{ label: \"" + suiteName + "\"," + " y: " + counter + " }," + "\n";
+			text.append("{ label: \"" + suiteName + "\"," + " y: " + counter + " }," + "\n");
 		}
-		text += "]}" + "\n";
-		text += "]});" + "\n";
+		text.append("]}" + "\n");
+		text.append("]});" + "\n");
+		return text.toString();
+	}
+	
+	private StringBuilder generateGraph(String axisX, String axisY, String type) {
+		StringBuilder text = new StringBuilder("");
+		text.append("var chart = new CanvasJS.Chart(\"chartContainer\", {" + "\n");
+		text.append("animationEnabled: true,");
+		text.append("height: 600,");
+		text.append("indexLabelFontSize: 16,");
+		text.append("theme: \"light2\",");
+		text.append("title:{text: \"\"},");
+		text.append("axisX:{" + axisX + "},");
+		text.append("axisY: {" + axisY + "},");
+		text.append("toolTip:{shared:true},");
+		text.append("legend:{cursor:\"pointer\",verticalAlign: \"top\",horizontalAlign: \"left\",dockInsidePlotArea: false, fontSize: 16},");
+		text.append("data: [" + "\n");
+		text.append("{type: " + type + "\n");
 		return text;
+		
 	}
 	
 	// Used from Suite Listener
@@ -2077,7 +2046,7 @@ public class ReportNGUtils {
 	}
 	
 	public static List<IssueDTO> getKnownIssues(String suiteName, String linkName, Set<ITestResult> results) {
-		List<IssueDTO> issues = new ArrayList<IssueDTO>();
+		List<IssueDTO> issues = new ArrayList<>();
 		if (knownDefectMode()) {
 			for (ITestResult tempITestResult : results) {
 				for (ITestResult iTestResult : tempITestResult.getTestContext().getPassedTests().getAllResults()) {
@@ -2085,9 +2054,7 @@ public class ReportNGUtils {
 					for (Annotation tempAnnotation : annotation) {
 						if (tempAnnotation.toString().contains(KNOWNDEFECT) && KNOWN.equals(iTestResult.getAttribute(TEST))) {
 							issues.add(new IssueDTO(suiteName, iTestResult.getTestContext().getName(), iTestResult.getInstanceName(), getDescription(tempAnnotation
-									.toString()), linkName, isRegression(
-											iTestResult
-													.getTestContext())));
+									.toString()), linkName, isRegression(iTestResult.getTestContext())));
 							break;
 						}
 					}
@@ -2099,7 +2066,7 @@ public class ReportNGUtils {
 	}
 	
 	public static List<IssueDTO> getFixedIssues(String suiteName, String linkName, Set<ITestResult> results) {
-		List<IssueDTO> issues = new ArrayList<IssueDTO>();
+		List<IssueDTO> issues = new ArrayList<>();
 		if (knownDefectMode()) {
 			for (ITestResult tempITestResult : results) {
 				for (ITestResult iTestResult : tempITestResult.getTestContext().getPassedTests().getAllResults()) {
@@ -2107,9 +2074,7 @@ public class ReportNGUtils {
 					for (Annotation tempAnnotation : annotation) {
 						if (tempAnnotation.toString().contains(KNOWNDEFECT) && FIXED.equals(iTestResult.getAttribute(TEST))) {
 							issues.add(new IssueDTO(suiteName, iTestResult.getTestContext().getName(), iTestResult.getInstanceName(), getDescription(tempAnnotation
-									.toString()), linkName, isRegression(
-											iTestResult
-													.getTestContext())));
+									.toString()), linkName, isRegression(iTestResult.getTestContext())));
 							break;
 						}
 					}
@@ -2121,16 +2086,16 @@ public class ReportNGUtils {
 	}
 	
 	public static List<IssueDTO> getNewIssues(String suiteName, String linkName, Set<ITestResult> results) {
-		List<IssueDTO> issues = new ArrayList<IssueDTO>();
+		List<IssueDTO> issues = new ArrayList<>();
 		for (ITestResult tr : results) {
-			issues.add(new IssueDTO(suiteName, tr.getTestContext().getName(), tr.getInstanceName(), tr.getThrowable().getMessage(), linkName, isRegression(tr
-					.getTestContext())));
+			issues.add(
+					new IssueDTO(suiteName, tr.getTestContext().getName(), tr.getInstanceName(), tr.getThrowable().getMessage(), linkName, isRegression(tr.getTestContext())));
 		}
 		return issues;
 	}
 	
 	public static List<IssueDTO> getFeatures(String suiteName, String linkName, ITestContext iTestContext) {
-		List<IssueDTO> issues = new ArrayList<IssueDTO>();
+		List<IssueDTO> issues = new ArrayList<>();
 		if (isFeature(iTestContext)) {
 			Set<ITestResult> iResultMapPass = getPassed(iTestContext).getAllResults();
 			Set<ITestResult> iResultMapFail = getFailed(iTestContext).getAllResults();
@@ -2138,7 +2103,7 @@ public class ReportNGUtils {
 			Set<ITestResult> iResultMapKnown = getKnownDefect(iTestContext).getAllResults();
 			Set<ITestResult> iResultMapFixed = getFixed(iTestContext).getAllResults();
 			
-			Set<ITestResult> all = new HashSet<ITestResult>();
+			Set<ITestResult> all = new HashSet<>();
 			all.addAll(iResultMapPass);
 			all.addAll(iResultMapFail);
 			all.addAll(iResultMapSkip);
@@ -2158,7 +2123,7 @@ public class ReportNGUtils {
 	}
 	
 	public static List<IssueDTO> getNewFeatures(String suiteName, String linkName, ITestContext iTestContext) {
-		List<IssueDTO> issues = new ArrayList<IssueDTO>();
+		List<IssueDTO> issues = new ArrayList<>();
 		if (isNewFeature(iTestContext)) {
 			Set<ITestResult> iResultMapPass = getPassed(iTestContext).getAllResults();
 			Set<ITestResult> iResultMapFail = getFailed(iTestContext).getAllResults();
@@ -2166,7 +2131,7 @@ public class ReportNGUtils {
 			Set<ITestResult> iResultMapKnown = getKnownDefect(iTestContext).getAllResults();
 			Set<ITestResult> iResultMapFixed = getFixed(iTestContext).getAllResults();
 			
-			Set<ITestResult> all = new HashSet<ITestResult>();
+			Set<ITestResult> all = new HashSet<>();
 			all.addAll(iResultMapPass);
 			all.addAll(iResultMapFail);
 			all.addAll(iResultMapSkip);
@@ -2196,51 +2161,50 @@ public class ReportNGUtils {
 	
 	private static String getFeatureResults(Set<ITestResult> iResultMapPass, Set<ITestResult> iResultMapFail, Set<ITestResult> iResultMapSkip,
 			Set<ITestResult> iResultMapKnown, Set<ITestResult> iResultMapFixed, String link) {
-		String results = "<table>" + "\n";
-		results += "<tr>";
-		if (iResultMapPass.size() > 0) {
-			results += "<td class=\"passedCell\" width=\"30px\"><a href=\"" + link + "\">" + iResultMapPass.size() + "</a></td>";
+		StringBuilder results = new StringBuilder("<table>" + "\n");
+		results.append("<tr>");
+		if (!iResultMapPass.isEmpty()) {
+			results.append("<td class=\"passedCell\" width=\"30px\"><a href=\"" + link + "\">" + iResultMapPass.size() + "</a></td>");
 		}
-		if (iResultMapFail.size() > 0) {
-			results += "<td class=\"failedCell\" width=\"30px\"><a href=\"" + link + "\">" + iResultMapFail.size() + "</a></td>";
+		if (!iResultMapFail.isEmpty()) {
+			results.append("<td class=\"failedCell\" width=\"30px\"><a href=\"" + link + "\">" + iResultMapFail.size() + "</a></td>");
 		}
-		if (iResultMapSkip.size() > 0) {
-			results += "<td class=\"skippedCell\" width=\"30px\"><a href=\"" + link + "\">" + iResultMapSkip.size() + "</a></td>";
+		if (!iResultMapSkip.isEmpty()) {
+			results.append("<td class=\"skippedCell\" width=\"30px\"><a href=\"" + link + "\">" + iResultMapSkip.size() + "</a></td>");
 		}
-		if (iResultMapKnown.size() > 0) {
-			results += "<td class=\"knownDefectsCell\" width=\"30px\"><a href=\"" + link + "\">" + iResultMapKnown.size() + "</a></td>";
+		if (!iResultMapKnown.isEmpty()) {
+			results.append("<td class=\"knownDefectsCell\" width=\"30px\"><a href=\"" + link + "\">" + iResultMapKnown.size() + "</a></td>");
 		}
-		if (iResultMapFixed.size() > 0) {
-			results += "<td class=\"fixedCell\" width=\"30px\"><a href=\"" + link + "\">" + iResultMapFixed.size() + "</a></td>";
+		if (!iResultMapFixed.isEmpty()) {
+			results.append("<td class=\"fixedCell\" width=\"30px\"><a href=\"" + link + "\">" + iResultMapFixed.size() + "</a></td>");
 		}
-		results += "</tr>";
-		results += "</table>";
-		return results;
+		results.append("</tr>");
+		results.append("</table>");
+		return results.toString();
 	}
 	
 	private static int getTotalNumberOfTests(Set<ITestResult> iResultMapPass, Set<ITestResult> iResultMapFail, Set<ITestResult> iResultMapSkip,
 			Set<ITestResult> iResultMapKnown, Set<ITestResult> iResultMapFixed) {
 		int totalNumberOfTests = 0;
-		if (iResultMapPass.size() > 0) {
+		if (!iResultMapPass.isEmpty()) {
 			totalNumberOfTests += iResultMapPass.size();
 		}
-		if (iResultMapFail.size() > 0) {
+		if (!iResultMapFail.isEmpty()) {
 			totalNumberOfTests += iResultMapFail.size();
 		}
-		if (iResultMapSkip.size() > 0) {
+		if (!iResultMapSkip.isEmpty()) {
 			totalNumberOfTests += iResultMapSkip.size();
 		}
-		if (iResultMapKnown.size() > 0) {
+		if (!iResultMapKnown.isEmpty()) {
 			totalNumberOfTests += iResultMapKnown.size();
 		}
-		if (iResultMapFixed.size() > 0) {
+		if (!iResultMapFixed.isEmpty()) {
 			totalNumberOfTests += iResultMapFixed.size();
 		}
 		return totalNumberOfTests;
 	}
 	
 	private static Annotation[] getDeclaredAnnotations(ITestResult result) {
-		// Deprecated : result.getMethod().getMethod().getDeclaredAnnotations();
 		for (ITestNGMethod temp : result.getTestContext().getAllTestMethods()) {
 			if (temp.getMethodName().equals(result.getMethod().getMethodName())) {
 				return temp.getConstructorOrMethod().getMethod().getAnnotations();
@@ -2249,7 +2213,7 @@ public class ReportNGUtils {
 		return null;
 	}
 	
-	private static boolean hasKnownDefectAnnotation(ITestResult result) {
+	public static boolean hasKnownDefectAnnotation(ITestResult result) {
 		if (result.getTestContext().getAllTestMethods()[0].getConstructorOrMethod().getMethod().getAnnotation(org.uncommons.reportng.annotations.KnownDefect.class) != null) {
 			return true;
 		}
@@ -2270,13 +2234,15 @@ public class ReportNGUtils {
 	}
 	
 	public static boolean knownDefectMode() {
-		String knownDefectsMode = System.getProperty(HTMLReporter.KWOWNDEFECTSMODE);
-		if (knownDefectsMode == null || knownDefectsMode.isEmpty()) {
-			knownDefectsMode = "false";
+		String knownDefectsMode = "false";
+		try {
+			knownDefectsMode = System.getProperty(HTMLReporter.KWOWNDEFECTSMODE);
+		} catch (Exception ex) {
+			
 		}
-		if (knownDefectsMode.equalsIgnoreCase("true")) {
-			return true;
+		if (!Strings.isNullOrEmpty(knownDefectsMode) && knownDefectsMode.equalsIgnoreCase("true")) {
+			knownDefectsMode = "true";
 		}
-		return false;
+		return Boolean.getBoolean(knownDefectsMode);
 	}
 }
