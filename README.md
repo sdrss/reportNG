@@ -126,4 +126,5 @@ Over-rides the default locale for localised messages in generated reports. If no
       </dependency>
 
 Check Maven Repository releases [here](https://mvnrepository.com/artifact/com.github.sdrss/reportng)
+
 Check Releases Notes [here](https://github.com/sdrss/reportNG/releases)
