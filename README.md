@@ -17,8 +17,14 @@ ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framewor
  - graphs of Test Execution
  - and various fixes
  
-See a sample report [here](https://sdrss.github.io/test/)
-  
+[Sample report](https://sdrss.github.io/test/)
+
+[Maven Repository](https://mvnrepository.com/artifact/com.github.sdrss/reportng)
+
+[Releases Notes](https://github.com/sdrss/reportNG/releases)
+
+[Tips](https://github.com/sdrss/reportNG/wiki/Tips) & [How To](https://github.com/sdrss/reportNG/wiki/How-to)
+
  ## Supported System Properties ##
  * org.uncommons.reportng.escape-output : Used to turn off escaping for log output in the reports (not recommended). The default is for output to be escaped, since this prevents characters such as '<' and '&' from causing mark-up problems. If escaping is turned off, then log text is included as raw HTML/XML, which allows for the insertion of hyperlinks and other nasty hacks.
  * org.uncommons.reportng.title : Used to over-ride the report title.
@@ -125,8 +131,3 @@ Over-rides the default locale for localised messages in generated reports. If no
 	   <version>2.4.6</version>
       </dependency>
 
-Check Maven Repository releases [here](https://mvnrepository.com/artifact/com.github.sdrss/reportng)
-
-Check Releases Notes [here](https://github.com/sdrss/reportNG/releases)
-
-[Tips](https://github.com/sdrss/reportNG/wiki/Tips)
