@@ -9,7 +9,7 @@ ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framewor
 [![Build](https://github.com/sdrss/reportNG/workflows/Java_CI/badge.svg)](https://github.com/sdrss/reportNG/workflows/Java_CI/badge.svg)
 
 [Sample report](https://sdrss.github.io/test/) / [Maven Repository](https://mvnrepository.com/artifact/com.github.sdrss/reportng) / 
-[Releases Notes](https://github.com/sdrss/reportNG/releases) / [Wiki](https://github.com/sdrss/reportNG/wiki/) 
+[Releases](https://github.com/sdrss/reportNG/releases) / [Wiki](https://github.com/sdrss/reportNG/wiki/) 
 
 ## Based on ReportNG v1.1.4 this is a ReportNG with : ##
  - new HTML layout
