@@ -278,7 +278,7 @@ public class ReportNGUtils {
 		}
 		
 		// Get Include Groups
-		Set<String> includeGroups = new HashSet<String>();
+		Set<String> includeGroups = new HashSet<>();
 		if (suites != null && !suites.isEmpty()) {
 			for (ISuite tempISuite : suites) {
 				includeGroups.addAll(tempISuite.getXmlSuite().getIncludedGroups());
@@ -295,7 +295,7 @@ public class ReportNGUtils {
 			response.append("</tr>\n");
 		}
 		// Get Exclude Groups
-		Set<String> excludeGroups = new HashSet<String>();
+		Set<String> excludeGroups = new HashSet<>();
 		if (suites != null && !suites.isEmpty()) {
 			for (ISuite tempISuite : suites) {
 				excludeGroups.addAll(tempISuite.getXmlSuite().getExcludedGroups());
@@ -2102,13 +2102,7 @@ public class ReportNGUtils {
 				resultsDTO.getNewFeaturesKnownDefect() +
 				resultsDTO.getNewFeaturesPass() +
 				resultsDTO.getNewFeaturesSkip();
-		double featuresTotal = resultsDTO.getRegression() +
-				resultsDTO.getRegressionFail() +
-				resultsDTO.getRegressionFixed() +
-				resultsDTO.getRegressionKnownDefect() +
-				resultsDTO.getRegressionPass() +
-				resultsDTO.getRegressionSkip();
-		if (newFeaturesTotal > 0 || featuresTotal > 0) {
+		if (newFeaturesTotal > 0) {
 			return true;
 		}
 		return false;

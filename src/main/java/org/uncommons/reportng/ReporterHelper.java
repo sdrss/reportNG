@@ -24,10 +24,10 @@ import org.uncommons.reportng.dto.PackageDetailsDTO;
 import org.uncommons.reportng.dto.ResultsDTO;
 
 public class ReporterHelper {
-
+	
 	public static ResultsDTO checkAttribute(List<ISuite> suites) {
-		ArrayList<Date> startDate = new ArrayList<Date>();
-		ArrayList<Date> endDate = new ArrayList<Date>();
+		ArrayList<Date> startDate = new ArrayList<>();
+		ArrayList<Date> endDate = new ArrayList<>();
 		ResultsDTO results = new ResultsDTO();
 		for (ISuite tempISuite : suites) {
 			Iterator<Entry<String, ISuiteResult>> item = tempISuite.getResults().entrySet().iterator();
@@ -57,12 +57,12 @@ public class ReporterHelper {
 		results.setTotalSkip(results.getNewFeaturesSkip() + results.getRegressionSkip());
 		results.setTotalKnownDefect(results.getNewFeaturesKnownDefect() + results.getRegressionKnownDefect());
 		results.setTotalFixed(results.getNewFeaturesFixed() + results.getRegressionFixed());
-
+		
 		// Calculate Summary
 		results.setSummaryRegression(results.getRegressionFail() + results.getRegressionFixed() + results.getRegressionKnownDefect() + results.getRegressionPass() + results.getRegressionSkip());
 		results.setSummaryNewFeature(results.getNewFeaturesFail() + results.getNewFeaturesFixed() + results.getNewFeaturesKnownDefect() + results.getNewFeaturesPass() + results.getNewFeaturesSkip());
 		results.setSummaryTotal(results.getTotalFail() + results.getTotalFixed() + results.getTotalKnownDefect() + results.getTotalPass() + results.getTotalSkip());
-
+		
 		// Calculate Success Rate
 		double regression;
 		try {
@@ -71,7 +71,7 @@ public class ReporterHelper {
 		} catch (Exception ex) {
 			results.setRegression(0);
 		}
-
+		
 		double newFeatures;
 		try {
 			newFeatures = (results.getSummaryNewFeature() - results.getNewFeaturesFail() - results.getNewFeaturesSkip()) * 100 / results.getSummaryNewFeature();
@@ -86,13 +86,13 @@ public class ReporterHelper {
 		} catch (Exception ex) {
 			results.setTotal(0);
 		}
-
+		
 		// Calculate Start End Date
 		Date tempStartDate = new Date();
 		try {
 			tempStartDate = startDate.get(0);
 		} catch (NullPointerException | IndexOutOfBoundsException ex) {
-
+			
 		}
 		for (Date tempDate : startDate) {
 			if (tempDate.before(tempStartDate)) {
@@ -100,12 +100,12 @@ public class ReporterHelper {
 			}
 		}
 		results.setStartDate(tempStartDate);
-
+		
 		Date tempEndDate = new Date();
 		try {
 			tempEndDate = endDate.get(0);
 		} catch (NullPointerException | IndexOutOfBoundsException ex) {
-
+			
 		}
 		for (Date tempDate : endDate) {
 			if (tempDate.after(tempEndDate)) {
@@ -113,12 +113,12 @@ public class ReporterHelper {
 			}
 		}
 		results.setEndDate(tempEndDate);
-
+		
 		long executionTime = results.getEndDate().toInstant().toEpochMilli() - results.getStartDate().toInstant().toEpochMilli();
 		results.setExecutionTime(ReportNGUtils.formatDurationinMinutes(executionTime));
 		return results;
 	}
-
+	
 	public static IssuesDTO issues(List<ISuite> suites) {
 		IssuesDTO issuesDTO = new IssuesDTO();
 		int suiteIndex = 1;
@@ -171,7 +171,7 @@ public class ReporterHelper {
 					}
 				}
 				issuesDTO.setNewIssuesAmount(issuesDTO.getNewIssues().size());
-
+				
 				// Calculate Features and newFeatures
 				List<IssueDTO> newFeature = ReportNGUtils.getNewFeatures(tempISuite.getName(), link, result.getTestContext());
 				if (!newFeature.isEmpty()) {
@@ -187,7 +187,7 @@ public class ReporterHelper {
 						}
 					}
 				}
-
+				
 				List<IssueDTO> feature = ReportNGUtils.getFeatures(tempISuite.getName(), link, result.getTestContext());
 				if (!feature.isEmpty()) {
 					for (IssueDTO temp : feature) {
@@ -254,7 +254,7 @@ public class ReporterHelper {
 				}
 			}
 		}
-
+		
 		// Calculate fixedissuesFeatures vs fixedIssuesRegression
 		item = issuesDTO.getFixedIssues().entrySet().iterator();
 		while (item.hasNext()) {
@@ -281,7 +281,7 @@ public class ReporterHelper {
 		}
 		return issuesDTO;
 	}
-
+	
 	public static boolean knownDefectMode() {
 		String knownDefectsMode = System.getProperty(HTMLReporter.KWOWNDEFECTSMODE);
 		if (knownDefectsMode == null || knownDefectsMode.isEmpty()) {
@@ -292,7 +292,7 @@ public class ReporterHelper {
 		}
 		return false;
 	}
-
+	
 	public static ITestContext updateResults(ITestContext iTestContext) {
 		if (knownDefectMode()) {
 			IResultMap failedResultMap = iTestContext.getFailedTests();
@@ -327,13 +327,13 @@ public class ReporterHelper {
 		}
 		return iTestContext;
 	}
-
+	
 	private static Map<PackageDetailsDTO, List<PackageDetailsDTO>> sortItems(Map<PackageDetailsDTO, List<PackageDetailsDTO>> results) {
-		Map<PackageDetailsDTO, List<PackageDetailsDTO>> treeMap = new TreeMap<PackageDetailsDTO, List<PackageDetailsDTO>>(new ResultComparator());
+		Map<PackageDetailsDTO, List<PackageDetailsDTO>> treeMap = new TreeMap<>(new ResultComparator());
 		treeMap.putAll(results);
 		return treeMap;
 	}
-
+	
 	public static Map<PackageDetailsDTO, List<PackageDetailsDTO>> packageDetails(List<ISuite> sortedSuites) {
 		Map<PackageDetailsDTO, List<PackageDetailsDTO>> packagesFinal = new HashMap<>();
 		if (sortedSuites != null) {
@@ -383,7 +383,7 @@ public class ReporterHelper {
 		}
 		return sortItems(packagesFinal);
 	}
-
+	
 	public static Map<PackageDetailsDTO, List<PackageDetailsDTO>> groupDetails(List<ISuite> sortedSuites) {
 		Map<PackageDetailsDTO, List<PackageDetailsDTO>> packagesFinal = new HashMap<>();
 		if (sortedSuites != null) {
@@ -404,7 +404,8 @@ public class ReporterHelper {
 									packageResults.setSkip(ReportNGUtils.getSkip(entry.getValue().getTestContext()).size());
 									packageResults.setKnown(ReportNGUtils.getKnownDefect(entry.getValue().getTestContext()).size());
 									packageResults.setFixed(ReportNGUtils.getFixed(entry.getValue().getTestContext()).size());
-									packageResults.setDuration(ReportNGUtils.formatDurationinMinutes(entry.getValue().getTestContext().getEndDate().getTime() - entry.getValue().getTestContext().getStartDate().getTime()));
+									packageResults
+											.setDuration(ReportNGUtils.formatDurationinMinutes(entry.getValue().getTestContext().getEndDate().getTime() - entry.getValue().getTestContext().getStartDate().getTime()));
 									packageResults.setClassName(tempClass.getTestClass().getName().trim());
 									packageResults.setUrl("suite" + suiteIndex + "_test" + testIndex + "_results.html");
 									if (packages.containsKey(packageResults.getPackageName())) {
