@@ -2095,8 +2095,23 @@ public class ReportNGUtils {
 	}
 	
 	public static boolean hasNewFeatures(List<ISuite> suites) {
-		// TODO
-		return true;
+		ResultsDTO resultsDTO = ReporterHelper.checkAttribute(suites);
+		double newFeaturesTotal = resultsDTO.getNewFeatures() +
+				resultsDTO.getNewFeaturesFail() +
+				resultsDTO.getNewFeaturesFixed() +
+				resultsDTO.getNewFeaturesKnownDefect() +
+				resultsDTO.getNewFeaturesPass() +
+				resultsDTO.getNewFeaturesSkip();
+		double featuresTotal = resultsDTO.getRegression() +
+				resultsDTO.getRegressionFail() +
+				resultsDTO.getRegressionFixed() +
+				resultsDTO.getRegressionKnownDefect() +
+				resultsDTO.getRegressionPass() +
+				resultsDTO.getRegressionSkip();
+		if (newFeaturesTotal > 0 || featuresTotal > 0) {
+			return true;
+		}
+		return false;
 	}
 	
 	public static List<IssueDTO> getFeatures(String suiteName, String linkName, ITestContext iTestContext) {
