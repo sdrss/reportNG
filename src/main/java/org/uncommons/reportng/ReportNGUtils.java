@@ -1840,7 +1840,7 @@ public class ReportNGUtils {
 	}
 	
 	public String graphSuite(List<ISuite> suites) {
-		StringBuilder text = generateGraph("", "title: \"Suite\"", "stackedBar\",showInLegend: true,name: \"Pass\",color: \"green\",dataPoints: [");
+		StringBuilder text = generateGraph("", "title: \"Suite\"", "\"stackedBar\",showInLegend: true,name: \"Pass\",color: \"green\",dataPoints: [");
 		for (ISuite tempISuite : suites) {
 			int counter = 0;
 			String suiteName = null;
