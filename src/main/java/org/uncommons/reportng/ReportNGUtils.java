@@ -830,28 +830,23 @@ public class ReportNGUtils {
 	}
 	
 	public String getAnnotation(ITestResult result) {
-		String annotation = "";
+		StringBuilder annotation = new StringBuilder();
 		try {
 			Annotation[] annotationArray = result.getMethod().getConstructorOrMethod().getMethod().getAnnotations();
 			for (int i = 0; i < annotationArray.length; i++) {
 				if (annotationArray[i].annotationType().getCanonicalName().startsWith("org.testng.annotations.")
 						&& !annotationArray[i].annotationType().getSimpleName().equals("Parameters")) {
-					annotation = annotationArray[i].annotationType().getSimpleName();
+					annotation.append("@").append(annotationArray[i].annotationType().getSimpleName()).append(" ");
 					HashMap<String, String> map = getTestAnnotationAttributes(annotationArray[i].toString());
 					if (map.containsKey("dataProvider") && !map.get("dataProvider").isEmpty()) {
-						annotation += " with DataProvider : [" + map.get("dataProvider") + "]";
+						annotation.append("@").append(" with DataProvider : [" + map.get("dataProvider") + "]").append(" ");
 					}
-					break;
 				}
 			}
 		} catch (Exception ex) {
 			
 		}
-		if (annotation.isEmpty()) {
-			return annotation;
-		} else {
-			return "@" + annotation;
-		}
+		return annotation.toString();
 	}
 	
 	private HashMap<String, String> getTestAnnotationAttributes(String annotation) {
