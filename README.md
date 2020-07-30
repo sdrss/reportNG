@@ -120,6 +120,6 @@ Over-rides the default locale for localised messages in generated reports. If no
       <dependency>
 	   <groupId>com.github.sdrss</groupId>
 	   <artifactId>reportng</artifactId>
-	   <version>2.4.9</version>
+	   <version>2.5</version>
       </dependency>
 
