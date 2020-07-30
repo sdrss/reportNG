@@ -27,6 +27,7 @@
         		<a href="knownIssues.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("knownIssues")&nbsp; ($utils.issues($suites).getKnownIssuesAmount())&nbsp;</a>
         		<a href="fixedIssues.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("fixedIssues")&nbsp; ($utils.issues($suites).getFixedIssuesAmount())&nbsp;</a>
         	#end
+        	<a href="skippedIssues.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("skippedIssues")&nbsp;($utils.issues($suites).getSkippedIssuesAmount())&nbsp;</a>
         </ul>
           
 	<a href="#pageSubmenuFeatures" class="list-group-item" data-toggle="collapse" aria-expanded="false"><span class="glyphicon glyphicon-th-large"></span>&nbsp;&nbsp;$messages.getString("features")&nbsp;</a>

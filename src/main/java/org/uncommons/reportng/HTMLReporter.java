@@ -70,6 +70,7 @@ public class HTMLReporter extends AbstractReporter {
 	public static final String ISSUES_NEW = "newIssues.html";
 	public static final String ISSUES_KNOWN = "knownIssues.html";
 	public static final String ISSUES_FIXED = "fixedIssues.html";
+	public static final String ISSUES_SKIPPED = "skippedIssues.html";
 	public static final String RUN_ARGUMENTS = "runArguments.html";
 	public static final String REGRESSION = "regression.html";
 	public static final String FEATURES = "newFeatures.html";
@@ -231,6 +232,7 @@ public class HTMLReporter extends AbstractReporter {
 		generateFile(new File(outputDirectory, ISSUES_NEW), ISSUES_NEW + TEMPLATE_EXTENSION, context);
 		generateFile(new File(outputDirectory, ISSUES_FIXED), ISSUES_FIXED + TEMPLATE_EXTENSION, context);
 		generateFile(new File(outputDirectory, ISSUES_KNOWN), ISSUES_KNOWN + TEMPLATE_EXTENSION, context);
+		generateFile(new File(outputDirectory, ISSUES_SKIPPED), ISSUES_SKIPPED + TEMPLATE_EXTENSION, context);
 	}
 	
 	private void createOverview(List<ISuite> suites, File outputDirectory) throws Exception {

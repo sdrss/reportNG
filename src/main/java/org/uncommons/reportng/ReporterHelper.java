@@ -157,6 +157,20 @@ public class ReporterHelper {
 					}
 				}
 				issuesDTO.setFixedIssuesAmount(issuesDTO.getFixedIssues().size());
+				// Calculate skipped issues
+				List<IssueDTO> skippedIssues = ReportNGUtils.getSkippedIssues(tempISuite.getName(), link, result.getTestContext().getSkippedTests().getAllResults());
+				for (IssueDTO temp : skippedIssues) {
+					String issueDescription = "null";
+					if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
+						issueDescription = temp.getIssueDescription().trim();
+					}
+					if (issuesDTO.getSkippedIssues().containsKey(issueDescription)) {
+						issuesDTO.getSkippedIssues().get(issueDescription).add(temp);
+					} else {
+						issuesDTO.getSkippedIssues().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
+					}
+				}
+				issuesDTO.setSkippedIssuesAmount(issuesDTO.getSkippedIssues().size());
 				// Calculate New issues
 				List<IssueDTO> newIssues = ReportNGUtils.getNewIssues(tempISuite.getName(), link, result.getTestContext().getFailedTests().getAllResults());
 				for (IssueDTO temp : newIssues) {
@@ -254,7 +268,6 @@ public class ReporterHelper {
 				}
 			}
 		}
-		
 		// Calculate fixedissuesFeatures vs fixedIssuesRegression
 		item = issuesDTO.getFixedIssues().entrySet().iterator();
 		while (item.hasNext()) {
@@ -275,6 +288,30 @@ public class ReporterHelper {
 						issuesDTO.getFixedIssuesNewFeature().get(issueDescription).add(temp);
 					} else {
 						issuesDTO.getFixedIssuesNewFeature().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
+					}
+				}
+			}
+		}
+		// Calculate newSkippedFeatures vs newSkippedRegression
+		item = issuesDTO.getSkippedIssues().entrySet().iterator();
+		while (item.hasNext()) {
+			Entry<String, List<IssueDTO>> pair = item.next();
+			for (IssueDTO temp : pair.getValue()) {
+				String issueDescription = "null";
+				if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
+					issueDescription = temp.getIssueDescription().trim();
+				}
+				if (temp.isRegression()) {
+					if (issuesDTO.getSkippedIssuesRegression().containsKey(issueDescription)) {
+						issuesDTO.getSkippedIssuesRegression().get(issueDescription).add(temp);
+					} else {
+						issuesDTO.getSkippedIssuesRegression().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
+					}
+				} else {
+					if (issuesDTO.getSkippedIssuesNewFeature().containsKey(issueDescription)) {
+						issuesDTO.getSkippedIssuesNewFeature().get(issueDescription).add(temp);
+					} else {
+						issuesDTO.getSkippedIssuesNewFeature().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
 					}
 				}
 			}

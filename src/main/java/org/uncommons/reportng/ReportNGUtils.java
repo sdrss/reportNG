@@ -217,7 +217,7 @@ public class ReportNGUtils {
 			}
 			responseStatus.append("");
 			if (releaseRegression) {
-				status.append("<font color=\"green\">You can Proceed with a new Release !</font><br>");
+				// status.append("<font color=\"green\">You can Proceed with a new Release !</font><br>");
 				status.append("<ul>");
 				status.append(responseStatus);
 				status.append(responseNewFeatures);
@@ -236,7 +236,7 @@ public class ReportNGUtils {
 					status.append(responseNewFeatures);
 					status.append("</ul>");
 				} else {
-					status.append("<font color=\"red\">You should not Proceed with a new Release !</font><br>");
+					// status.append("<font color=\"red\">You should not Proceed with a new Release !</font><br>");
 					status.append("<ul>");
 					status.append(responseStatus);
 					status.append(responseNewFeatures);
@@ -1216,6 +1216,21 @@ public class ReportNGUtils {
 		return text;
 	}
 	
+	private static String getDescriptionSkipped(String text) {
+		try {
+			if (!Strings.isNullOrEmpty(text)) {
+				if (text.contains("depends on not successfully finished methods")) {
+					return ("Depends on not successfully finished methods");
+				} else if (text.startsWith("org.testng.SkipException: ")) {
+					return text.replace("org.testng.SkipException: ", "").trim();
+				}
+			}
+		} catch (Exception ex) {
+			
+		}
+		return text;
+	}
+	
 	public List<ITestResult> getPassedConfigurations(IClass classTest, Map<IClass, List<ITestResult>> passedConfigurations) {
 		List<ITestResult> newmethods = new ArrayList<>();
 		if ("true".equals(System.getProperty(HTMLReporter.SHOW_PASSED_CONFIGURATIONS))) {
@@ -2080,6 +2095,18 @@ public class ReportNGUtils {
 		return issues;
 	}
 	
+	public static List<IssueDTO> getSkippedIssues(String suiteName, String linkName, Set<ITestResult> results) {
+		List<IssueDTO> issues = new ArrayList<>();
+		for (ITestResult tempITestResult : results) {
+			for (ITestResult iTestResult : tempITestResult.getTestContext().getSkippedTests().getAllResults()) {
+				issues.add(new IssueDTO(suiteName, iTestResult.getTestContext().getName(), iTestResult.getInstanceName(), getDescriptionSkipped(iTestResult.getThrowable().toString()
+						.toString()), linkName, isRegression(iTestResult.getTestContext())));
+			}
+			break;
+		}
+		return issues;
+	}
+	
 	public static List<IssueDTO> getNewIssues(String suiteName, String linkName, Set<ITestResult> results) {
 		List<IssueDTO> issues = new ArrayList<>();
 		for (ITestResult tr : results) {
@@ -2090,7 +2117,7 @@ public class ReportNGUtils {
 	}
 	
 	public static boolean hasNewFeatures(List<ISuite> suites) {
-		ResultsDTO resultsDTO = ReporterHelper.checkAttribute(suites);
+		ResultsDTO resultsDTO = HTMLReporter.getResults();
 		double newFeaturesTotal = resultsDTO.getNewFeatures() +
 				resultsDTO.getNewFeaturesFail() +
 				resultsDTO.getNewFeaturesFixed() +
@@ -2098,6 +2125,15 @@ public class ReportNGUtils {
 				resultsDTO.getNewFeaturesPass() +
 				resultsDTO.getNewFeaturesSkip();
 		if (newFeaturesTotal > 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean hasSkipped(List<ISuite> suites) {
+		ResultsDTO resultsDTO = HTMLReporter.getResults();
+		double skippedTotal = resultsDTO.getNewFeaturesSkip() + resultsDTO.getRegressionSkip();
+		if (skippedTotal > 0) {
 			return true;
 		}
 		return false;
@@ -2232,8 +2268,6 @@ public class ReportNGUtils {
 	public String getProgress(double per) {
 		if (per == 100) {
 			return "<div class=\"progress\" role=\"progressbar\" style=\"width:100%;background-color:green;color:white;font-weight:bold;\">" + per + "%</div>";
-		} else if (per == 0) {
-			return "";
 		}
 		return "<div class=\"progress\" role=\"progressbar\" style=\"width:100%;background-color:red;color:white;font-weight:bold;\">" + per + "%</div>";
 	}

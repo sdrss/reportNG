@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$messages.locale.language" lang="$messages.locale.language">
+<head>
+	<script type="text/javascript" src="js/jquery-1.12.0.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
+	<link rel="stylesheet" href="css/reportng.css" />
+	<script type="text/javascript">  
+    	$(document).ready(function () {  
+	            $('tr.parent')  
+	                .css("cursor", "pointer")  
+	                .attr("title", "Click to expand/collapse")  
+	                .click(function () {  
+	                    $(this).siblings('.child-' + this.id).toggle();  
+	                });
+	                $('tr.parent')  
+	                .css("cursor", "pointer")  
+	                .attr("title", "Click to expand/collapse")  
+	                .click();
+	    });
+	    function changeIcon(elementId) {
+			if ($('#'+elementId).hasClass('glyphicon glyphicon-minus')){
+				$('#'+elementId).removeClass('glyphicon glyphicon-minus').toggleClass('glyphicon glyphicon-plus');
+			}else{
+				$('#'+elementId).removeClass('glyphicon glyphicon-plus').toggleClass('glyphicon glyphicon-minus');
+			}
+		}
+		function showReport(element,report){$(element).children(".tipFrame").attr('src', report).show();}
+		function hideReport(element){$(element).children(".tipFrame").hide();}
+    </script>
+</head>
+<body>
+<h3 class="skipTitle">$messages.getString("skippedIssues")</h3>
+<div>
+	<div class="well well-large">
+	<h4>$messages.getString("regressionissues")</h4>
+		<table class="table table-bordered" width="100%;" id="features">
+			<thead>
+				<tr>
+					<th scope="col" width="30px">#</th>
+					<th scope="col">$messages.getString("issue")</th>
+					<th scope="col" colspan="2">$messages.getString("totalAffectedTests")</th>
+				</tr>
+			</thead>
+			<tbody>
+				$utils.getIssues($utils.issues($suites).getSkippedIssuesRegression())
+			</tbody>
+	</table>
+	</div>
+	
+	<div class="well well-large">
+	<h4>$messages.getString("newissuesonFeatures")</h4>
+		<table class="table table-bordered" width="100%;" id="features">
+			<thead>
+				<tr>
+					<th scope="col" width="30px">#</th>
+					<th scope="col">$messages.getString("issue")</th>
+					<th scope="col" colspan="2">$messages.getString("totalAffectedTests")</th>
+				</tr>
+			</thead>
+			<tbody>
+				$utils.getIssues($utils.issues($suites).getSkippedIssuesNewFeature())
+			</tbody>
+	</table>
+	</div>
+	
+</div>
+</body>
+</html>
