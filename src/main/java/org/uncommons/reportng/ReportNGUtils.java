@@ -2099,8 +2099,13 @@ public class ReportNGUtils {
 		List<IssueDTO> issues = new ArrayList<>();
 		for (ITestResult tempITestResult : results) {
 			for (ITestResult iTestResult : tempITestResult.getTestContext().getSkippedTests().getAllResults()) {
-				issues.add(new IssueDTO(suiteName, iTestResult.getTestContext().getName(), iTestResult.getInstanceName(), getDescriptionSkipped(iTestResult.getThrowable().toString()
-						.toString()), linkName, isRegression(iTestResult.getTestContext())));
+				String skippedException = null;
+				try {
+					skippedException = iTestResult.getThrowable().toString();
+				} catch (Exception ex) {
+					
+				}
+				issues.add(new IssueDTO(suiteName, iTestResult.getTestContext().getName(), iTestResult.getInstanceName(), getDescriptionSkipped(skippedException), linkName, isRegression(iTestResult.getTestContext())));
 			}
 			break;
 		}
