@@ -60,12 +60,7 @@
 		#end
 		## Show logger output for the test.
 		#set ($output = $utils.getTestOutput($testResult))
-		#if ($output.size() > 0)
-			#if ($testResult.getStatus()==2)
-				<div class="noCollapse" id="$generatedID">
-			#else
-				<div class="stackTrace" id="$generatedID">
-			#end
+		<div class="stackTrace" id="$generatedID">
 			#foreach( $line in $output )
 		    	#if ($meta.shouldEscapeOutput())
 		        	$utils.escapeHTMLString($line)<br>
@@ -73,7 +68,6 @@
 		        	$line
 		        #end
 		   	#end
-		#end
 		#if ($testResult.throwable && ( $testResult.status == 2 || $meta.shouldShowExpectedExceptions()))
 			<a href="javascript:toggleElement('exception-$generatedID','block')" title="$messages.getString("clickToExpandCollapse")"><b>$utils.escapeHTMLString($testResult.throwable.toString())</b></a><br>
 		    <div class="stackTrace" id="exception-$generatedID">
@@ -91,9 +85,7 @@
 			#end
 			</div>
 		#end
-		#if ($output.size() > 0)
-			</div>
-		#end
+		</div>
 		</td>
 	</tr>
 #set ($generatedID = $utils.randomId())
