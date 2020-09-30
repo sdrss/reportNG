@@ -78,7 +78,6 @@ public class ReportNGUtils {
 							"\" class=\"list-group-item\" target=\"overview\">&nbsp;&nbsp;&nbsp;" + entry.getKey() + "</a>" + "\n");
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
 			}
 		}
 		return response.toString();
@@ -920,7 +919,7 @@ public class ReportNGUtils {
 		if ("true".equalsIgnoreCase(System.getProperty(HTMLReporter.LOG_OUTPUT_REPORT))) {
 			return Reporter.getOutput();
 		}
-		return new ArrayList<String>(Arrays.asList("Param '" + HTMLReporter.LOG_OUTPUT_REPORT
+		return new ArrayList<>(Arrays.asList("Param '" + HTMLReporter.LOG_OUTPUT_REPORT
 				+ "' has neen set to 'false' , so Report Output is not generated."));
 	}
 	
@@ -954,31 +953,39 @@ public class ReportNGUtils {
 	}
 	
 	public boolean hasDescription(ITestResult result) {
-		String description = "";
 		try {
-			if (result.getMethod().isTest()) {
-				description = result.getMethod().getDescription();
-				if (description != null)
-					return true;
-				else
-					return false;
+			if (result.getMethod().isTest() && result.getMethod().getDescription() != null) {
+				return true;
 			}
 		} catch (NullPointerException ex) {
 		}
 		return false;
 	}
 	
-	public String getClassName2(ISuiteResult result) {
+	public String getClassNameFullPath(ISuiteResult result) {
 		List<XmlClass> list = result.getTestContext().getCurrentXmlTest().getClasses();
-		String classNames = "";
+		StringBuilder classNames = new StringBuilder();
 		String separateLines = "";
 		if (list.size() > 1) {
 			separateLines = "<br>";
 		}
 		for (XmlClass temp : list) {
-			classNames += temp.getName() + separateLines;
+			classNames.append(temp.getName()).append(separateLines);
 		}
-		return classNames;
+		return classNames.toString();
+	}
+	
+	public String getClassName(ISuiteResult result) {
+		List<XmlClass> list = result.getTestContext().getCurrentXmlTest().getClasses();
+		StringBuilder classNames = new StringBuilder();
+		String separateLines = "";
+		if (list.size() > 1) {
+			separateLines = "<br>";
+		}
+		for (XmlClass temp : list) {
+			classNames.append(getClassFromFullClassName(temp.getName())).append(separateLines);
+		}
+		return classNames.toString();
 	}
 	
 	public String getTotalTime(ISuiteResult result) {
@@ -1056,13 +1063,9 @@ public class ReportNGUtils {
 	}
 	
 	public boolean hasPriority(ITestResult result) {
-		int priority = 0;
 		try {
-			if (result.getMethod().isTest()) {
-				priority = result.getMethod().getPriority();
-				if (priority != 0) {
-					return true;
-				}
+			if (result.getMethod().isTest() && result.getMethod().getPriority() != 0) {
+				return true;
 			}
 		} catch (NullPointerException ex) {
 		}
@@ -1070,14 +1073,9 @@ public class ReportNGUtils {
 	}
 	
 	public boolean hasGroups(ITestResult result) {
-		String[] groups = null;
 		try {
-			if (result.getMethod().isTest()) {
-				groups = result.getMethod().getGroups();
-				if (groups.length != 0) {
-					return true;
-				}
-				return false;
+			if (result.getMethod().isTest() && result.getMethod().getGroups().length != 0) {
+				return true;
 			}
 		} catch (NullPointerException ex) {
 		}
@@ -1086,16 +1084,18 @@ public class ReportNGUtils {
 	
 	public String getGroups(ITestResult result) {
 		String[] groups = null;
-		String foundGroups = "";
+		StringBuilder foundGroups = new StringBuilder();
 		try {
 			if (result.getMethod().isTest()) {
 				groups = result.getMethod().getGroups();
 				if (groups.length != 0) {
-					foundGroups = "";
 					for (int i = 0; i < groups.length; i++) {
-						foundGroups += groups[i] + ",";
+						foundGroups.append(groups[i]);
+						if (i != groups.length - 1) {
+							foundGroups.append(",");
+						}
 					}
-					return foundGroups.substring(0, foundGroups.length() - 1);
+					return foundGroups.toString();
 				}
 			}
 		} catch (NullPointerException ex) {
@@ -2273,8 +2273,11 @@ public class ReportNGUtils {
 	public String getProgress(double per) {
 		if (per == 100) {
 			return "<div class=\"progress\" role=\"progressbar\" style=\"width:100%;background-color:green;color:white;font-weight:bold;\">" + per + "%</div>";
+		} else if (per < 0) {
+			return "<div></div>";
+		} else {
+			return "<div class=\"progress\" role=\"progressbar\" style=\"width:100%;background-color:red;color:white;font-weight:bold;\">" + per + "%</div>";
 		}
-		return "<div class=\"progress\" role=\"progressbar\" style=\"width:100%;background-color:red;color:white;font-weight:bold;\">" + per + "%</div>";
 	}
 	
 	public String randomId() {
@@ -2292,5 +2295,13 @@ public class ReportNGUtils {
 			knownDefectsMode = "true";
 		}
 		return Boolean.valueOf(knownDefectsMode);
+	}
+	
+	private String getClassFromFullClassName(String fullClassName) {
+		String[] splitter = fullClassName.split("\\.");
+		if (splitter.length > 1) {
+			return splitter[splitter.length - 1];
+		}
+		return fullClassName;
 	}
 }

@@ -66,23 +66,35 @@ public class ReporterHelper {
 		// Calculate Success Rate
 		double regression;
 		try {
-			regression = (results.getSummaryRegression() - results.getRegressionFail() - results.getRegressionSkip()) * 100 / results.getSummaryRegression();
-			results.setRegression(regression);
+			if (results.getSummaryRegression() > 0) {
+				regression = (results.getSummaryRegression() - results.getRegressionFail() - results.getRegressionSkip()) * 100 / results.getSummaryRegression();
+				results.setRegression(regression);
+			} else {
+				results.setRegression(-1);
+			}
 		} catch (Exception ex) {
 			results.setRegression(0);
 		}
 		
 		double newFeatures;
 		try {
-			newFeatures = (results.getSummaryNewFeature() - results.getNewFeaturesFail() - results.getNewFeaturesSkip()) * 100 / results.getSummaryNewFeature();
-			results.setNewFeatures(newFeatures);
+			if (results.getSummaryNewFeature() > 0) {
+				newFeatures = (results.getSummaryNewFeature() - results.getNewFeaturesFail() - results.getNewFeaturesSkip()) * 100 / results.getSummaryNewFeature();
+				results.setNewFeatures(newFeatures);
+			} else {
+				results.setNewFeatures(-1);
+			}
 		} catch (Exception ex) {
 			results.setNewFeatures(0);
 		}
 		double total;
 		try {
-			total = (results.getSummaryTotal() - results.getTotalFail() - results.getTotalSkip()) * 100 / results.getSummaryTotal();
-			results.setTotal(total);
+			if (results.getSummaryTotal() > 0) {
+				total = (results.getSummaryTotal() - results.getTotalFail() - results.getTotalSkip()) * 100 / results.getSummaryTotal();
+				results.setTotal(total);
+			} else {
+				results.setTotal(-1);
+			}
 		} catch (Exception ex) {
 			results.setTotal(0);
 		}
