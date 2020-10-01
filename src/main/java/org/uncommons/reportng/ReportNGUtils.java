@@ -2274,7 +2274,7 @@ public class ReportNGUtils {
 		if (per == 100) {
 			return "<div class=\"progress\" role=\"progressbar\" style=\"width:100%;background-color:green;color:white;font-weight:bold;\">" + per + "%</div>";
 		} else if (per < 0) {
-			return "<div></div>";
+			return "<div><b>-</b></div>";
 		} else {
 			return "<div class=\"progress\" role=\"progressbar\" style=\"width:100%;background-color:red;color:white;font-weight:bold;\">" + per + "%</div>";
 		}
