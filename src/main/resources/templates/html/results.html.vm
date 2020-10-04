@@ -23,36 +23,79 @@
 	<table class="table">
 	  <tr>
 	    <th>$messages.getString("testName") : </th>
-	    <th>$result.testContext.name</th> 
+	    <th>
+	    	<div class="tooltipCustom">
+	    		<img src="images/copy.png" width="10" height="15" alt="Copy to Clipboard" onclick="copyToClipboard('#testNameId')"/>
+	    		<span class="tooltiptextCustom">Copy test name</span>
+			</div>
+	    </th>
+	    <th id="testNameId">$result.testContext.name</th> 
 	  </tr>
 	  <tr>
 	    <th>$messages.getString("testClass") : </th>
-	    <th>$utils.getClassName2($result)</th> 
+	    <th>
+	    	<div class="tooltipCustom">
+	    		<img src="images/copy.png" width="10" height="15" alt="Copy to Clipboard" onclick="copyToClipboard('#testClassId')"/>
+	    		<span class="tooltiptextCustom">Copy full path class name</span>
+			</div>
+	    	<div class="tooltipCustom">
+	    		<img src="images/copy.png" width="10" height="15" alt="Copy to Clipboard" onclick="copyToClipboard('#testClassNameId')"/>
+	    		<span class="tooltiptextCustom">Copy class name</span>
+			</div>
+	    </th> 
+	    <th id="testClassId">$utils.getClassNameFullPath($result)</th>
+	    <th id="testClassNameId" hidden="true">$utils.getClassName($result)</th>
 	  </tr>
 	  <tr>
 	    <th>$messages.getString("suiteName") : </th>
-	    <th>$utils.getSuiteName($result)</th> 
+	    <th>
+	    	<div class="tooltipCustom">
+	    		<img src="images/copy.png" width="10" height="15" alt="Copy to Clipboard" onclick="copyToClipboard('#suiteNameId')"/>
+	    		<span class="tooltiptextCustom">Copy suite name</span>
+			</div>
+		</th>
+	    <th id="suiteNameId">$utils.getSuiteName($result)</th>
 	  </tr>
 	  <tr>
 	    <th>$messages.getString("suiteXML") : </th>
-	    <th>$utils.getSuiteXMLName($result)</th> 
+	    <th>
+	    	<div class="tooltipCustom">
+	    		<img src="images/copy.png" width="10" height="15" alt="Copy to Clipboard" onclick="copyToClipboard('#suiteXMLId')"/>
+	    		<span class="tooltiptextCustom">Copy suite xml full file name</span>
+			</div>
+	    	<div class="tooltipCustom">
+	    		<img src="images/copy.png" width="10" height="15" alt="Copy to Clipboard" onclick="copyToClipboard('#suiteXMLNameId')"/>
+	    		<span class="tooltiptextCustom">Copy suite xml file name</span>
+			</div>
+	    </th> 
+	  	<th id="suiteXMLId">$utils.getSuiteXMLName($result)</th>
+	  	<th id="suiteXMLNameId" hidden="true">$utils.getSuiteXMLFileName($result)</th>
 	  </tr>
 	  #if ($utils.hasDescription($result))
 	  <tr>
 	    <th>$messages.getString("featureDescription") : </th>
-	    <th>$utils.getDescription($result)</th> 
+	    <th>
+	    	<div class="tooltipCustom">
+	    		<img src="images/copy.png" width="10" height="15" alt="Copy to Clipboard" onclick="copyToClipboard('#featureDescriptionId')"/>
+	    		<span class="tooltiptextCustom">Copy feature description</span>
+			</div>
+		</th>
+	  	<th id="featureDescriptionId">$utils.getDescription($result)</th>
 	  </tr>
 	  #end
 	  <tr>
 	    <th>$messages.getString("totalTime") : </th>
+	    <th></th>
 	    <th>$utils.getTotalTime($result)</th> 
 	  </tr>
 	  <tr>
 	    <th>$messages.getString("totalSteps") : </th>
+	   	<th></th>
 	    <th>$utils.getTotalSteps($result)</th> 
 	  </tr>
 	  <tr>
 	    <th>$messages.getString("status") : </th>
+	    <th></th>
 	    <th>$utils.getTestStatus($result)</th> 
 	  </tr>
 	</table>
