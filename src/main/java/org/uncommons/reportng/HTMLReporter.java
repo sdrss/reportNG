@@ -362,6 +362,7 @@ public class HTMLReporter extends AbstractReporter {
 		copyStream("images/bg.gif", "images/bg.gif", outputDirectory);
 		copyStream("images/desc.gif", "images/desc.gif", outputDirectory);
 		copyStream("images/fav.png", "images/fav.png", outputDirectory);
+		copyStream("images/copy.png", "images/copy.png", outputDirectory);
 		
 		copyStream("fonts/glyphicons-halflings-regular.eot", "fonts/glyphicons-halflings-regular.eot", outputDirectory);
 		copyStream("fonts/glyphicons-halflings-regular.svg", "fonts/glyphicons-halflings-regular.svg", outputDirectory);
