@@ -1,5 +1,6 @@
 package org.uncommons.reportng;
 
+import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
@@ -1005,6 +1006,14 @@ public class ReportNGUtils {
 	
 	public String getSuiteXMLName(ISuiteResult result) {
 		return result.getTestContext().getSuite().getXmlSuite().getFileName();
+	}
+	
+	public String getSuiteXMLFileName(ISuiteResult result) {
+		String fullPathName = getSuiteXMLName(result);
+		if (!Strings.isNullOrEmpty(fullPathName)) {
+			return new File(fullPathName).getName();
+		}
+		return fullPathName;
 	}
 	
 	public String getTestStatus(ISuiteResult result) {
