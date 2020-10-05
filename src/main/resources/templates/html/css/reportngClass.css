@@ -554,7 +554,6 @@ td.header:hover  {
 .tooltipCustom {
   position: relative;
   display: inline-block;
-  border-bottom: 1px dotted black;
 }
 
 .tooltipCustom .tooltiptextCustom {
