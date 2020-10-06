@@ -45,7 +45,9 @@
 	  		<tr class="columnHeadings">
 	  		    <th class="header" style="vertical-align:middle;text-align:left;">$messages.getString("testTime")&nbsp;&nbsp;</th>
 	    		<th class="header" style="vertical-align:middle;text-align:left;">$messages.getString("testName")&nbsp;&nbsp;</th>
-	    		<th class="header" style="vertical-align:middle;text-align:center;">$messages.getString("regression")&nbsp;&nbsp;</th>
+	    		#if ($utils.showRegressionColumn())
+	    			<th class="header" style="vertical-align:middle;text-align:center;">$messages.getString("regression")&nbsp;&nbsp;</th>
+	    		#end
 	    		<th class="header" style="vertical-align:middle;text-align:center;">$messages.getString("duration")&nbsp;&nbsp;</th>
 	    		<th class="header" style="vertical-align:middle;text-align:center;">$messages.getString("passed")&nbsp;&nbsp;</th>
 	    		<th class="header" style="vertical-align:middle;text-align:center;">$messages.getString("skipped")&nbsp;&nbsp;</th>
@@ -58,6 +60,7 @@
   			</tr>
  		</thead>
  		<tbody>
+ 			$utils.getSuiteConfigurationBefore($suiteId,$suite)
   			#foreach ($result in $suite.results)
   			#set ($totalPassed = $totalPassed + $utils.getPassed($result.testContext).size())
   			#set ($totalFailed = $totalFailed +  $utils.getFailed($result.testContext).size())
@@ -83,8 +86,10 @@
     			#else
     				<td><a href="suite${suiteId}_test${velocityCount}_results.html">${result.testContext.name}</a></td>
     			#end
-    			<td class="duration">$utils.isRegression($result.testContext)</td>
-    			<td class="duration">$utils.formatDuration($utils.getDuration($result.testContext))</td>
+    			#if ($utils.showRegressionColumn())
+					<td class="duration">$utils.isRegression($result.testContext)</td>
+	    		#end
+    			<td class="duration">$utils.formatDuration($utils.getTestDuration($result.testContext))</td>
     			#if ($utils.getPassed($result.testContext).size() > 0)
     			<td class="passed number">$utils.getPassed($result.testContext).size()</td>
     			#else
@@ -123,11 +128,14 @@
   			</tr>
   		#end
   	#end
+  	$utils.getSuiteConfigurationAfter($suiteId, $suite)
 	</tbody>
     <tr class="suite">
     <td colspan="1" class="totalLabel">$messages.getString("total")</td>
     <td class="totalLabel"></td>
-    <td class="totalLabel"></td>
+    #if ($utils.showRegressionColumn())
+    	<td class="totalLabel"></td>
+    #end
 	<td class="totalLabel">$utils.getTotalDuration()m</td>
     #if ($totalPassed > 0)
     <td class="passed number">$totalPassed</td>
