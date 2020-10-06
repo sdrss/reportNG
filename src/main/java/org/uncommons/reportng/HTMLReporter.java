@@ -101,7 +101,6 @@ public class HTMLReporter extends AbstractReporter {
 	public static final Comparator<ITestNGMethod> METHOD_COMPARATOR = new TestMethodComparator();
 	public static final Comparator<ITestResult> RESULT_COMPARATOR = new TestResultComparator();
 	public static final Comparator<IClass> CLASS_COMPARATOR = new TestClassComparator();
-	public static long totalDuration = 0;
 	public static String suiteName = "";
 	public static String OUTPUTDIRECTORY = "";
 	public static String OUTPUTDIRECTORY_ABSOLUTE = "";
@@ -123,7 +122,6 @@ public class HTMLReporter extends AbstractReporter {
 	@Override
 	public void generateReport(List<XmlSuite> xmlSuites, List<ISuite> suites, String outputDirectoryName) {
 		OUTPUTDIRECTORY = outputDirectoryName;
-		totalDuration = 0;
 		if (System.getProperty(LOG_OUTPUT_REPORT_PATH) != null) {
 			REPORT_DIRECTORY = System.getProperty(LOG_OUTPUT_REPORT_PATH);
 		}

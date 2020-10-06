@@ -732,7 +732,6 @@ public class ReportNGUtils {
 	public long getTestDuration(ITestContext context) {
 		if (!HTMLReporter.suiteName.equals(context.getSuite().getName())) {
 			HTMLReporter.suiteName = context.getSuite().getName();
-			HTMLReporter.totalDuration = 0;
 		}
 		long duration = getTestDuration(context.getPassedTests().getAllResults());
 		duration += getTestDuration(context.getSkippedTests().getAllResults());
@@ -740,7 +739,6 @@ public class ReportNGUtils {
 		duration += getTestDuration(context.getPassedConfigurations().getAllResults());
 		duration += getTestDuration(context.getSkippedConfigurations().getAllResults());
 		duration += getTestDuration(context.getFailedConfigurations().getAllResults());
-		HTMLReporter.totalDuration = HTMLReporter.totalDuration + duration;
 		return duration;
 	}
 	
@@ -769,8 +767,36 @@ public class ReportNGUtils {
 		return date;
 	}
 	
-	public static String getTotalDuration() {
-		return formatDurationinMinutes(HTMLReporter.totalDuration);
+	public String getSuiteConfTime(Set<ITestResult> itestResults) {
+		Long date = null;
+		for (ITestResult temp : itestResults) {
+			if (date == null || temp.getStartMillis() < date) {
+				date = temp.getStartMillis();
+			}
+		}
+		if (date != null) {
+			return DateFormat.getTimeInstance().format(date);
+		}
+		return "";
+	}
+	
+	public static String getTotalDuration(ISuite suite) {
+		Map<String, ISuiteResult> results = suite.getResults();
+		Map<String, ISuiteResult> map = suite.getResults();
+		List<ITestContext> list = new ArrayList<>();
+		for (String key : map.keySet()) {
+			list.add(map.get(key).getTestContext());
+		}
+		Set<ITestResult> allResults = new HashSet<>();
+		for (ITestContext temp : list) {
+			allResults.addAll(temp.getFailedConfigurations().getAllResults());
+			allResults.addAll(temp.getPassedConfigurations().getAllResults());
+			allResults.addAll(temp.getSkippedConfigurations().getAllResults());
+			allResults.addAll(temp.getSkippedTests().getAllResults());
+			allResults.addAll(temp.getPassedTests().getAllResults());
+			allResults.addAll(temp.getFailedTests().getAllResults());
+		}
+		return formatDurationinMinutes(getSuiteDuration(allResults));
 	}
 	
 	public static String formatDurationinMinutes(long elapsed) {
@@ -845,7 +871,7 @@ public class ReportNGUtils {
 		return duration;
 	}
 	
-	private long getSuiteDuration(Set<ITestResult> results) {
+	private static long getSuiteDuration(Set<ITestResult> results) {
 		long duration = 0;
 		for (ITestResult result : results) {
 			duration += (result.getEndMillis() - result.getStartMillis());
@@ -2477,6 +2503,7 @@ public class ReportNGUtils {
 				}
 			}
 			totalDuration += getSuiteDuration(finalSet);
+			startDateTime = getSuiteConfTime(finalSet);
 			if (totalPass + totalFail + totalSkip > 0) {
 				// Generate Code
 				return generateOverviewSuiteConfiguration(id, suite, conf, totalPass, totalFail, totalSkip, totalDuration, startDateTime);

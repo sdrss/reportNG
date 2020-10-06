@@ -89,7 +89,7 @@
     			#if ($utils.showRegressionColumn())
 					<td class="duration">$utils.isRegression($result.testContext)</td>
 	    		#end
-    			<td class="duration">$utils.formatDuration($utils.getTestDuration($result.testContext))</td>
+    			<td class="duration">$utils.formatDurationinMinutes($utils.getTestDuration($result.testContext))</td>
     			#if ($utils.getPassed($result.testContext).size() > 0)
     			<td class="passed number">$utils.getPassed($result.testContext).size()</td>
     			#else
@@ -136,7 +136,7 @@
     #if ($utils.showRegressionColumn())
     	<td class="totalLabel"></td>
     #end
-	<td class="totalLabel">$utils.getTotalDuration()m</td>
+	<td class="totalLabel">$utils.getTotalDuration($suite)</td>
     #if ($totalPassed > 0)
     <td class="passed number">$totalPassed</td>
     #else
