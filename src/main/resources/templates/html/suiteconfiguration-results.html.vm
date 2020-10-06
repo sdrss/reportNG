@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="$messages.locale.language" lang="$messages.locale.language">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="description" content="TestNG unit test results." />
+  <link href="css/bootstrap.min.css" rel="stylesheet" />
+  <link href="css/reportngClass.css" rel="stylesheet" />
+  <script type="text/javascript" src="js/reportngClass.js"></script>
+  <script type="text/javascript" src="js/jquery-1.4.4.min.js"></script> 
+  <script type="text/javascript" src="js/jquery.tablesorter.min.js"></script>
+  <script type="text/javascript" src="js/json-min.js"></script>
+  <script type="text/javascript">
+	$(document).ready(function(){
+		$('.tablesorter').tablesorter({sortList: [[0,0]]});
+	});
+  </script>
+</head>
+<body onload="doParse(); return false;" onkeypress="collapseExpand();">
+<div class="well well-large">
+	<b>$messages.getString("suiteInfo")</>
+	<table class="table">
+	  <tr>
+	    <th>$messages.getString("suiteName") : </th>
+	    <th>
+	    	<div class="tooltipCustom">
+	    		<img src="images/copy.png" width="10" height="15" alt="Copy to Clipboard" onclick="copyToClipboard('#suiteNameId')"/>
+	    		<span class="tooltiptextCustom">Copy suite name</span>
+			</div>
+		</th>
+	    <th id="suiteNameId">$utils.getSuiteName($result)</th>
+	  </tr>
+	  <tr>
+	    <th>$messages.getString("suiteXML") : </th>
+	    <th>
+	    	<div class="tooltipCustom">
+	    		<img src="images/copy.png" width="10" height="15" alt="Copy to Clipboard" onclick="copyToClipboard('#suiteXMLId')"/>
+	    		<span class="tooltiptextCustom">Copy suite xml full file name</span>
+			</div>
+	    	<div class="tooltipCustom">
+	    		<img src="images/copy.png" width="10" height="15" alt="Copy to Clipboard" onclick="copyToClipboard('#suiteXMLNameId')"/>
+	    		<span class="tooltiptextCustom">Copy suite xml file name</span>
+			</div>
+	    </th> 
+	  	<th id="suiteXMLId">$utils.getSuiteXMLName($result)</th>
+	  	<th id="suiteXMLNameId" hidden="true">$utils.getSuiteXMLFileName($result)</th>
+	  </tr>
+	</table>
+</div>
+<div class="well well-large">
+	<div class="row">
+		<div class="col-xs-12">
+	        <div class="text-right">
+	            <button id="hideResults" type="button" class="btn-danger" onclick="collapseExpand(this);" onkeypress="collapseExpand(this);" class="btn pull-right" title="$messages.getString("hoverTextHidePassTest")">$messages.getString("showonlyfailures")</button>
+	        </div>
+	    </div>
+	</div>
+	<table class="tablesorter" border="1">
+		<thead>
+		<tr>
+		<th class="headerTime">Time</th>
+		<th class="headerTime" width="12%">Info</th>
+		<th class="headerTime" width="88%">Test</th>
+		</tr>
+		</thead>
+		<tbody>
+		
+		#if ($failedSuiteConfigurations.size() > 0)
+		#set ($id = 0)
+		#foreach ($testClass in $failedSuiteConfigurations.keySet())
+		#set ($classResults = $failedSuiteConfigurations.get($testClass))
+		#parse("org/uncommons/reportng/templates/html/classconfiguration-results.html.vm")
+		#end
+		#end
+		
+		#if ($skippedSuiteConfigurations.size() > 0)
+		#set ($id = 0)
+		#foreach ($testClass in $skippedSuiteConfigurations.keySet())
+	    #set ($classResults = $skippedSuiteConfigurations.get($testClass))
+	    #parse ("org/uncommons/reportng/templates/html/classconfiguration-results.html.vm")
+	    #end
+	    #end
+		
+		#if ($passedSuiteConfigurations.size() > 0)
+		#set ($id = 0)
+		#foreach ($testClass in $passedSuiteConfigurations.keySet())
+		#set ($classResults =  $passedSuiteConfigurations.get($testClass))
+		#parse("org/uncommons/reportng/templates/html/classconfiguration-results.html.vm")
+		#end
+		#end
+	</tbody>
+	</table>
+</div>
+</body>
+</html>

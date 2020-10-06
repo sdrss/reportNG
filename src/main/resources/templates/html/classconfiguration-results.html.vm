@@ -37,6 +37,7 @@
 		#if ($testResult.testName)
 			#set ($testInstanceName = "($testResult.testName)")
 		#end
+		<span class="description"><b>$messages.getString("class"): </b>$testResult.getMethod().getRealClass()</span><br>
 		<span class="description"><b>$messages.getString("method"): </b>$testResult.name$testInstanceName</span><br>
 		#if ($utils.hasDescription($testResult))
 			<span class="description"><b>$messages.getString("Description"): </b>$testResult.method.description</span><br>

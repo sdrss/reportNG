@@ -54,7 +54,8 @@ public class HTMLReporter extends AbstractReporter {
 	public static final String SKIP_EXECUTION = "org.uncommons.reportng.skip.execution";
 	public static final String TEST_TIMEOUT = "org.uncommons.reportng.timeout";
 	public static final String TEST_MAX_RETRY_COUNT = "org.uncommons.reportng.maxRetryCount";
-	
+	public static final String SHOW_SUITE_CONFIGURATION_METHODS = "org.uncommons.reportng.show-suite-configuration-methods";
+	public static final String SHOW_REGRESSION_COLUMN = "org.uncommons.reportng.show-regression-column";
 	// HTML pages
 	public static final String INDEX_FILE = "index.html";
 	public static final String SUITES_FILE = "suites.html";
@@ -76,13 +77,18 @@ public class HTMLReporter extends AbstractReporter {
 	public static final String FEATURES = "newFeatures.html";
 	public static final String PACKAGES = "packages.html";
 	public static final String GROUPS = "groupsresults.html";
+	public static final String SUITE_CONF_FILE = "suiteconfiguration-results.html";
 	// JS scripts
 	public static final String CANVAS_FILE = "canvas.js";
 	// Keys
 	public static final String SUITE_KEY = "suite";
 	public static final String SUITES_KEY = "suites";
+	// public static final String SUITES_CONFIG_KEY = "suitesconfig";
 	public static final String GROUPS_KEY = "groups";
 	public static final String RESULT_KEY = "result";
+	public static final String FAILED_SUITE_CONFIG_KEY = "failedSuiteConfigurations";
+	public static final String SKIPPED_SUITE_CONFIG_KEY = "skippedSuiteConfigurations";
+	public static final String PASSED_SUITE_CONFIG_KEY = "passedSuiteConfigurations";
 	public static final String FAILED_CONFIG_KEY = "failedConfigurations";
 	public static final String SKIPPED_CONFIG_KEY = "skippedConfigurations";
 	public static final String PASSED_CONFIG_KEY = "passedConfigurations";
@@ -147,6 +153,8 @@ public class HTMLReporter extends AbstractReporter {
 			createMenu(sortedSuites, outputDirectory);
 			// Create Overview
 			createOverview(sortedSuites, outputDirectory);
+			// Calculate Before/After suite
+			// Map<XmlSuite, List<ITestNGMethod>> suiteConfig = ReporterHelper.suiteConfigurationCalculation(sortedSuites);
 			// Overview
 			createTestOverview(sortedSuites, outputDirectory);
 			// Suites
@@ -269,17 +277,46 @@ public class HTMLReporter extends AbstractReporter {
 		for (ISuite suite : suites) {
 			int index2 = 1;
 			for (ISuiteResult result : suite.getResults().values()) {
-				VelocityContext context = createContext();
-				context.put(RESULT_KEY, result);
-				context.put(FAILED_CONFIG_KEY, sortByTestClass(result.getTestContext().getFailedConfigurations()));
-				context.put(SKIPPED_CONFIG_KEY, sortByTestClass(result.getTestContext().getSkippedConfigurations()));
-				context.put(PASSED_CONFIG_KEY, sortByTestClass(result.getTestContext().getPassedConfigurations()));
-				context.put(FAILED_TESTS_KEY, sortByTestClass(result.getTestContext().getFailedTests()));
-				context.put(SKIPPED_TESTS_KEY, sortByTestClass(result.getTestContext().getSkippedTests()));
-				context.put(PASSED_TESTS_KEY, sortByTestClass(result.getTestContext().getPassedTests()));
-				String fileName = String.format("suite%d_test%d_%s", index, index2, RESULTS_FILE);
-				generateFile(new File(outputDirectory, fileName), RESULTS_FILE + TEMPLATE_EXTENSION, context);
+				VelocityContext contextTest = createContext();
+				VelocityContext contextSuitesBefore = createContext();
+				VelocityContext contextSuitesAfter = createContext();
+				contextTest.put(RESULT_KEY, result);
+				if (ReportNGUtils.showSuiteConfigurationMethods()) {
+					contextTest.put(FAILED_CONFIG_KEY, sortByTestClass(ReportNGUtils.getTestContext(result.getTestContext().getFailedConfigurations())));
+					contextTest.put(SKIPPED_CONFIG_KEY, sortByTestClass(ReportNGUtils.getTestContext(result.getTestContext().getSkippedConfigurations())));
+					contextTest.put(PASSED_CONFIG_KEY, sortByTestClass(ReportNGUtils.getTestContext(result.getTestContext().getPassedConfigurations())));
+					contextTest.put(FAILED_TESTS_KEY, sortByTestClass(ReportNGUtils.getTestContext(result.getTestContext().getFailedTests())));
+					contextTest.put(SKIPPED_TESTS_KEY, sortByTestClass(ReportNGUtils.getTestContext(result.getTestContext().getSkippedTests())));
+					contextTest.put(PASSED_TESTS_KEY, sortByTestClass(ReportNGUtils.getTestContext(result.getTestContext().getPassedTests())));
+					
+					contextSuitesBefore.put(RESULT_KEY, result.getTestContext().getSuite());
+					contextSuitesAfter.put(RESULT_KEY, result.getTestContext().getSuite());
+					
+					contextSuitesBefore.put(FAILED_SUITE_CONFIG_KEY, sortByTestClass(ReportNGUtils.getSuiteContextBeforeSuite(result.getTestContext().getFailedConfigurations())));
+					contextSuitesBefore.put(SKIPPED_SUITE_CONFIG_KEY, sortByTestClass(ReportNGUtils.getSuiteContextBeforeSuite(result.getTestContext().getSkippedConfigurations())));
+					contextSuitesBefore.put(PASSED_SUITE_CONFIG_KEY, sortByTestClass(ReportNGUtils.getSuiteContextBeforeSuite(result.getTestContext().getPassedConfigurations())));
+					
+					contextSuitesAfter.put(FAILED_SUITE_CONFIG_KEY, sortByTestClass(ReportNGUtils.getSuiteContextAfterSuite(result.getTestContext().getFailedConfigurations())));
+					contextSuitesAfter.put(SKIPPED_SUITE_CONFIG_KEY, sortByTestClass(ReportNGUtils.getSuiteContextAfterSuite(result.getTestContext().getSkippedConfigurations())));
+					contextSuitesAfter.put(PASSED_SUITE_CONFIG_KEY, sortByTestClass(ReportNGUtils.getSuiteContextAfterSuite(result.getTestContext().getPassedConfigurations())));
+				} else {
+					contextTest.put(FAILED_CONFIG_KEY, sortByTestClass(result.getTestContext().getFailedConfigurations()));
+					contextTest.put(SKIPPED_CONFIG_KEY, sortByTestClass(result.getTestContext().getSkippedConfigurations()));
+					contextTest.put(PASSED_CONFIG_KEY, sortByTestClass(result.getTestContext().getPassedConfigurations()));
+					contextTest.put(FAILED_TESTS_KEY, sortByTestClass(result.getTestContext().getFailedTests()));
+					contextTest.put(SKIPPED_TESTS_KEY, sortByTestClass(result.getTestContext().getSkippedTests()));
+					contextTest.put(PASSED_TESTS_KEY, sortByTestClass(result.getTestContext().getPassedTests()));
+				}
+				String fileNameTest = String.format("suite%d_test%d_%s", index, index2, RESULTS_FILE);
+				generateFile(new File(outputDirectory, fileNameTest), RESULTS_FILE + TEMPLATE_EXTENSION, contextTest);
 				++index2;
+				if (ReportNGUtils.showSuiteConfigurationMethods()) {
+					String fileNameSuiteBefore = String.format("suite%d_Before_%s", index, SUITE_CONF_FILE);
+					generateFile(new File(outputDirectory, fileNameSuiteBefore), SUITE_CONF_FILE + TEMPLATE_EXTENSION, contextSuitesBefore);
+					
+					String fileNameSuiteAfter = String.format("suite%d_After_%s", index, SUITE_CONF_FILE);
+					generateFile(new File(outputDirectory, fileNameSuiteAfter), SUITE_CONF_FILE + TEMPLATE_EXTENSION, contextSuitesAfter);
+				}
 			}
 			++index;
 		}

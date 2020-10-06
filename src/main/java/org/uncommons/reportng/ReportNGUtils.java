@@ -41,6 +41,7 @@ import org.uncommons.reportng.dto.IssuesDTO;
 import org.uncommons.reportng.dto.PackageDetailsDTO;
 import org.uncommons.reportng.dto.ResultStatus;
 import org.uncommons.reportng.dto.ResultsDTO;
+import org.uncommons.reportng.dto.SuiteConfigurationDTO;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -59,6 +60,11 @@ public class ReportNGUtils {
 	private static final String NEW_FEATURE = NewFeature.class.getName();
 	private static final String FEATURE = Feature.class.getName();
 	private static boolean showHideReportFeatureFlag = false;
+	
+	public enum SuiteConfigurationType {
+		AfterSuite,
+		BeforeSuite
+	}
 	
 	public static String getExternalLinks() {
 		StringBuilder response = new StringBuilder();
@@ -723,28 +729,36 @@ public class ReportNGUtils {
 		return status.toString();
 	}
 	
-	/**
-	 * Returns the aggregate of the elapsed times for each test result.
-	 * 
-	 * @param context
-	 *            The test results.
-	 * @return The sum of the test durations.
-	 */
-	public long getDuration(ITestContext context) {
+	public long getTestDuration(ITestContext context) {
 		if (!HTMLReporter.suiteName.equals(context.getSuite().getName())) {
 			HTMLReporter.suiteName = context.getSuite().getName();
 			HTMLReporter.totalDuration = 0;
 		}
-		long duration = getDuration(context.getPassedConfigurations().getAllResults());
-		duration += getDuration(context.getPassedTests().getAllResults());
-		// You would expect skipped tests to have durations of zero, but
-		// apparently not.
-		duration += getDuration(context.getSkippedConfigurations().getAllResults());
-		duration += getDuration(context.getSkippedTests().getAllResults());
-		duration += getDuration(context.getFailedConfigurations().getAllResults());
-		duration += getDuration(context.getFailedTests().getAllResults());
+		long duration = getTestDuration(context.getPassedTests().getAllResults());
+		duration += getTestDuration(context.getSkippedTests().getAllResults());
+		duration += getTestDuration(context.getFailedTests().getAllResults());
+		duration += getTestDuration(context.getPassedConfigurations().getAllResults());
+		duration += getTestDuration(context.getSkippedConfigurations().getAllResults());
+		duration += getTestDuration(context.getFailedConfigurations().getAllResults());
 		HTMLReporter.totalDuration = HTMLReporter.totalDuration + duration;
 		return duration;
+	}
+	
+	public SuiteConfigurationDTO getSuiteConfiguration(ITestContext context) {
+		Set<ITestResult> before = new HashSet<>();
+		Set<ITestResult> after = new HashSet<>();
+		Set<ITestResult> allResults = new HashSet<>();
+		allResults.addAll(context.getPassedConfigurations().getAllResults());
+		allResults.addAll(context.getSkippedConfigurations().getAllResults());
+		allResults.addAll(context.getFailedConfigurations().getAllResults());
+		for (ITestResult temp : allResults) {
+			if (temp.getMethod().isBeforeSuiteConfiguration()) {
+				before.add(temp);
+			} else if (temp.getMethod().isAfterSuiteConfiguration()) {
+				after.add(temp);
+			}
+		}
+		return new SuiteConfigurationDTO(before, after);
 	}
 	
 	public String getTime(ITestContext context) {
@@ -821,7 +835,17 @@ public class ReportNGUtils {
 	 *            A set of test results.
 	 * @return The sum of the test durations.
 	 */
-	private long getDuration(Set<ITestResult> results) {
+	private long getTestDuration(Set<ITestResult> results) {
+		long duration = 0;
+		for (ITestResult result : results) {
+			if (!(result.getMethod().isBeforeSuiteConfiguration() || result.getMethod().isAfterSuiteConfiguration())) {
+				duration += (result.getEndMillis() - result.getStartMillis());
+			}
+		}
+		return duration;
+	}
+	
+	private long getSuiteDuration(Set<ITestResult> results) {
 		long duration = 0;
 		for (ITestResult result : results) {
 			duration += (result.getEndMillis() - result.getStartMillis());
@@ -964,16 +988,19 @@ public class ReportNGUtils {
 	}
 	
 	public String getClassNameFullPath(ISuiteResult result) {
-		List<XmlClass> list = result.getTestContext().getCurrentXmlTest().getClasses();
-		StringBuilder classNames = new StringBuilder();
-		String separateLines = "";
-		if (list.size() > 1) {
-			separateLines = "<br>";
+		if (result != null) {
+			List<XmlClass> list = result.getTestContext().getCurrentXmlTest().getClasses();
+			StringBuilder classNames = new StringBuilder();
+			String separateLines = "";
+			if (list.size() > 1) {
+				separateLines = "<br>";
+			}
+			for (XmlClass temp : list) {
+				classNames.append(temp.getName()).append(separateLines);
+			}
+			return classNames.toString();
 		}
-		for (XmlClass temp : list) {
-			classNames.append(temp.getName()).append(separateLines);
-		}
-		return classNames.toString();
+		return "";
 	}
 	
 	public String getClassName(ISuiteResult result) {
@@ -990,14 +1017,20 @@ public class ReportNGUtils {
 	}
 	
 	public String getTotalTime(ISuiteResult result) {
-		Date start = result.getTestContext().getStartDate();
-		Date end = result.getTestContext().getEndDate();
-		long diff = end.toInstant().toEpochMilli() - start.toInstant().toEpochMilli();
-		return formatDurationinMinutes(diff);
+		if (result != null) {
+			Date start = result.getTestContext().getStartDate();
+			Date end = result.getTestContext().getEndDate();
+			long diff = end.toInstant().toEpochMilli() - start.toInstant().toEpochMilli();
+			return formatDurationinMinutes(diff);
+		}
+		return "";
 	}
 	
 	public int getTotalSteps(ISuiteResult result) {
-		return result.getTestContext().getAllTestMethods().length;
+		if (result != null) {
+			return result.getTestContext().getAllTestMethods().length;
+		}
+		return 0;
 	}
 	
 	public String getSuiteName(ISuiteResult result) {
@@ -1005,7 +1038,10 @@ public class ReportNGUtils {
 	}
 	
 	public String getSuiteXMLName(ISuiteResult result) {
-		return result.getTestContext().getSuite().getXmlSuite().getFileName();
+		if (result != null) {
+			return result.getTestContext().getSuite().getXmlSuite().getFileName();
+		}
+		return "";
 	}
 	
 	public String getSuiteXMLFileName(ISuiteResult result) {
@@ -1017,13 +1053,16 @@ public class ReportNGUtils {
 	}
 	
 	public String getTestStatus(ISuiteResult result) {
-		if (result.getTestContext().getFailedTests().size() > 0) {
-			return getStatusColor(ResultStatus.FAIL);
+		if (result != null) {
+			if (result.getTestContext().getFailedTests().size() > 0) {
+				return getStatusColor(ResultStatus.FAIL);
+			}
+			if (result.getTestContext().getSkippedTests().size() > 0) {
+				return getStatusColor(ResultStatus.SKIP);
+			}
+			return getStatusColor(ResultStatus.PASS);
 		}
-		if (result.getTestContext().getSkippedTests().size() > 0) {
-			return getStatusColor(ResultStatus.SKIP);
-		}
-		return getStatusColor(ResultStatus.PASS);
+		return "";
 	}
 	
 	public String getSteps(ISuiteResult result) {
@@ -1509,6 +1548,21 @@ public class ReportNGUtils {
 			return suite.getName().replaceAll(" ", "_").replaceAll(",", "_").replaceAll("\"", "_");
 		}
 		return "N/A";
+	}
+	
+	public String getSuiteXMLName(ISuite suite) {
+		if (suite != null) {
+			return suite.getXmlSuite().getFileName();
+		}
+		return "";
+	}
+	
+	public String getSuiteXMLFileName(ISuite suite) {
+		String fullPathName = getSuiteXMLName(suite);
+		if (!Strings.isNullOrEmpty(fullPathName)) {
+			return new File(fullPathName).getName();
+		}
+		return fullPathName;
 	}
 	
 	/**
@@ -2306,6 +2360,32 @@ public class ReportNGUtils {
 		return Boolean.valueOf(knownDefectsMode);
 	}
 	
+	public static boolean showRegressionColumn() {
+		String regressionColumn = "false";
+		try {
+			regressionColumn = System.getProperty(HTMLReporter.SHOW_REGRESSION_COLUMN);
+		} catch (Exception ex) {
+			
+		}
+		if (!Strings.isNullOrEmpty(regressionColumn) && regressionColumn.equalsIgnoreCase("true")) {
+			regressionColumn = "true";
+		}
+		return Boolean.valueOf(regressionColumn);
+	}
+	
+	public static boolean showSuiteConfigurationMethods() {
+		String showSuiteConfigurationMethods = "false";
+		try {
+			showSuiteConfigurationMethods = System.getProperty(HTMLReporter.SHOW_SUITE_CONFIGURATION_METHODS);
+		} catch (Exception ex) {
+			
+		}
+		if (!Strings.isNullOrEmpty(showSuiteConfigurationMethods) && showSuiteConfigurationMethods.equalsIgnoreCase("true")) {
+			showSuiteConfigurationMethods = "true";
+		}
+		return Boolean.valueOf(showSuiteConfigurationMethods);
+	}
+	
 	private String getClassFromFullClassName(String fullClassName) {
 		String[] splitter = fullClassName.split("\\.");
 		if (splitter.length > 1) {
@@ -2313,4 +2393,151 @@ public class ReportNGUtils {
 		}
 		return fullClassName;
 	}
+	
+	public static IResultMap getTestContext(IResultMap iResultMap) {
+		IResultMap map = new ResultMap();
+		for (ITestResult temp : iResultMap.getAllResults()) {
+			if (!temp.getMethod().isBeforeSuiteConfiguration() && !temp.getMethod().isAfterSuiteConfiguration()) {
+				map.addResult(temp, temp.getMethod());
+			}
+		}
+		return map;
+	}
+	
+	public static IResultMap getSuiteContextBeforeSuite(IResultMap iResultMap) {
+		IResultMap map = new ResultMap();
+		for (ITestResult temp : iResultMap.getAllResults()) {
+			if (temp.getMethod().isBeforeSuiteConfiguration()) {
+				map.addResult(temp, temp.getMethod());
+			}
+		}
+		return map;
+	}
+	
+	public static IResultMap getSuiteContextAfterSuite(IResultMap iResultMap) {
+		IResultMap map = new ResultMap();
+		for (ITestResult temp : iResultMap.getAllResults()) {
+			if (temp.getMethod().isAfterSuiteConfiguration()) {
+				map.addResult(temp, temp.getMethod());
+			}
+		}
+		return map;
+	}
+	
+	public String getSuiteConfigurationBefore(int id, ISuite suite) {
+		return getSuiteConfigurationData(suite, id, "BeforeSuite");
+	}
+	
+	public String getSuiteConfigurationAfter(int id, ISuite suite) {
+		return getSuiteConfigurationData(suite, id, "AfterSuite");
+	}
+	
+	private String getSuiteConfigurationData(ISuite suite, int id, String conf) {
+		if ("true".equalsIgnoreCase(System.getProperty(HTMLReporter.SHOW_SUITE_CONFIGURATION_METHODS))) {
+			SuiteConfigurationType suiteConfigurationType = null;
+			if (conf.equalsIgnoreCase("BeforeSuite")) {
+				suiteConfigurationType = SuiteConfigurationType.BeforeSuite;
+			} else if (conf.equalsIgnoreCase("AfterSuite")) {
+				suiteConfigurationType = SuiteConfigurationType.AfterSuite;
+			}
+			// Calculate Total before and after
+			int totalPass = 0;
+			int totalFail = 0;
+			int totalSkip = 0;
+			long totalDuration = 0;
+			String startDateTime = "";
+			Iterator<?> it = suite.getResults().entrySet().iterator();
+			Set<ITestResult> suiteSetBefore = new HashSet<>();
+			Set<ITestResult> suiteSetAfter = new HashSet<>();
+			while (it.hasNext()) {
+				Map.Entry pair = ((Map.Entry) it.next());
+				ISuiteResult suiteResult = (ISuiteResult) pair.getValue();
+				SuiteConfigurationDTO suiteConfigurationDTO = getSuiteConfiguration(suiteResult.getTestContext());
+				if (SuiteConfigurationType.BeforeSuite.toString().equalsIgnoreCase(conf)) {
+					suiteSetBefore.addAll(suiteConfigurationDTO.getBefore());
+				} else if (SuiteConfigurationType.AfterSuite.toString().equalsIgnoreCase(conf)) {
+					suiteSetAfter.addAll(suiteConfigurationDTO.getAfter());
+				}
+			}
+			
+			Set<ITestResult> finalSet = null;
+			if (SuiteConfigurationType.BeforeSuite.equals(suiteConfigurationType)) {
+				finalSet = suiteSetBefore;
+			} else if (SuiteConfigurationType.AfterSuite.equals(suiteConfigurationType)) {
+				finalSet = suiteSetAfter;
+			}
+			
+			for (ITestResult temp : finalSet) {
+				if (ITestResult.SUCCESS == temp.getStatus()) {
+					totalPass++;
+				} else if (ITestResult.FAILURE == temp.getStatus()) {
+					totalFail++;
+				} else if (ITestResult.SKIP == temp.getStatus()) {
+					totalSkip++;
+				}
+			}
+			totalDuration += getSuiteDuration(finalSet);
+			if (totalPass + totalFail + totalSkip > 0) {
+				// Generate Code
+				return generateOverviewSuiteConfiguration(id, suite, conf, totalPass, totalFail, totalSkip, totalDuration, startDateTime);
+			}
+		}
+		return "";
+		
+	}
+	
+	private String generateOverviewSuiteConfiguration(int id, ISuite suite, String conf,
+			int totalConfPass,
+			int totalConfFail,
+			int totalConfSkip,
+			long totalDuration,
+			String startDateTime) {
+		StringBuilder htmlCode = new StringBuilder();
+		htmlCode.append("<tr class=\"test\">");
+		htmlCode.append("<td width=\"100\">" + startDateTime + "</td>");
+		if (conf.equalsIgnoreCase("BeforeSuite")) {
+			htmlCode.append("<td><a href=\"suite" + id + "_Before_suiteconfiguration-results.html\">@BeforeSuite" + "</a></td>");
+		} else {
+			htmlCode.append("<td><a href=\"suite" + id + "_After_suiteconfiguration-results.html\">@AfterSuite" + "</a></td>");
+		}
+		if (showRegressionColumn()) {
+			htmlCode.append("<td class=\"duration\"></td>");
+		}
+		htmlCode.append("<td class=\"duration\">" + formatDurationinMinutes(totalDuration) + "</td>");
+		// Total Pass
+		if (totalConfPass > 0) {
+			htmlCode.append("<td class=\"passed number\">" + totalConfPass + "</td>");
+		} else {
+			htmlCode.append("<td class=\"zero number\">0</td>");
+		}
+		// Total Skip
+		if (totalConfSkip > 0) {
+			htmlCode.append("<td class=\"skipped number\">" + totalConfSkip + "</td>");
+		} else {
+			htmlCode.append("<td class=\"zero number\">0</td>");
+		}
+		if (knownDefectMode()) {
+			// #if ($utils.getKnownDefect($result.testContext).size() > 0)
+			// htmlCode.append("<td class=\"knownDefects number\">$utils.getKnownDefect($result.testContext).size()</td>");
+			htmlCode.append("<td class=\"zero number\">0</td>");
+		}
+		//
+		if (knownDefectMode()) {
+			// #if ($utils.getFixed($result.testContext).size() > 0)
+			// htmlCode.append("<td class=\"fixed number\">$utils.getFixed($result.testContext).size()</td>");
+			htmlCode.append("<td class=\"zero number\">0</td>");
+		}
+		// Total Fail
+		if (totalConfFail > 0) {
+			htmlCode.append("<td class=\"failed number\">" + totalConfFail + "</td>");
+		} else {
+			htmlCode.append("<td class=\"zero number\">0</td>");
+		}
+		// Calculate passRate
+		int passRate = (totalConfPass + totalConfSkip) * 100 / totalConfPass + totalConfSkip + totalConfFail;
+		htmlCode.append("<td class=\"passRate\">" + passRate + "%</td>");
+		htmlCode.append("</tr>");
+		return htmlCode.toString();
+	}
+	
 }
