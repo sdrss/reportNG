@@ -50,12 +50,13 @@ public class HTMLReporter extends AbstractReporter {
 	public static final String EXTERNAL_LINKS = "org.uncommons.reportng.externalLinks";
 	public static final String ESCAPE_OUTPUT = "org.uncommons.reportng.escape-output";
 	public static final String SHOW_PASSED_CONFIGURATIONS = "org.uncommons.reportng.show-passed-configuration-methods";
-	public static final String TEMPLATES_PATH = "org/uncommons/reportng/templates/html/";
 	public static final String SKIP_EXECUTION = "org.uncommons.reportng.skip.execution";
 	public static final String TEST_TIMEOUT = "org.uncommons.reportng.timeout";
 	public static final String TEST_MAX_RETRY_COUNT = "org.uncommons.reportng.maxRetryCount";
 	public static final String SHOW_SUITE_CONFIGURATION_METHODS = "org.uncommons.reportng.show-suite-configuration-methods";
 	public static final String SHOW_REGRESSION_COLUMN = "org.uncommons.reportng.show-regression-column";
+	//
+	public static final String TEMPLATES_PATH = "org/uncommons/reportng/templates/html/";
 	// HTML pages
 	public static final String INDEX_FILE = "index.html";
 	public static final String SUITES_FILE = "suites.html";
@@ -83,7 +84,6 @@ public class HTMLReporter extends AbstractReporter {
 	// Keys
 	public static final String SUITE_KEY = "suite";
 	public static final String SUITES_KEY = "suites";
-	// public static final String SUITES_CONFIG_KEY = "suitesconfig";
 	public static final String GROUPS_KEY = "groups";
 	public static final String RESULT_KEY = "result";
 	public static final String FAILED_SUITE_CONFIG_KEY = "failedSuiteConfigurations";
@@ -151,8 +151,6 @@ public class HTMLReporter extends AbstractReporter {
 			createMenu(sortedSuites, outputDirectory);
 			// Create Overview
 			createOverview(sortedSuites, outputDirectory);
-			// Calculate Before/After suite
-			// Map<XmlSuite, List<ITestNGMethod>> suiteConfig = ReporterHelper.suiteConfigurationCalculation(sortedSuites);
 			// Overview
 			createTestOverview(sortedSuites, outputDirectory);
 			// Suites

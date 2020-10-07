@@ -62,8 +62,16 @@ public class ReportNGUtils {
 	private static boolean showHideReportFeatureFlag = false;
 	
 	public enum SuiteConfigurationType {
-		AfterSuite,
-		BeforeSuite
+		AFTERSUITE,
+		BEFORESUITE
+	}
+	
+	public static ResultsDTO checkAttribute(List<ISuite> suites) {
+		return HTMLReporter.getResults();
+	}
+	
+	public static IssuesDTO issues(List<ISuite> suites) {
+		return HTMLReporter.getIssuesDTO();
 	}
 	
 	public static String getExternalLinks() {
@@ -253,14 +261,6 @@ public class ReportNGUtils {
 		}
 		return status.toString();
 		
-	}
-	
-	public static ResultsDTO checkAttribute(List<ISuite> suites) {
-		return HTMLReporter.getResults();
-	}
-	
-	public static IssuesDTO issues(List<ISuite> suites) {
-		return HTMLReporter.getIssuesDTO();
 	}
 	
 	public String runArguments(List<ISuite> suites) {
@@ -2462,9 +2462,9 @@ public class ReportNGUtils {
 		if ("true".equalsIgnoreCase(System.getProperty(HTMLReporter.SHOW_SUITE_CONFIGURATION_METHODS))) {
 			SuiteConfigurationType suiteConfigurationType = null;
 			if (conf.equalsIgnoreCase("BeforeSuite")) {
-				suiteConfigurationType = SuiteConfigurationType.BeforeSuite;
+				suiteConfigurationType = SuiteConfigurationType.BEFORESUITE;
 			} else if (conf.equalsIgnoreCase("AfterSuite")) {
-				suiteConfigurationType = SuiteConfigurationType.AfterSuite;
+				suiteConfigurationType = SuiteConfigurationType.AFTERSUITE;
 			}
 			// Calculate Total before and after
 			int totalPass = 0;
@@ -2479,17 +2479,17 @@ public class ReportNGUtils {
 				Map.Entry pair = ((Map.Entry) it.next());
 				ISuiteResult suiteResult = (ISuiteResult) pair.getValue();
 				SuiteConfigurationDTO suiteConfigurationDTO = getSuiteConfiguration(suiteResult.getTestContext());
-				if (SuiteConfigurationType.BeforeSuite.toString().equalsIgnoreCase(conf)) {
+				if (SuiteConfigurationType.BEFORESUITE.toString().equalsIgnoreCase(conf)) {
 					suiteSetBefore.addAll(suiteConfigurationDTO.getBefore());
-				} else if (SuiteConfigurationType.AfterSuite.toString().equalsIgnoreCase(conf)) {
+				} else if (SuiteConfigurationType.AFTERSUITE.toString().equalsIgnoreCase(conf)) {
 					suiteSetAfter.addAll(suiteConfigurationDTO.getAfter());
 				}
 			}
 			
 			Set<ITestResult> finalSet = null;
-			if (SuiteConfigurationType.BeforeSuite.equals(suiteConfigurationType)) {
+			if (SuiteConfigurationType.BEFORESUITE.equals(suiteConfigurationType)) {
 				finalSet = suiteSetBefore;
-			} else if (SuiteConfigurationType.AfterSuite.equals(suiteConfigurationType)) {
+			} else if (SuiteConfigurationType.AFTERSUITE.equals(suiteConfigurationType)) {
 				finalSet = suiteSetAfter;
 			}
 			

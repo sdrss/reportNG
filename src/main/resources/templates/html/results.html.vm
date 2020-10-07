@@ -26,7 +26,7 @@
 	    <th>
 	    	<div class="tooltipCustom">
 	    		<img src="images/copy.png" width="10" height="15" alt="Copy to Clipboard" onclick="copyToClipboard('#testNameId')"/>
-	    		<span class="tooltiptextCustom">Copy test name</span>
+	    		<span class="tooltiptextCustom">$messages.getString("copyTestName")</span>
 			</div>
 	    </th>
 	    <th id="testNameId">$result.testContext.name</th> 
@@ -36,11 +36,11 @@
 	    <th>
 	    	<div class="tooltipCustom">
 	    		<img src="images/copy.png" width="10" height="15" alt="Copy to Clipboard" onclick="copyToClipboard('#testClassId')"/>
-	    		<span class="tooltiptextCustom">Copy full path class name</span>
+	    		<span class="tooltiptextCustom">$messages.getString("copyFullPathClassName")</span>
 			</div>
 	    	<div class="tooltipCustom">
 	    		<img src="images/copy.png" width="10" height="15" alt="Copy to Clipboard" onclick="copyToClipboard('#testClassNameId')"/>
-	    		<span class="tooltiptextCustom">Copy class name</span>
+	    		<span class="tooltiptextCustom">$messages.getString("copyClassName")</span>
 			</div>
 	    </th> 
 	    <th id="testClassId">$utils.getClassNameFullPath($result)</th>
@@ -51,7 +51,7 @@
 	    <th>
 	    	<div class="tooltipCustom">
 	    		<img src="images/copy.png" width="10" height="15" alt="Copy to Clipboard" onclick="copyToClipboard('#suiteNameId')"/>
-	    		<span class="tooltiptextCustom">Copy suite name</span>
+	    		<span class="tooltiptextCustom">$messages.getString("copySuiteName")</span>
 			</div>
 		</th>
 	    <th id="suiteNameId">$utils.getSuiteName($result)</th>
@@ -61,11 +61,11 @@
 	    <th>
 	    	<div class="tooltipCustom">
 	    		<img src="images/copy.png" width="10" height="15" alt="Copy to Clipboard" onclick="copyToClipboard('#suiteXMLId')"/>
-	    		<span class="tooltiptextCustom">Copy suite xml full file name</span>
+	    		<span class="tooltiptextCustom">$messages.getString("copyFullPathSuiteNameXML")</span>
 			</div>
 	    	<div class="tooltipCustom">
 	    		<img src="images/copy.png" width="10" height="15" alt="Copy to Clipboard" onclick="copyToClipboard('#suiteXMLNameId')"/>
-	    		<span class="tooltiptextCustom">Copy suite xml file name</span>
+	    		<span class="tooltiptextCustom">$messages.getString("copySuiteNameXML")</span>
 			</div>
 	    </th> 
 	  	<th id="suiteXMLId">$utils.getSuiteXMLName($result)</th>
@@ -77,7 +77,7 @@
 	    <th>
 	    	<div class="tooltipCustom">
 	    		<img src="images/copy.png" width="10" height="15" alt="Copy to Clipboard" onclick="copyToClipboard('#featureDescriptionId')"/>
-	    		<span class="tooltiptextCustom">Copy feature description</span>
+	    		<span class="tooltiptextCustom">$messages.getString("copyFeature")</span>
 			</div>
 		</th>
 	  	<th id="featureDescriptionId">$utils.getDescription($result)</th>
