@@ -25,7 +25,7 @@ ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framewor
  * org.uncommons.reportng.logOutputReport : Set to "true" or "false" to specify if a summary of log output is generated and linked in test report.
  * org.uncommons.reportng.locale
 Over-rides the default locale for localised messages in generated reports. If not specified, the JVM default locale is used. If there are no translations available for the selected locale the default English messages are used instead. This property should be set to an ISO language code (e.g. "en" or "fr") or to an ISO language code and an ISO country code separated by an underscore (e.g. "en_US" or "fr_CA").
- * org.uncommons.reportng.skip.execution : Set to "true" whenever you need to skip the rest testNG execution.
+ * org.uncommons.reportng.skip.execution : Set to "true" whenever you need to skip the rest testNG execution.See for more [Wiki/Tips](https://github.com/sdrss/reportNG/wiki/Tips)
  * org.uncommons.reportng.show-suite-configuration-methods : Set to "true" to display @Before & @After suite methods into overview page. Otherwise, if false then suite configuration methods are displayed by default in the first/last test. Default value is false
  * org.uncommons.reportng.show-regression-column : Set to "true"/"false" in order to show/hide accordingly the column Regression into Overview page. The default value is false
  
