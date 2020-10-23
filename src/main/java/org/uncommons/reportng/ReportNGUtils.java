@@ -2563,9 +2563,9 @@ public class ReportNGUtils {
 		// Calculate passRate
 		int passRate = 0;
 		int total = totalConfPass + totalConfSkip + totalConfFail;
-		int totalPass = totalConfPass + totalConfSkip;
+		int totalPass = totalConfPass;
 		if (total > 0 && totalPass > 0) {
-			passRate = (totalConfPass + totalConfSkip) * 100 / totalConfPass + totalConfSkip + totalConfFail;
+			passRate = totalPass * 100 / total;
 		}
 		htmlCode.append("<td class=\"passRate\">" + passRate + "%</td>");
 		htmlCode.append("</tr>");
