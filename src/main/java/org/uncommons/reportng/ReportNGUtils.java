@@ -424,10 +424,10 @@ public class ReportNGUtils {
 					}
 				}
 				
-				if (totalStartDate == null || totalStartDate > startDate) {
+				if (totalStartDate == null || (startDate != null && totalStartDate > startDate)) {
 					totalStartDate = startDate;
 				}
-				if (totalEndDate == null || totalEndDate < endDate) {
+				if (totalEndDate == null || (endDate != null && totalEndDate < endDate)) {
 					totalEndDate = endDate;
 				}
 				response.append("<tr class=\"test\">\n");
