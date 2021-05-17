@@ -15,7 +15,7 @@ public class IAnnotationTransformerListener implements IAnnotationTransformer {
 	@Override
 	public void transform(ITestAnnotation annotation, @SuppressWarnings("rawtypes") Class testClass, @SuppressWarnings("rawtypes") Constructor testConstructor, Method testMethod) {
 		// Retry
-		IRetryAnalyzer retry = annotation.getRetryAnalyzer();
+		Class<? extends IRetryAnalyzer> retry = annotation.getRetryAnalyzerClass();
 		if (retry == null) {
 			annotation.setRetryAnalyzer(Retry.class);
 		}
