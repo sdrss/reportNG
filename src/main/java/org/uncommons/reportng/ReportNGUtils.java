@@ -423,11 +423,16 @@ public class ReportNGUtils {
 						endDate = tempIInvokedMethod.getDate();
 					}
 				}
-				
+				if (startDate == null) {
+					startDate = 0L;
+				}
+				if (endDate == null) {
+					endDate = 0L;
+				}
 				if (totalStartDate == null || (startDate != null && totalStartDate > startDate)) {
 					totalStartDate = startDate;
 				}
-				if (totalEndDate == null || (endDate != null && totalEndDate < endDate)) {
+				if (totalEndDate == null || (endDate != null && totalEndDate > endDate)) {
 					totalEndDate = endDate;
 				}
 				response.append("<tr class=\"test\">\n");
