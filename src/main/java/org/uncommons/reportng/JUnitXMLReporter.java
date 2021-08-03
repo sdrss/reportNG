@@ -31,8 +31,7 @@ import org.testng.ITestResult;
 import org.testng.xml.XmlSuite;
 
 /**
- * JUnit XML reporter for TestNG that uses Velocity templates to generate its
- * output.
+ * JUnit XML reporter for TestNG that uses Velocity templates to generate its output.
  * 
  * @author Daniel Dyer
  */
@@ -40,16 +39,15 @@ public class JUnitXMLReporter extends AbstractReporter {
 	private static final String RESULTS_KEY = "results";
 	private static final String TEMPLATES_PATH = "org/uncommons/reportng/templates/xml/";
 	private static final String RESULTS_FILE = "results.xml";
-
+	
 	private static final String REPORT_DIRECTORY = "xml";
-
+	
 	public JUnitXMLReporter() {
 		super(TEMPLATES_PATH);
 	}
-
+	
 	/**
-	 * Generates a set of XML files (JUnit format) that contain data about the
-	 * outcome of the specified test suites.
+	 * Generates a set of XML files (JUnit format) that contain data about the outcome of the specified test suites.
 	 * 
 	 * @param suites
 	 *            Data about the test runs.
@@ -57,9 +55,9 @@ public class JUnitXMLReporter extends AbstractReporter {
 	 *            The directory in which to create the report.
 	 */
 	public void generateReport(List<XmlSuite> xmlSuites, List<ISuite> suites, String outputDirectoryName) {
-		removeEmptyDirectories(new File(outputDirectoryName));
+		// removeEmptyDirectories(new File(outputDirectoryName));
 		File outputDirectory = new File(outputDirectoryName, REPORT_DIRECTORY);
-		outputDirectory.mkdir();
+		outputDirectory.mkdirs();
 		Collection<TestClassResults> flattenedResults = flattenResults(suites);
 		for (TestClassResults results : flattenedResults) {
 			VelocityContext context = createContext();
@@ -71,11 +69,10 @@ public class JUnitXMLReporter extends AbstractReporter {
 			}
 		}
 	}
-
+	
 	/**
-	 * Flatten a list of test suite results into a collection of results grouped
-	 * by test class. This method basically strips away the TestNG way of
-	 * organising tests and arranges the results by test class.
+	 * Flatten a list of test suite results into a collection of results grouped by test class. This method basically strips away the TestNG way of organising tests and arranges the results by test
+	 * class.
 	 */
 	private Collection<TestClassResults> flattenResults(List<ISuite> suites) {
 		Map<IClass, TestClassResults> flattenedResults = new HashMap<IClass, TestClassResults>();
@@ -93,13 +90,13 @@ public class JUnitXMLReporter extends AbstractReporter {
 		}
 		return flattenedResults.values();
 	}
-
+	
 	private void organiseByClass(Set<ITestResult> testResults, Map<IClass, TestClassResults> flattenedResults) {
 		for (ITestResult testResult : testResults) {
 			getResultsForClass(flattenedResults, testResult).addResult(testResult);
 		}
 	}
-
+	
 	/**
 	 * Look-up the results data for a particular test class.
 	 */
@@ -111,61 +108,60 @@ public class JUnitXMLReporter extends AbstractReporter {
 		}
 		return resultsForClass;
 	}
-
+	
 	/**
-	 * Groups together all of the data about the tests results from the methods
-	 * of a single test class.
+	 * Groups together all of the data about the tests results from the methods of a single test class.
 	 */
 	public static final class TestClassResults {
 		private final IClass testClass;
 		private final Collection<ITestResult> failedTests = new LinkedList<ITestResult>();
 		private final Collection<ITestResult> skippedTests = new LinkedList<ITestResult>();
 		private final Collection<ITestResult> passedTests = new LinkedList<ITestResult>();
-
+		
 		private long duration = 0;
-
+		
 		private TestClassResults(IClass testClass) {
 			this.testClass = testClass;
 		}
-
+		
 		public IClass getTestClass() {
 			return testClass;
 		}
-
+		
 		/**
 		 * Adds a test result for this class. Organises results by outcome.
 		 */
 		void addResult(ITestResult result) {
 			switch (result.getStatus()) {
-			case ITestResult.SKIP:
-				if (META.allowSkippedTestsInXML()) {
-					skippedTests.add(result);
+				case ITestResult.SKIP:
+					if (META.allowSkippedTestsInXML()) {
+						skippedTests.add(result);
+						break;
+					}
+				case ITestResult.FAILURE:
 					break;
-				}
-			case ITestResult.FAILURE:
-				break;
-			case ITestResult.SUCCESS_PERCENTAGE_FAILURE:
-				failedTests.add(result);
-				break;
-			case ITestResult.SUCCESS:
-				passedTests.add(result);
-				break;
+				case ITestResult.SUCCESS_PERCENTAGE_FAILURE:
+					failedTests.add(result);
+					break;
+				case ITestResult.SUCCESS:
+					passedTests.add(result);
+					break;
 			}
 			duration += (result.getEndMillis() - result.getStartMillis());
 		}
-
+		
 		public Collection<ITestResult> getFailedTests() {
 			return failedTests;
 		}
-
+		
 		public Collection<ITestResult> getSkippedTests() {
 			return skippedTests;
 		}
-
+		
 		public Collection<ITestResult> getPassedTests() {
 			return passedTests;
 		}
-
+		
 		public long getDuration() {
 			return duration;
 		}
