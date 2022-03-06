@@ -786,7 +786,6 @@ public class ReportNGUtils {
 	}
 	
 	public static String getTotalDuration(ISuite suite) {
-		Map<String, ISuiteResult> results = suite.getResults();
 		Map<String, ISuiteResult> map = suite.getResults();
 		List<ITestContext> list = new ArrayList<>();
 		for (String key : map.keySet()) {
@@ -805,10 +804,13 @@ public class ReportNGUtils {
 	}
 	
 	public static String formatDurationinMinutes(long elapsed) {
-		long seconds = (elapsed / 1000) % 60;
-		long minutes = (elapsed / (1000 * 60)) % 60;
-		long hours = (elapsed / (1000 * 60 * 60)) % 24;
-		return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+		if (elapsed >= 0) {
+			long seconds = (elapsed / 1000) % 60;
+			long minutes = (elapsed / (1000 * 60)) % 60;
+			long hours = (elapsed / (1000 * 60 * 60)) % 24;
+			return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+		}
+		return String.format("%02d:%02d:%02d", 0, 0, 0);
 	}
 	
 	public static String formatDurationinMinutes(String time1, String time2) {
@@ -873,13 +875,20 @@ public class ReportNGUtils {
 				duration += (result.getEndMillis() - result.getStartMillis());
 			}
 		}
+		if (duration < 0) {
+			// Skip tests or configuration methods are have getEndMillis = 0 end getStartMillis > 0
+			return 0;
+		}
 		return duration;
 	}
 	
 	private static long getSuiteDuration(Set<ITestResult> results) {
 		long duration = 0;
 		for (ITestResult result : results) {
-			duration += (result.getEndMillis() - result.getStartMillis());
+			long tempDuration = result.getEndMillis() - result.getStartMillis();
+			if (tempDuration > 0) {
+				duration += tempDuration;
+			}
 		}
 		return duration;
 	}
@@ -929,6 +938,9 @@ public class ReportNGUtils {
 	
 	public String formatDuration(long elapsed) {
 		double seconds = (double) elapsed / 1000;
+		if (seconds < 0) {
+			seconds = 0;
+		}
 		return DURATION_FORMAT.format(seconds);
 	}
 	
@@ -2060,7 +2072,7 @@ public class ReportNGUtils {
 				}
 			}
 			if (addResult) {
-				temp.addResult(tr, tr.getMethod());
+				temp.addResult(tr);
 			}
 		}
 		return temp;
@@ -2085,7 +2097,7 @@ public class ReportNGUtils {
 				}
 			}
 			if (addResult) {
-				temp.addResult(tr, tr.getMethod());
+				temp.addResult(tr);
 			}
 		}
 		return temp;
@@ -2115,7 +2127,7 @@ public class ReportNGUtils {
 					}
 				}
 				if (addResult) {
-					temp.addResult(tr, tr.getMethod());
+					temp.addResult(tr);
 				}
 			}
 		}
@@ -2142,7 +2154,7 @@ public class ReportNGUtils {
 					}
 				}
 				if (addResult) {
-					temp.addResult(tr, tr.getMethod());
+					temp.addResult(tr);
 				}
 			}
 		}
@@ -2429,7 +2441,7 @@ public class ReportNGUtils {
 		IResultMap map = new ResultMap();
 		for (ITestResult temp : iResultMap.getAllResults()) {
 			if (!temp.getMethod().isBeforeSuiteConfiguration() && !temp.getMethod().isAfterSuiteConfiguration()) {
-				map.addResult(temp, temp.getMethod());
+				map.addResult(temp);
 			}
 		}
 		return map;
@@ -2439,7 +2451,7 @@ public class ReportNGUtils {
 		IResultMap map = new ResultMap();
 		for (ITestResult temp : iResultMap.getAllResults()) {
 			if (temp.getMethod().isBeforeSuiteConfiguration()) {
-				map.addResult(temp, temp.getMethod());
+				map.addResult(temp);
 			}
 		}
 		return map;
@@ -2449,7 +2461,7 @@ public class ReportNGUtils {
 		IResultMap map = new ResultMap();
 		for (ITestResult temp : iResultMap.getAllResults()) {
 			if (temp.getMethod().isAfterSuiteConfiguration()) {
-				map.addResult(temp, temp.getMethod());
+				map.addResult(temp);
 			}
 		}
 		return map;
