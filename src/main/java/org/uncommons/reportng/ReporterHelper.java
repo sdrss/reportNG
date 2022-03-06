@@ -359,7 +359,7 @@ public class ReporterHelper {
 					testResult.setStatus(ITestResult.SUCCESS);
 					testResult.setAttribute(ReportNGUtils.TEST, ReportNGUtils.KNOWN);
 					// Add to PASS
-					passedResultMap.addResult(testResult, testResult.getMethod());
+					passedResultMap.addResult(testResult);
 				}
 			}
 			Iterator<ITestResult> passedIterator = passedResultMap.getAllResults().iterator();
