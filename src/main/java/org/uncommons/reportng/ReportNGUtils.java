@@ -883,14 +883,20 @@ public class ReportNGUtils {
 	}
 	
 	private static long getSuiteDuration(Set<ITestResult> results) {
-		long duration = 0;
+		long startDate = Long.MAX_VALUE;
+		long endDate = 0;
 		for (ITestResult result : results) {
-			long tempDuration = result.getEndMillis() - result.getStartMillis();
-			if (tempDuration > 0) {
-				duration += tempDuration;
+			if (result.getStartMillis() < startDate) {
+				startDate = result.getStartMillis();
+			}
+			if (result.getEndMillis() > endDate) {
+				endDate = result.getEndMillis();
 			}
 		}
-		return duration;
+		if (endDate > 0) {
+			return endDate - startDate;
+		}
+		return 0;
 	}
 	
 	public String getAnnotation(ITestResult result) {
