@@ -402,6 +402,8 @@ public class ReporterHelper {
 							packageResults.setKnown(ReportNGUtils.getKnownDefect(entry.getValue().getTestContext()).size());
 							packageResults.setFixed(ReportNGUtils.getFixed(entry.getValue().getTestContext()).size());
 							packageResults.setDuration(ReportNGUtils.formatDurationinMinutes(entry.getValue().getTestContext().getEndDate().getTime() - entry.getValue().getTestContext().getStartDate().getTime()));
+							packageResults.setEndMillis(entry.getValue().getTestContext().getEndDate().getTime());
+							packageResults.setStartMillis(entry.getValue().getTestContext().getStartDate().getTime());
 							packageResults.setClassName(tempClass.getName().trim());
 							packageResults.setUrl("suite" + suiteIndex + "_test" + testIndex + "_results.html");
 							if (packages.containsKey(packageResults.getPackageName())) {
@@ -409,6 +411,7 @@ public class ReporterHelper {
 							} else {
 								packages.put(packageResults.getPackageName(), new ArrayList<>(Arrays.asList(packageResults)));
 							}
+							
 						}
 						testIndex++;
 					}
@@ -418,8 +421,17 @@ public class ReporterHelper {
 			// Count Summary per Package
 			for (Map.Entry<String, List<PackageDetailsDTO>> entry : packages.entrySet()) {
 				PackageDetailsDTO packageDetailsDTO = new PackageDetailsDTO(null, null, 0, 0, 0, 0, 0, "00:00:00", "");
+				long startDate = Long.MAX_VALUE;
+				long endDate = 0;
 				for (PackageDetailsDTO temp : entry.getValue()) {
-					packageDetailsDTO.setDuration(ReportNGUtils.formatDurationinMinutes(temp.getDuration(), packageDetailsDTO.getDuration()));
+					if (temp.getStartMillis() < startDate) {
+						startDate = temp.getStartMillis();
+					}
+					if (temp.getEndMillis() > endDate) {
+						endDate = temp.getEndMillis();
+					}
+					// packageDetailsDTO.setDuration(ReportNGUtils.formatDurationinMinutes(temp.getDuration(), packageDetailsDTO.getDuration()));
+					packageDetailsDTO.setDuration(ReportNGUtils.formatDurationinMinutes(endDate - startDate));
 					packageDetailsDTO.setFail(temp.getFail() + packageDetailsDTO.getFail());
 					packageDetailsDTO.setFixed(temp.getFixed() + packageDetailsDTO.getFixed());
 					packageDetailsDTO.setKnown(temp.getKnown() + packageDetailsDTO.getKnown());
@@ -455,6 +467,8 @@ public class ReporterHelper {
 									packageResults.setFixed(ReportNGUtils.getFixed(entry.getValue().getTestContext()).size());
 									packageResults
 											.setDuration(ReportNGUtils.formatDurationinMinutes(entry.getValue().getTestContext().getEndDate().getTime() - entry.getValue().getTestContext().getStartDate().getTime()));
+									packageResults.setEndMillis(entry.getValue().getTestContext().getEndDate().getTime());
+									packageResults.setStartMillis(entry.getValue().getTestContext().getStartDate().getTime());
 									packageResults.setClassName(tempClass.getTestClass().getName().trim());
 									packageResults.setUrl("suite" + suiteIndex + "_test" + testIndex + "_results.html");
 									if (packages.containsKey(packageResults.getPackageName())) {
@@ -481,8 +495,17 @@ public class ReporterHelper {
 			// Count Summary per Package
 			for (Map.Entry<String, List<PackageDetailsDTO>> entry : packages.entrySet()) {
 				PackageDetailsDTO packageDetailsDTO = new PackageDetailsDTO(null, null, 0, 0, 0, 0, 0, "00:00:00", "");
+				long startDate = Long.MAX_VALUE;
+				long endDate = 0;
 				for (PackageDetailsDTO temp : entry.getValue()) {
-					packageDetailsDTO.setDuration(ReportNGUtils.formatDurationinMinutes(temp.getDuration(), packageDetailsDTO.getDuration()));
+					if (packageDetailsDTO.getStartMillis() < startDate) {
+						startDate = temp.getStartMillis();
+					}
+					if (packageDetailsDTO.getEndMillis() > endDate) {
+						endDate = temp.getEndMillis();
+					}
+					packageDetailsDTO.setDuration(ReportNGUtils.formatDurationinMinutes(endDate - startDate));
+					// packageDetailsDTO.setDuration(ReportNGUtils.formatDurationinMinutes(temp.getDuration(), packageDetailsDTO.getDuration()));
 					packageDetailsDTO.setFail(temp.getFail() + packageDetailsDTO.getFail());
 					packageDetailsDTO.setFixed(temp.getFixed() + packageDetailsDTO.getFixed());
 					packageDetailsDTO.setKnown(temp.getKnown() + packageDetailsDTO.getKnown());
