@@ -378,8 +378,8 @@ public class ReportNGUtils {
 			int totalSkip = 0;
 			int totalKnown = 0;
 			int totalFixed = 0;
-			Long totalStartDate = null;
-			Long totalEndDate = null;
+			Long totalStartDate = Long.MAX_VALUE;
+			Long totalEndDate = 0L;
 			for (ISuite tempISuite : suites) {
 				String suiteName = tempISuite.getName();
 				String parentSuiteName = "";
@@ -413,26 +413,20 @@ public class ReportNGUtils {
 				totalKnown += known;
 				totalFixed += fixed;
 				
-				Long startDate = null;
-				Long endDate = null;
+				Long startDate = Long.MAX_VALUE;
+				Long endDate = 0L;
 				for (IInvokedMethod tempIInvokedMethod : tempISuite.getAllInvokedMethods()) {
-					if (startDate == null || tempIInvokedMethod.getDate() < startDate) {
+					if (tempIInvokedMethod.getDate() < startDate) {
 						startDate = tempIInvokedMethod.getDate();
 					}
-					if (endDate == null || tempIInvokedMethod.getDate() > endDate) {
+					if (tempIInvokedMethod.getDate() > endDate) {
 						endDate = tempIInvokedMethod.getDate();
 					}
 				}
-				if (startDate == null) {
-					startDate = 0L;
-				}
-				if (endDate == null) {
-					endDate = 0L;
-				}
-				if (totalStartDate == null || (startDate != null && totalStartDate > startDate)) {
+				if (startDate != null && startDate < totalStartDate) {
 					totalStartDate = startDate;
 				}
-				if (totalEndDate == null || (endDate != null && totalEndDate > endDate)) {
+				if (endDate != null && endDate > totalEndDate) {
 					totalEndDate = endDate;
 				}
 				response.append("<tr class=\"test\">\n");
@@ -474,12 +468,8 @@ public class ReportNGUtils {
 			response.append("<tbody class=\"avoid-sort\">");
 			response.append("<tr class=\"suite\">\n");
 			response.append("<td colspan=\"4\">Total</td>");
-			// In case of suite with no tests totalEndDate & totalStartDate are
-			// null
-			if (totalEndDate == null) {
-				totalEndDate = 0L;
-			}
-			if (totalStartDate == null) {
+			
+			if (totalStartDate == Long.MAX_VALUE) {
 				totalStartDate = 0L;
 			}
 			response.append("<td class=\"duration\">" + formatDurationinMinutes(totalEndDate - totalStartDate) + "</td>");
