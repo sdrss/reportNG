@@ -46,7 +46,7 @@
         	<a href="graphsRSuite.html" class="list-group-item" target="overview">&nbsp;&nbsp;&nbsp;$messages.getString("suiteResults")&nbsp;</a>
         </ul>
 	<a href="output.html" target="overview" class="list-group-item"><span class="glyphicon glyphicon-file"></span>&nbsp;&nbsp;$messages.getString("reportOutputMenu")&nbsp;</a>
-	$utils.getExternalLinks();
+	$utils.getExternalLinks()
 </div>
 </body>
 </html>
