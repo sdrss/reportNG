@@ -2,6 +2,7 @@ package org.uncommons.reportng;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,6 +23,8 @@ import org.uncommons.reportng.dto.IssueDTO;
 import org.uncommons.reportng.dto.IssuesDTO;
 import org.uncommons.reportng.dto.PackageDetailsDTO;
 import org.uncommons.reportng.dto.ResultsDTO;
+
+import com.google.common.base.Strings;
 
 public class ReporterHelper {
 	
@@ -99,30 +102,21 @@ public class ReporterHelper {
 			results.setTotal(0);
 		}
 		
-		// Calculate Start End Date
+		// Calculate Start Date
 		Date tempStartDate = new Date();
 		try {
-			tempStartDate = startDate.get(0);
-		} catch (NullPointerException | IndexOutOfBoundsException ex) {
+			tempStartDate = startDate.stream().min(Comparator.comparing(Date::toInstant)).get();
+		} catch (Exception ex) {
 			
-		}
-		for (Date tempDate : startDate) {
-			if (tempDate.before(tempStartDate)) {
-				tempStartDate = tempDate;
-			}
 		}
 		results.setStartDate(tempStartDate);
 		
+		// Calculate End Date
 		Date tempEndDate = new Date();
 		try {
-			tempEndDate = endDate.get(0);
-		} catch (NullPointerException | IndexOutOfBoundsException ex) {
+			tempEndDate = endDate.stream().max(Comparator.comparing(Date::toInstant)).get();
+		} catch (Exception ex) {
 			
-		}
-		for (Date tempDate : endDate) {
-			if (tempDate.after(tempEndDate)) {
-				tempEndDate = tempDate;
-			}
 		}
 		results.setEndDate(tempEndDate);
 		
@@ -146,7 +140,7 @@ public class ReporterHelper {
 				for (IssueDTO temp : knownIssues) {
 					String issueDescription = "null";
 					if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
-						issueDescription = temp.getIssueDescription().trim();
+						issueDescription = temp.getIssueDescription();
 					}
 					if (issuesDTO.getKnownIssues().containsKey(issueDescription)) {
 						issuesDTO.getKnownIssues().get(issueDescription).add(temp);
@@ -160,7 +154,7 @@ public class ReporterHelper {
 				for (IssueDTO temp : fixedIssues) {
 					String issueDescription = "null";
 					if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
-						issueDescription = temp.getIssueDescription().trim();
+						issueDescription = temp.getIssueDescription();
 					}
 					if (issuesDTO.getFixedIssues().containsKey(issueDescription)) {
 						issuesDTO.getFixedIssues().get(issueDescription).add(temp);
@@ -174,7 +168,7 @@ public class ReporterHelper {
 				for (IssueDTO temp : skippedIssues) {
 					String issueDescription = "null";
 					if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
-						issueDescription = temp.getIssueDescription().trim();
+						issueDescription = temp.getIssueDescription();
 					}
 					if (issuesDTO.getSkippedIssues().containsKey(issueDescription)) {
 						issuesDTO.getSkippedIssues().get(issueDescription).add(temp);
@@ -188,7 +182,7 @@ public class ReporterHelper {
 				for (IssueDTO temp : newIssues) {
 					String issueDescription = "null";
 					if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
-						issueDescription = temp.getIssueDescription().trim();
+						issueDescription = temp.getIssueDescription();
 					}
 					if (issuesDTO.getNewIssues().containsKey(issueDescription)) {
 						issuesDTO.getNewIssues().get(issueDescription).add(temp);
@@ -204,7 +198,7 @@ public class ReporterHelper {
 					for (IssueDTO temp : newFeature) {
 						String issueDescription = "null";
 						if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
-							issueDescription = temp.getIssueDescription().trim();
+							issueDescription = temp.getIssueDescription();
 						}
 						if (issuesDTO.getNewFeature().containsKey(issueDescription)) {
 							issuesDTO.getNewFeature().get(issueDescription).add(temp);
@@ -219,7 +213,7 @@ public class ReporterHelper {
 					for (IssueDTO temp : feature) {
 						String issueDescription = "null";
 						if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
-							issueDescription = temp.getIssueDescription().trim();
+							issueDescription = temp.getIssueDescription();
 						}
 						if (issuesDTO.getFeature().containsKey(issueDescription)) {
 							issuesDTO.getFeature().get(issueDescription).add(temp);
@@ -239,7 +233,7 @@ public class ReporterHelper {
 			for (IssueDTO temp : pair.getValue()) {
 				String issueDescription = "null";
 				if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
-					issueDescription = temp.getIssueDescription().trim();
+					issueDescription = temp.getIssueDescription();
 				}
 				if (temp.isRegression()) {
 					if (issuesDTO.getNewIssuesRegression().containsKey(issueDescription)) {
@@ -263,7 +257,7 @@ public class ReporterHelper {
 			for (IssueDTO temp : pair.getValue()) {
 				String issueDescription = "null";
 				if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
-					issueDescription = temp.getIssueDescription().trim();
+					issueDescription = temp.getIssueDescription();
 				}
 				if (temp.isRegression()) {
 					if (issuesDTO.getKnownIssuesRegression().containsKey(issueDescription)) {
@@ -287,7 +281,7 @@ public class ReporterHelper {
 			for (IssueDTO temp : pair.getValue()) {
 				String issueDescription = "null";
 				if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
-					issueDescription = temp.getIssueDescription().trim();
+					issueDescription = temp.getIssueDescription();
 				}
 				if (temp.isRegression()) {
 					if (issuesDTO.getFixedIssuesRegression().containsKey(issueDescription)) {
@@ -311,7 +305,7 @@ public class ReporterHelper {
 			for (IssueDTO temp : pair.getValue()) {
 				String issueDescription = "null";
 				if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
-					issueDescription = temp.getIssueDescription().trim();
+					issueDescription = temp.getIssueDescription();
 				}
 				if (temp.isRegression()) {
 					if (issuesDTO.getSkippedIssuesRegression().containsKey(issueDescription)) {
@@ -331,19 +325,8 @@ public class ReporterHelper {
 		return issuesDTO;
 	}
 	
-	public static boolean knownDefectMode() {
-		String knownDefectsMode = System.getProperty(HTMLReporter.KWOWNDEFECTSMODE);
-		if (knownDefectsMode == null || knownDefectsMode.isEmpty()) {
-			knownDefectsMode = "false";
-		}
-		if (knownDefectsMode.equalsIgnoreCase("true")) {
-			return true;
-		}
-		return false;
-	}
-	
 	public static ITestContext updateResults(ITestContext iTestContext) {
-		if (knownDefectMode()) {
+		if (ReportNGUtils.knownDefectMode()) {
 			IResultMap failedResultMap = iTestContext.getFailedTests();
 			IResultMap passedResultMap = iTestContext.getPassedTests();
 			Iterator<ITestResult> failedIterator = failedResultMap.getAllResults().iterator();
@@ -393,7 +376,7 @@ public class ReporterHelper {
 				int testIndex = 1;
 				for (Map.Entry<String, ISuiteResult> entry : results.entrySet()) {
 					for (XmlClass tempClass : entry.getValue().getTestContext().getCurrentXmlTest().getClasses()) {
-						if (tempClass.getName() != null && !tempClass.getName().isEmpty()) {
+						if (!Strings.isNullOrEmpty(tempClass.getName())) {
 							PackageDetailsDTO packageResults = new PackageDetailsDTO();
 							packageResults.setPackageName(tempClass.getName().substring(0, tempClass.getName().lastIndexOf(".")).trim());
 							packageResults.setPass(ReportNGUtils.getPassed(entry.getValue().getTestContext()).size());
@@ -457,7 +440,7 @@ public class ReporterHelper {
 					for (ITestNGMethod tempClass : entry.getValue().getTestContext().getAllTestMethods()) {
 						if (tempClass.getGroups() != null && tempClass.getGroups().length > 0) {
 							for (String tempGroup : tempClass.getGroups()) {
-								if (tempGroup != null && !tempGroup.isEmpty()) {
+								if (!Strings.isNullOrEmpty(tempGroup)) {
 									PackageDetailsDTO packageResults = new PackageDetailsDTO();
 									packageResults.setPackageName(tempGroup.trim());
 									packageResults.setPass(ReportNGUtils.getPassed(entry.getValue().getTestContext()).size());

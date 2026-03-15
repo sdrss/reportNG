@@ -3,6 +3,8 @@ package org.uncommons.reportng;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -43,18 +45,21 @@ public class HTMLReporter extends AbstractReporter {
 	
 	// System Variables
 	public static final String REPORTNG_TITLE = "org.uncommons.reportng.title";
-	public static final String ARGUMENTS_TITLE = "org.uncommons.reportng.arguments";
-	public static final String LOG_OUTPUT_REPORT = "org.uncommons.reportng.logOutputReport";
-	public static final String LOG_OUTPUT_REPORT_PATH = "org.uncommons.reportng.logOutputReport.path";
-	public static final String KWOWNDEFECTSMODE = "org.uncommons.reportng.knownDefectsMode";
-	public static final String EXTERNAL_LINKS = "org.uncommons.reportng.externalLinks";
 	public static final String ESCAPE_OUTPUT = "org.uncommons.reportng.escape-output";
-	public static final String SHOW_PASSED_CONFIGURATIONS = "org.uncommons.reportng.show-passed-configuration-methods";
+	public static final String LOG_OUTPUT_REPORT_PATH = "org.uncommons.reportng.logOutputReport.path";
+	// System Variables and modes
+	public static final String REPORTNG_DEBUG_MODE = "org.uncommons.reportng.debug.mode";
+	public static final String KWOWN_DEFECTS_MODE = "org.uncommons.reportng.knownDefectsMode";
+	public static final String SHOW_PASSED_CONFIGURATIONS_MODE = "org.uncommons.reportng.show-passed-configuration-methods";
+	public static final String SHOW_SUITE_CONFIGURATION_METHODS_MODE = "org.uncommons.reportng.show-suite-configuration-methods";
+	public static final String SHOW_REGRESSION_COLUMN_MODE = "org.uncommons.reportng.show-regression-column";
+	public static final String LOG_OUTPUT_REPORT_MODE = "org.uncommons.reportng.logOutputReport";
+	// System Variables
 	public static final String SKIP_EXECUTION = "org.uncommons.reportng.skip.execution";
+	public static final String EXTERNAL_LINKS = "org.uncommons.reportng.externalLinks";
+	// System Variables and Listeners
 	public static final String TEST_TIMEOUT = "org.uncommons.reportng.timeout";
 	public static final String TEST_MAX_RETRY_COUNT = "org.uncommons.reportng.maxRetryCount";
-	public static final String SHOW_SUITE_CONFIGURATION_METHODS = "org.uncommons.reportng.show-suite-configuration-methods";
-	public static final String SHOW_REGRESSION_COLUMN = "org.uncommons.reportng.show-regression-column";
 	//
 	public static final String TEMPLATES_PATH = "org/uncommons/reportng/templates/html/";
 	// HTML pages
@@ -130,7 +135,16 @@ public class HTMLReporter extends AbstractReporter {
 		try {
 			logger.info("****************************************");
 			logger.info("Generate reportNG report");
+			if (ReportNGUtils.isDebugModeEnabled()) {
+				logger.info("Modes : ");
+				logger.info(KWOWN_DEFECTS_MODE + " : " + ReportNGUtils.knownDefectMode());
+				logger.info(SHOW_PASSED_CONFIGURATIONS_MODE + " : " + ReportNGUtils.showPassedConfigurationMethods());
+				logger.info(SHOW_SUITE_CONFIGURATION_METHODS_MODE + " : " + ReportNGUtils.showSuiteConfigurationMethods());
+				logger.info(SHOW_REGRESSION_COLUMN_MODE + " : " + ReportNGUtils.showRegressionColumn());
+				logger.info(LOG_OUTPUT_REPORT_MODE + " : " + ReportNGUtils.getAllOutput());
+			}
 			logger.info("Path : " + OUTPUTDIRECTORY_ABSOLUTE);
+			Instant start = Instant.now();
 			// Sort Suites
 			List<ISuite> sortedSuites = sortSuitesChronologicaly(suites);
 			sortedSuites = sortResultsChronologicaly(sortedSuites);
@@ -141,10 +155,17 @@ public class HTMLReporter extends AbstractReporter {
 			// Copy Resources
 			copyResources(outputDirectory);
 			// Update results
+			Instant start2 = Instant.now();
 			setResults(ReporterHelper.checkAttribute(sortedSuites));
 			setIssuesDTO(ReporterHelper.issues(sortedSuites));
 			setPackageDeatails(ReporterHelper.packageDetails(sortedSuites));
 			setGroupDetails(ReporterHelper.groupDetails(sortedSuites));
+			Instant finish2 = Instant.now();
+			long timeElapsed2 = Duration.between(start2, finish2).toSeconds();
+			if (ReportNGUtils.isDebugModeEnabled()) {
+				logger.info("Calculation Time " + timeElapsed2 + "s");
+			}
+			Instant start3 = Instant.now();
 			// Create Frames
 			createFrameset(outputDirectory);
 			// Create Menu
@@ -175,6 +196,16 @@ public class HTMLReporter extends AbstractReporter {
 			createReportLogOutput(outputDirectory);
 			// Create File with Html Report Title
 			createHTMLReportTitleFile(OUTPUTDIRECTORY);
+			Instant finish3 = Instant.now();
+			long timeElapsed3 = Duration.between(start3, finish3).toSeconds();
+			if (ReportNGUtils.isDebugModeEnabled()) {
+				logger.info("Html creation Time " + timeElapsed3 + "s");
+			}
+			Instant finish = Instant.now();
+			long timeElapsed = Duration.between(start, finish).toSeconds();
+			if (ReportNGUtils.isDebugModeEnabled()) {
+				logger.info("Total Time " + timeElapsed + "s");
+			}
 			logger.info("****************************************");
 		} catch (Exception ex) {
 			throw new ReportNGException("Failed generating HTML report.", ex);

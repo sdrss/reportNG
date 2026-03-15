@@ -30,11 +30,10 @@ import org.testng.TestListenerAdapter;
 import org.uncommons.reportng.dto.TestNGSemantics;
 
 /**
- * Convenient base class for the ReportNG reporters. Provides common
- * functionality.
+ * Convenient base class for the ReportNG reporters. Provides common functionality.
  */
 public abstract class AbstractReporter extends TestListenerAdapter implements IReporter, ISuiteListener, IConfigurationListener2 {
-
+	
 	private static final String ENCODING = "UTF-8";
 	protected static final String TEMPLATE_EXTENSION = ".vm";
 	private static final String META_KEY = "meta";
@@ -44,7 +43,7 @@ public abstract class AbstractReporter extends TestListenerAdapter implements IR
 	private static final String MESSAGES_KEY = "messages";
 	private static final ResourceBundle MESSAGES = ResourceBundle.getBundle("org.uncommons.reportng.messages.reportng", META.getLocale());
 	private final String classpathPrefix;
-
+	
 	/**
 	 * @param classpathPrefix
 	 *            Where in the classpath to load templates from.
@@ -62,10 +61,9 @@ public abstract class AbstractReporter extends TestListenerAdapter implements IR
 			throw new ReportNGException("Failed to initialise Velocity.", ex);
 		}
 	}
-
+	
 	/**
-	 * Helper method that creates a Velocity context and initialises it with a
-	 * reference to the ReportNG utils, report metadata and localised messages.
+	 * Helper method that creates a Velocity context and initialises it with a reference to the ReportNG utils, report metadata and localised messages.
 	 * 
 	 * @return An initialised Velocity context.
 	 */
@@ -76,10 +74,9 @@ public abstract class AbstractReporter extends TestListenerAdapter implements IR
 		context.put(MESSAGES_KEY, MESSAGES);
 		return context;
 	}
-
+	
 	/**
-	 * Generate the specified output file by merging the specified Velocity
-	 * template with the supplied context.
+	 * Generate the specified output file by merging the specified Velocity template with the supplied context.
 	 */
 	protected void generateFile(File file, String templateName, VelocityContext context) throws Exception {
 		Writer writer = new BufferedWriter(new FileWriter(file));
@@ -90,7 +87,7 @@ public abstract class AbstractReporter extends TestListenerAdapter implements IR
 			writer.close();
 		}
 	}
-
+	
 	/**
 	 * Helper method to copy the contents of a stream to a file.
 	 * 
@@ -126,14 +123,14 @@ public abstract class AbstractReporter extends TestListenerAdapter implements IR
 			}
 		}
 	}
-
+	
 	protected void copyStream(String sourceFile, String destinationFile, File outputDirectory) throws IOException {
 		String resourcePath = "/" + classpathPrefix + sourceFile;
 		URL inputUrl = this.getClass().getResource(resourcePath);
 		File dest = new File(outputDirectory.getAbsolutePath() + "/" + destinationFile);
 		FileUtils.copyURLToFile(inputUrl, dest);
 	}
-
+	
 	protected void removeEmptyDirectories(File outputDirectory) {
 		if (outputDirectory.exists()) {
 			try {
@@ -143,11 +140,11 @@ public abstract class AbstractReporter extends TestListenerAdapter implements IR
 			}
 		}
 	}
-
+	
 	protected void generateDirectory(File file) {
 		file.mkdirs();
 	}
-
+	
 	@Override
 	public void onFinish(ISuite iSuite) {
 		for (Entry<String, ISuiteResult> entry : iSuite.getResults().entrySet()) {
@@ -155,17 +152,17 @@ public abstract class AbstractReporter extends TestListenerAdapter implements IR
 			testContext = ReporterHelper.updateResults(testContext);
 		}
 	}
-
+	
 	@Override
 	public void onStart(ISuite iSuite) {
-
+		
 	}
-
+	
 	@Override
 	public void onStart(ITestContext testContext) {
-
+		
 	}
-
+	
 	@Override
 	public void onFinish(ITestContext testContext) {
 		super.onFinish(testContext);
@@ -194,23 +191,23 @@ public abstract class AbstractReporter extends TestListenerAdapter implements IR
 			fixed = "0";
 			System.setProperty(TestNGSemantics.FIXED, fixed);
 		}
-
+		
 		int passI = ReportNGUtils.getPassed(testContext).size();
 		System.setProperty(TestNGSemantics.PASS, Integer.toString(passI + Integer.parseInt(passed)));
-
+		
 		int failI = ReportNGUtils.getFailed(testContext).size();
 		System.setProperty(TestNGSemantics.FAILED, Integer.toString(failI + Integer.parseInt(failed)));
-
+		
 		int skipI = ReportNGUtils.getSkip(testContext).size();
 		System.setProperty(TestNGSemantics.SKIP, Integer.toString(skipI + Integer.parseInt(skipped)));
-
+		
 		int knownI = ReportNGUtils.getKnownDefect(testContext).size();
 		System.setProperty(TestNGSemantics.KNOWN_DEFECT, Integer.toString(knownI + Integer.parseInt(known)));
-
+		
 		int fixedI = ReportNGUtils.getFixed(testContext).size();
 		System.setProperty(TestNGSemantics.FIXED, Integer.toString(fixedI + Integer.parseInt(fixed)));
-		if (!"true".equalsIgnoreCase(System.getProperty(HTMLReporter.SKIP_EXECUTION))) {
-			if ("true".equalsIgnoreCase(System.getProperty(HTMLReporter.KWOWNDEFECTSMODE))) {
+		if (!ReportNGUtils.skipExecutionMode()) {
+			if (ReportNGUtils.knownDefectMode()) {
 				Reporter.log(TestNGSemantics.STRIPES, true);
 				Reporter.log("Total Passed: " + System.getProperty(TestNGSemantics.PASS) + "(+" + passI + "), " +
 						"Failures: " + System.getProperty(TestNGSemantics.FAILED) + "(+" + failI + "), " +
@@ -225,48 +222,47 @@ public abstract class AbstractReporter extends TestListenerAdapter implements IR
 						"Skips: " + System.getProperty(TestNGSemantics.SKIP) + "(+" + skipI + ")", true);
 				Reporter.log(TestNGSemantics.STRIPES, true);
 			}
-
 		}
 	}
-
+	
 	@Override
 	public void onTestStart(ITestResult tr) {
 		skipExecution(tr);
 	}
-
+	
 	@Override
 	public void onTestSkipped(ITestResult tr) {
 	}
-
+	
 	@Override
 	public void onTestFailure(ITestResult tr) {
 	}
-
+	
 	@Override
 	public void onTestSuccess(ITestResult tr) {
 	}
-
+	
 	@Override
 	public void onConfigurationSuccess(ITestResult tr) {
 	}
-
+	
 	@Override
 	public void onConfigurationFailure(ITestResult tr) {
 	}
-
+	
 	@Override
 	public void onConfigurationSkip(ITestResult tr) {
 	}
-
+	
 	@Override
 	public void beforeConfiguration(ITestResult tr) {
 		skipExecution(tr);
 	}
-
+	
 	public static void skipExecution(ITestResult iTestResult) {
-		if ("true".equalsIgnoreCase(System.getProperty(HTMLReporter.SKIP_EXECUTION))) {
+		if (ReportNGUtils.skipExecutionMode()) {
 			throw new SkipException("Skipped because property [" + HTMLReporter.SKIP_EXECUTION + "=" + true + "]");
 		}
 	}
-
+	
 }

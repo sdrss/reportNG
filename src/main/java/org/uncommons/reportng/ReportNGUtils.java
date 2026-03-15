@@ -130,7 +130,7 @@ public class ReportNGUtils {
 	
 	public static String getReleaseStatus(List<ISuite> suites) {
 		StringBuilder status = new StringBuilder();
-		if ("true".equalsIgnoreCase(System.getProperty(HTMLReporter.SKIP_EXECUTION))) {
+		if (skipExecutionMode()) {
 			status.append("<b><font color=\"red\">Skip Execution due to \"Skip Execution Mode\".</font></b><br>");
 		} else {
 			boolean releaseRegression = true;
@@ -974,19 +974,6 @@ public class ReportNGUtils {
 		return Reporter.getOutput(result);
 	}
 	
-	/**
-	 * Retieves the output from all calls to {@link org.testng.Reporter#log(String)} across all tests.
-	 * 
-	 * @return A (possibly empty) list of log messages.
-	 */
-	public List<String> getAllOutput() {
-		if ("true".equalsIgnoreCase(System.getProperty(HTMLReporter.LOG_OUTPUT_REPORT))) {
-			return Reporter.getOutput();
-		}
-		return new ArrayList<>(Arrays.asList("Param '" + HTMLReporter.LOG_OUTPUT_REPORT
-				+ "' has neen set to 'false' , so Report Output is not generated."));
-	}
-	
 	public boolean hasArguments(ITestResult result) {
 		return result.getParameters().length > 0;
 	}
@@ -1320,7 +1307,7 @@ public class ReportNGUtils {
 	
 	public List<ITestResult> getPassedConfigurations(IClass classTest, Map<IClass, List<ITestResult>> passedConfigurations) {
 		List<ITestResult> newmethods = new ArrayList<>();
-		if ("true".equals(System.getProperty(HTMLReporter.SHOW_PASSED_CONFIGURATIONS))) {
+		if (showPassedConfigurationMethods()) {
 			Method[] methodsInClass = classTest.getRealClass().getDeclaredMethods();
 			List<ITestResult> methods = passedConfigurations.get(classTest);
 			for (ITestResult temp : methods) {
@@ -2386,45 +2373,6 @@ public class ReportNGUtils {
 		return UUID.randomUUID().toString();
 	}
 	
-	public static boolean knownDefectMode() {
-		String knownDefectsMode = "false";
-		try {
-			knownDefectsMode = System.getProperty(HTMLReporter.KWOWNDEFECTSMODE);
-		} catch (Exception ex) {
-			
-		}
-		if (!Strings.isNullOrEmpty(knownDefectsMode) && knownDefectsMode.equalsIgnoreCase("true")) {
-			knownDefectsMode = "true";
-		}
-		return Boolean.valueOf(knownDefectsMode);
-	}
-	
-	public static boolean showRegressionColumn() {
-		String regressionColumn = "false";
-		try {
-			regressionColumn = System.getProperty(HTMLReporter.SHOW_REGRESSION_COLUMN);
-		} catch (Exception ex) {
-			
-		}
-		if (!Strings.isNullOrEmpty(regressionColumn) && regressionColumn.equalsIgnoreCase("true")) {
-			regressionColumn = "true";
-		}
-		return Boolean.valueOf(regressionColumn);
-	}
-	
-	public static boolean showSuiteConfigurationMethods() {
-		String showSuiteConfigurationMethods = "false";
-		try {
-			showSuiteConfigurationMethods = System.getProperty(HTMLReporter.SHOW_SUITE_CONFIGURATION_METHODS);
-		} catch (Exception ex) {
-			
-		}
-		if (!Strings.isNullOrEmpty(showSuiteConfigurationMethods) && showSuiteConfigurationMethods.equalsIgnoreCase("true")) {
-			showSuiteConfigurationMethods = "true";
-		}
-		return Boolean.valueOf(showSuiteConfigurationMethods);
-	}
-	
 	private String getClassFromFullClassName(String fullClassName) {
 		String[] splitter = fullClassName.split("\\.");
 		if (splitter.length > 1) {
@@ -2472,7 +2420,7 @@ public class ReportNGUtils {
 	}
 	
 	private String getSuiteConfigurationData(ISuite suite, int id, String conf) {
-		if ("true".equalsIgnoreCase(System.getProperty(HTMLReporter.SHOW_SUITE_CONFIGURATION_METHODS))) {
+		if (showSuiteConfigurationMethods()) {
 			SuiteConfigurationType suiteConfigurationType = null;
 			if (conf.equalsIgnoreCase("BeforeSuite")) {
 				suiteConfigurationType = SuiteConfigurationType.BEFORESUITE;
@@ -2583,6 +2531,62 @@ public class ReportNGUtils {
 		htmlCode.append("<td class=\"passRate\">" + passRate + "%</td>");
 		htmlCode.append("</tr>");
 		return htmlCode.toString();
+	}
+	
+	///////////////////////////////////////////////////////////////////////
+	// Modes
+	public static boolean isDebugModeEnabled() {
+		if ("true".equalsIgnoreCase(System.getProperty(HTMLReporter.REPORTNG_DEBUG_MODE))) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean knownDefectMode() {
+		if ("true".equalsIgnoreCase(System.getProperty(HTMLReporter.KWOWN_DEFECTS_MODE))) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean showRegressionColumn() {
+		if ("true".equalsIgnoreCase(System.getProperty(HTMLReporter.SHOW_REGRESSION_COLUMN_MODE))) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean showSuiteConfigurationMethods() {
+		if ("true".equalsIgnoreCase(System.getProperty(HTMLReporter.SHOW_SUITE_CONFIGURATION_METHODS_MODE))) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean showPassedConfigurationMethods() {
+		if ("true".equalsIgnoreCase(System.getProperty(HTMLReporter.SHOW_PASSED_CONFIGURATIONS_MODE))) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean skipExecutionMode() {
+		if ("true".equalsIgnoreCase(System.getProperty(HTMLReporter.SKIP_EXECUTION))) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Retieves the output from all calls to {@link org.testng.Reporter#log(String)} across all tests.
+	 * 
+	 * @return A (possibly empty) list of log messages.
+	 */
+	public static List<String> getAllOutput() {
+		if ("true".equalsIgnoreCase(System.getProperty(HTMLReporter.LOG_OUTPUT_REPORT_MODE))) {
+			return Reporter.getOutput();
+		}
+		return new ArrayList<>(Arrays.asList("Param '" + HTMLReporter.LOG_OUTPUT_REPORT_MODE + "' has neen set to 'false' , so Report Output is not generated."));
 	}
 	
 }
