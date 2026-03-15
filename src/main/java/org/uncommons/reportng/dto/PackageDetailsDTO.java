@@ -80,7 +80,7 @@ public class PackageDetailsDTO {
 		this.duration = duration;
 	}
 	
-	public String getClassΝame() {
+	public String getClassName() {
 		return className;
 	}
 	

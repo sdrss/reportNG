@@ -550,10 +550,10 @@ public class ReportNGUtils {
 				response.append("<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">");
 				response.append("<td></td>");
 				if (showHideReportFeatureFlag) {
-					response.append("<td><a href=\"" + packageDTO.getUrl() + "\" onmouseover=\"showReport(this,'" + packageDTO.getUrl() + "')\" onmouseout = \"hideReport(this)\">" + packageDTO.getClassΝame()
+					response.append("<td><a href=\"" + packageDTO.getUrl() + "\" onmouseover=\"showReport(this,'" + packageDTO.getUrl() + "')\" onmouseout = \"hideReport(this)\">" + packageDTO.getClassName()
 							+ "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>");
 				} else {
-					response.append("<td><a href=\"" + packageDTO.getUrl() + "\">" + packageDTO.getClassΝame() + "</a></td>");
+					response.append("<td><a href=\"" + packageDTO.getUrl() + "\">" + packageDTO.getClassName() + "</a></td>");
 				}
 				response.append("<td align=\"center\">" + packageDTO.getDuration() + "</td>");
 				if (packageDTO.getPass() > 0) {
@@ -634,10 +634,10 @@ public class ReportNGUtils {
 					response.append("<tr class=\"child-row" + indexCounter + "\" style=\"display: table-row;\">");
 					response.append("<td></td>");
 					if (showHideReportFeatureFlag) {
-						response.append("<td><a href=\"" + packageDTO.getUrl() + "\" onmouseover=\"showReport(this,'" + packageDTO.getUrl() + "')\" onmouseout = \"hideReport(this)\">" + packageDTO.getClassΝame()
+						response.append("<td><a href=\"" + packageDTO.getUrl() + "\" onmouseover=\"showReport(this,'" + packageDTO.getUrl() + "')\" onmouseout = \"hideReport(this)\">" + packageDTO.getClassName()
 								+ "<iframe class=\"tipFrame\" src=\"\"></iframe></a></td>");
 					} else {
-						response.append("<td><a href=\"" + packageDTO.getUrl() + "\">" + packageDTO.getClassΝame() + "</a></td>");
+						response.append("<td><a href=\"" + packageDTO.getUrl() + "\">" + packageDTO.getClassName() + "</a></td>");
 					}
 					response.append("<td align=\"center\">" + packageDTO.getDuration() + "</td>");
 					if (packageDTO.getPass() > 0) {

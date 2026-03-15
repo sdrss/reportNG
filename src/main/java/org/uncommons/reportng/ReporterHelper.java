@@ -457,7 +457,7 @@ public class ReporterHelper {
 									if (packages.containsKey(packageResults.getPackageName())) {
 										boolean found = false;
 										for (PackageDetailsDTO temp : packages.get(packageResults.getPackageName())) {
-											if (temp.getClassΝame().equals(packageResults.getClassΝame())) {
+											if (temp.getClassName().equals(packageResults.getClassName())) {
 												found = true;
 											}
 										}
