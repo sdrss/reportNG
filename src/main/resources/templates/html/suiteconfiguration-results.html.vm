@@ -19,7 +19,7 @@
 </head>
 <body onload="doParse(); return false;" onkeypress="collapseExpand();">
 <div class="well well-large">
-	<b>$messages.getString("suiteInfo")</>
+	<b>$messages.getString("suiteInfo")</b>
 	<table class="table">
 	  <tr>
 	    <th>$messages.getString("suiteName") : </th>

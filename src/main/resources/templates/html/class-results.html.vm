@@ -18,7 +18,7 @@
 		<td class="time">$testResult.startMillis</td>
 		<td class="header fixed" colspan="4" onClick="toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse" style="cursor: pointer;">
 		<div style="float:left;"><i>$messages.getString("class")&nbsp;:&nbsp;</i>$utils.escapeHTMLString($testResult.InstanceName)</div>
-		<div style="float:right;">$utils.getAnnotation($testResult)&nbsp&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
+		<div style="float:right;">$utils.getAnnotation($testResult)&nbsp;&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
 		</td>
 		</tr>
 	#else
@@ -64,19 +64,19 @@
 		<span class="description"><b>$messages.getString("Description"): </b>$utils.escapeHTMLString($testResult.method.description)</span><br>
 	#end
 	#if ($utils.hasPriority($testResult))
-		<span class="description"><b>$messages.getString("Priority"): </b><font color='blue'>$testResult.method.priority</font></span><br>
+		<span class="description"><b>$messages.getString("Priority"): </b><span style="color:blue;">$testResult.method.priority</span></span><br>
 	#end
 	#if ($utils.hasKnownDefectsDescription($testResult))
-		<span class="Description"><b>$messages.getString("KnownIssue"): </b><font color='red'>$utils.getKnownDefectDescription($testResult)</font></span><br>
+		<span class="Description"><b>$messages.getString("KnownIssue"): </b><span style="color:red;">$utils.escapeHTMLString($utils.getKnownDefectDescription($testResult))</span></span><br>
 	#end
 	#if ($utils.hasGroups($testResult))
-		<span class="description"><b>$messages.getString("groups"): </b><font color='green'>$utils.getGroups($testResult)</font></span><br>
+		<span class="description"><b>$messages.getString("groups"): </b><span style="color:green;">$utils.escapeHTMLString($utils.getGroups($testResult))</span></span><br>
 	#end
 	#if ($utils.hasInvocationCount($testResult))
-		<span class="description"><b>$messages.getString("invocationCount"): </b><font color='blue'>$utils.getInvocationCount($testResult)</font></span><br>
+		<span class="description"><b>$messages.getString("invocationCount"): </b><span style="color:blue;">$utils.escapeHTMLString($utils.getInvocationCount($testResult))</span></span><br>
 	#end
 	#if ($utils.hasTimeOut($testResult))
-		<span class="description"><b>$messages.getString("timeOut"): </b><font color='blue'>$utils.getTimeOut($testResult)</font></span><br>
+		<span class="description"><b>$messages.getString("timeOut"): </b><span style="color:blue;">$utils.escapeHTMLString($utils.getTimeOut($testResult))</span></span><br>
 	#end
 	<span class="duration"><b>$messages.getString("duration"): </b>$utils.formatDuration($testResult.startMillis,$testResult.endMillis)s</span><br>
 	</td>
@@ -129,8 +129,8 @@
 		#end
 		</div>
 	#end
-	</td>
 	</div>
+	</td>
 </tr>
 #set ($generatedID = $utils.randomId())
 #end
