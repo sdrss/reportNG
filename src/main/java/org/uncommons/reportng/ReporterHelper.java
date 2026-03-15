@@ -1,7 +1,7 @@
 ﻿package org.uncommons.reportng;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -137,7 +137,7 @@ public class ReporterHelper {
 					if (issuesDTO.getKnownIssues().containsKey(issueDescription)) {
 						issuesDTO.getKnownIssues().get(issueDescription).add(temp);
 					} else {
-						issuesDTO.getKnownIssues().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
+						issuesDTO.getKnownIssues().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
 					}
 				}
 				issuesDTO.setKnownIssuesAmount(issuesDTO.getKnownIssues().size());
@@ -151,7 +151,7 @@ public class ReporterHelper {
 					if (issuesDTO.getFixedIssues().containsKey(issueDescription)) {
 						issuesDTO.getFixedIssues().get(issueDescription).add(temp);
 					} else {
-						issuesDTO.getFixedIssues().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
+						issuesDTO.getFixedIssues().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
 					}
 				}
 				issuesDTO.setFixedIssuesAmount(issuesDTO.getFixedIssues().size());
@@ -165,7 +165,7 @@ public class ReporterHelper {
 					if (issuesDTO.getSkippedIssues().containsKey(issueDescription)) {
 						issuesDTO.getSkippedIssues().get(issueDescription).add(temp);
 					} else {
-						issuesDTO.getSkippedIssues().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
+						issuesDTO.getSkippedIssues().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
 					}
 				}
 				issuesDTO.setSkippedIssuesAmount(issuesDTO.getSkippedIssues().size());
@@ -179,7 +179,7 @@ public class ReporterHelper {
 					if (issuesDTO.getNewIssues().containsKey(issueDescription)) {
 						issuesDTO.getNewIssues().get(issueDescription).add(temp);
 					} else {
-						issuesDTO.getNewIssues().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
+						issuesDTO.getNewIssues().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
 					}
 				}
 				issuesDTO.setNewIssuesAmount(issuesDTO.getNewIssues().size());
@@ -195,7 +195,7 @@ public class ReporterHelper {
 						if (issuesDTO.getNewFeature().containsKey(issueDescription)) {
 							issuesDTO.getNewFeature().get(issueDescription).add(temp);
 						} else {
-							issuesDTO.getNewFeature().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
+							issuesDTO.getNewFeature().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
 						}
 					}
 				}
@@ -210,7 +210,7 @@ public class ReporterHelper {
 						if (issuesDTO.getFeature().containsKey(issueDescription)) {
 							issuesDTO.getFeature().get(issueDescription).add(temp);
 						} else {
-							issuesDTO.getFeature().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
+							issuesDTO.getFeature().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
 						}
 					}
 				}
@@ -231,13 +231,13 @@ public class ReporterHelper {
 					if (issuesDTO.getNewIssuesRegression().containsKey(issueDescription)) {
 						issuesDTO.getNewIssuesRegression().get(issueDescription).add(temp);
 					} else {
-						issuesDTO.getNewIssuesRegression().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
+						issuesDTO.getNewIssuesRegression().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
 					}
 				} else {
 					if (issuesDTO.getNewIssuesNewFeature().containsKey(issueDescription)) {
 						issuesDTO.getNewIssuesNewFeature().get(issueDescription).add(temp);
 					} else {
-						issuesDTO.getNewIssuesNewFeature().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
+						issuesDTO.getNewIssuesNewFeature().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
 					}
 				}
 			}
@@ -255,13 +255,13 @@ public class ReporterHelper {
 					if (issuesDTO.getKnownIssuesRegression().containsKey(issueDescription)) {
 						issuesDTO.getKnownIssuesRegression().get(issueDescription).add(temp);
 					} else {
-						issuesDTO.getKnownIssuesRegression().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
+						issuesDTO.getKnownIssuesRegression().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
 					}
 				} else {
 					if (issuesDTO.getKnownIssuesNewFeature().containsKey(issueDescription)) {
 						issuesDTO.getKnownIssuesNewFeature().get(issueDescription).add(temp);
 					} else {
-						issuesDTO.getKnownIssuesNewFeature().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
+						issuesDTO.getKnownIssuesNewFeature().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
 					}
 				}
 			}
@@ -279,13 +279,13 @@ public class ReporterHelper {
 					if (issuesDTO.getFixedIssuesRegression().containsKey(issueDescription)) {
 						issuesDTO.getFixedIssuesRegression().get(issueDescription).add(temp);
 					} else {
-						issuesDTO.getFixedIssuesRegression().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
+						issuesDTO.getFixedIssuesRegression().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
 					}
 				} else {
 					if (issuesDTO.getFixedIssuesNewFeature().containsKey(issueDescription)) {
 						issuesDTO.getFixedIssuesNewFeature().get(issueDescription).add(temp);
 					} else {
-						issuesDTO.getFixedIssuesNewFeature().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
+						issuesDTO.getFixedIssuesNewFeature().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
 					}
 				}
 			}
@@ -303,13 +303,13 @@ public class ReporterHelper {
 					if (issuesDTO.getSkippedIssuesRegression().containsKey(issueDescription)) {
 						issuesDTO.getSkippedIssuesRegression().get(issueDescription).add(temp);
 					} else {
-						issuesDTO.getSkippedIssuesRegression().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
+						issuesDTO.getSkippedIssuesRegression().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
 					}
 				} else {
 					if (issuesDTO.getSkippedIssuesNewFeature().containsKey(issueDescription)) {
 						issuesDTO.getSkippedIssuesNewFeature().get(issueDescription).add(temp);
 					} else {
-						issuesDTO.getSkippedIssuesNewFeature().put(issueDescription, new ArrayList<IssueDTO>(Arrays.asList(temp)));
+						issuesDTO.getSkippedIssuesNewFeature().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
 					}
 				}
 			}
@@ -384,7 +384,7 @@ public class ReporterHelper {
 							if (packages.containsKey(packageResults.getPackageName())) {
 								packages.get(packageResults.getPackageName()).add(packageResults);
 							} else {
-								packages.put(packageResults.getPackageName(), new ArrayList<>(Arrays.asList(packageResults)));
+								packages.put(packageResults.getPackageName(), new ArrayList<>(Collections.singletonList(packageResults)));
 							}
 							
 						}
@@ -399,10 +399,10 @@ public class ReporterHelper {
 				long startDate = Long.MAX_VALUE;
 				long endDate = 0;
 				for (PackageDetailsDTO temp : entry.getValue()) {
-					if (temp.getStartMillis() < startDate) {
+					if (temp.getStartMillis() != null && temp.getStartMillis() < startDate) {
 						startDate = temp.getStartMillis();
 					}
-					if (temp.getEndMillis() > endDate) {
+					if (temp.getEndMillis() != null && temp.getEndMillis() > endDate) {
 						endDate = temp.getEndMillis();
 					}
 					// packageDetailsDTO.setDuration(ReportNGUtils.formatDurationinMinutes(temp.getDuration(), packageDetailsDTO.getDuration()));
@@ -447,17 +447,14 @@ public class ReporterHelper {
 									packageResults.setClassName(tempClass.getTestClass().getName().trim());
 									packageResults.setUrl("suite" + suiteIndex + "_test" + testIndex + "_results.html");
 									if (packages.containsKey(packageResults.getPackageName())) {
-										boolean found = false;
-										for (PackageDetailsDTO temp : packages.get(packageResults.getPackageName())) {
-											if (temp.getClassName().equals(packageResults.getClassName())) {
-												found = true;
-											}
-										}
+										boolean found = packages.get(packageResults.getPackageName()).stream().anyMatch(t -> t.getClassName().equals(packageResults.getClassName()));
 										if (!found) {
 											packages.get(packageResults.getPackageName()).add(packageResults);
 										}
 									} else {
-										packages.put(packageResults.getPackageName(), new ArrayList<>(Arrays.asList(packageResults)));
+										List<PackageDetailsDTO> newList = new ArrayList<>();
+										newList.add(packageResults);
+										packages.put(packageResults.getPackageName(), newList);
 									}
 								}
 							}
@@ -473,10 +470,10 @@ public class ReporterHelper {
 				long startDate = Long.MAX_VALUE;
 				long endDate = 0;
 				for (PackageDetailsDTO temp : entry.getValue()) {
-					if (temp.getStartMillis() < startDate) {
+					if (temp.getStartMillis() != null && temp.getStartMillis() < startDate) {
 						startDate = temp.getStartMillis();
 					}
-					if (temp.getEndMillis() > endDate) {
+					if (temp.getEndMillis() != null && temp.getEndMillis() > endDate) {
 						endDate = temp.getEndMillis();
 					}
 					packageDetailsDTO.setDuration(ReportNGUtils.formatDurationinMinutes(endDate - startDate));

@@ -778,8 +778,8 @@ public class ReportNGUtils {
 	public static String getTotalDuration(ISuite suite) {
 		Map<String, ISuiteResult> map = suite.getResults();
 		List<ITestContext> list = new ArrayList<>();
-		for (String key : map.keySet()) {
-			list.add(map.get(key).getTestContext());
+		for (ISuiteResult suiteResult : map.values()) {
+			list.add(suiteResult.getTestContext());
 		}
 		Set<ITestResult> allResults = new HashSet<>();
 		for (ITestContext temp : list) {
@@ -1561,10 +1561,10 @@ public class ReportNGUtils {
 		int failed = 0;
 		int skip = 0;
 		Map<String, ISuiteResult> map = suite.getResults();
-		for (String key : map.keySet()) {
-			passed += map.get(key).getTestContext().getPassedTests().size();
-			failed += map.get(key).getTestContext().getFailedTests().size();
-			skip += map.get(key).getTestContext().getSkippedTests().size();
+		for (ISuiteResult suiteResult : map.values()) {
+			passed += suiteResult.getTestContext().getPassedTests().size();
+			failed += suiteResult.getTestContext().getFailedTests().size();
+			skip += suiteResult.getTestContext().getSkippedTests().size();
 		}
 		return passed + failed + skip;
 	}
@@ -2205,7 +2205,7 @@ public class ReportNGUtils {
 		List<IssueDTO> issues = new ArrayList<>();
 		for (ITestResult tr : results) {
 			issues.add(
-					new IssueDTO(suiteName, tr.getTestContext().getName(), tr.getInstanceName(), tr.getThrowable().getMessage(), linkName, isRegression(tr.getTestContext())));
+					new IssueDTO(suiteName, tr.getTestContext().getName(), tr.getInstanceName(), tr.getThrowable() != null ? tr.getThrowable().getMessage() : "", linkName, isRegression(tr.getTestContext())));
 		}
 		return issues;
 	}
@@ -2349,7 +2349,7 @@ public class ReportNGUtils {
 				return temp.getConstructorOrMethod().getMethod().getAnnotations();
 			}
 		}
-		return null;
+		return new Annotation[0];
 	}
 	
 	public static boolean hasKnownDefectAnnotation(ITestResult result) {
