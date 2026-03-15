@@ -1,4 +1,4 @@
-﻿package org.uncommons.reportng;
+package org.uncommons.reportng;
 
 import java.util.ArrayList;
 import java.util.Comparator;
