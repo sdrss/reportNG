@@ -4,32 +4,34 @@ function toggleElement(elementId, displayStyle) {
 }
 
 function toggleElementRow(elementId, parentStyle) {
-	var current = getStyle(elementId, 'display');
-	if(parentStyle=='none' && current == 'none'){
+	if (parentStyle === 'none') {
 		elementId.style.display = 'none';
-	}else
-	if(parentStyle=='none' && current == 'table-row'){
-		elementId.style.display = 'none';
-	}else
-	if(parentStyle=='table-row' && current == 'table-row'){
+	} else if (parentStyle === 'table-row') {
 		elementId.style.display = 'table-row';
 	}
 }
 
-function getStyle(elementId, property) {
-	var element = elementId;
-	return element.currentStyle ? element.currentStyle[property]
-			: document.defaultView.getComputedStyle(element, null)
-					.getPropertyValue(property);
+function getStyle(element, property) {
+	return window.getComputedStyle(element).getPropertyValue(property);
+}
+
+function toggleHideButton(btn) {
+	var labelShowAll = btn.data('label-show-all') || 'Show All';
+	var labelShowFailures = btn.data('label-show-failures') || 'Show Only Failures';
+	if (btn.hasClass('btn-danger')) {
+		btn.removeClass('btn-danger').addClass('btn-default').text(labelShowAll);
+	} else {
+		btn.removeClass('btn-default').addClass('btn-danger').text(labelShowFailures);
+	}
 }
 
 function hidePass(element) {
 	var suite = $('table.table-bordered');
 	var suitefooter = $('tr.suite');
 	var well = $('div.well');
-	for (var i = 0; i < suitefooter.length; i++) {
+	for (let i = 0; i < suitefooter.length; i++) {
 		var foundAllPass = 0;
-		var elements = suitefooter[i].parentElement.getElementsByTagName("td");
+		let elements = suitefooter[i].parentElement.getElementsByTagName("td");
 		for (var j = 5; j < elements.length - 1; j++) {
 			if (elements[j].textContent != '0') {
 				foundAllPass = 1;
@@ -39,14 +41,13 @@ function hidePass(element) {
 		if (foundAllPass == 0) {
 			toggleElement(suitefooter[i], '');
 			toggleElement(suitefooter[i].parentElement.parentElement, '');
-
 			toggleElement(well[i], '');
 		}
 	}
 	var test = $('tr.test');
-	for (var i = 0; i < test.length; i++) {
+	for (let i = 0; i < test.length; i++) {
 		var pass = 0;
-		var elements = test[i].getElementsByTagName("td");
+		let elements = test[i].getElementsByTagName("td");
 		for (var j = 5; j < elements.length - 1; j++) {
 			if (elements[j].textContent != '0') {
 				pass = 1;
@@ -57,36 +58,24 @@ function hidePass(element) {
 			toggleElement(test[i], '');
 		}
 	}
-	if ($("#hideResults").hasClass('btn-danger')) {
-		$("#hideResults").removeClass('btn-danger').toggleClass('btn-default');
-		$("#hideResults").text('Show All');
-	} else {
-		$("#hideResults").removeClass('btn-default').toggleClass('btn-danger');
-		$("#hideResults").text('Show Only Failures');
-	}
+	toggleHideButton($("#hideResults"));
 }
 
 function hidePassSuites(element) {
 	var suitefooter = $('tr.test');
-	for (var i = 0; i < suitefooter.length; i++) {
+	for (let i = 0; i < suitefooter.length; i++) {
 		var elements = suitefooter[i].getElementsByTagName("td");
 		if (elements[10].innerText == 'PASS') {
 			toggleElement(suitefooter[i], '');
 		}
 	}
-	if ($("#hideResults").hasClass('btn-danger')) {
-		$("#hideResults").removeClass('btn-danger').toggleClass('btn-default');
-		$("#hideResults").text('Show All');
-	} else {
-		$("#hideResults").removeClass('btn-default').toggleClass('btn-danger');
-		$("#hideResults").text('Show Only Failures');
-	}
+	toggleHideButton($("#hideResults"));
 }
 
 function hidePassPackages(element) {
 	var suitefooter = $('tr.parent');
-	for (var i = 0; i < suitefooter.length; i++) {
-		foundFailures = 0;
+	for (let i = 0; i < suitefooter.length; i++) {
+		var foundFailures = 0;
 		var elements = suitefooter[i].getElementsByTagName("td");
 		for (var j = 4; j < elements.length; j++) {
 			if (elements[j].textContent != '0') {
@@ -96,18 +85,11 @@ function hidePassPackages(element) {
 		}
 		if (foundFailures == 0) {
 			toggleElement(suitefooter[i], '');
-			childElements = $('tr.child-'+suitefooter[i].getAttribute('id'));
+			var childElements = $('tr.child-' + suitefooter[i].getAttribute('id'));
 			for (var k = 0; k < childElements.length; k++) {
 				toggleElementRow(childElements[k], getStyle(suitefooter[i], 'display'));
 			}
 		}
 	}
-	
-	if ($("#hideResults").hasClass('btn-danger')) {
-		$("#hideResults").removeClass('btn-danger').toggleClass('btn-default');
-		$("#hideResults").text('Show All');
-	} else {
-		$("#hideResults").removeClass('btn-default').toggleClass('btn-danger');
-		$("#hideResults").text('Show Only Failures');
-	}
+	toggleHideButton($("#hideResults"));
 }

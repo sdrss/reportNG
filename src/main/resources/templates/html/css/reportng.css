@@ -25,11 +25,11 @@
 }
  .failedConfig {
     background-color: #800000;
-     color: #ffffff
+     color: #ffffff;
 }
  .skippedConfig {
     background-color: #cc6600;
-     color: #ffffff
+     color: #ffffff;
 }
  .totalLabel {
     font-weight: bold;
@@ -79,7 +79,6 @@
     width:1em;
 }
  .duration {
-    text-align: right;
     text-align: center;
     width:1em;
 }
@@ -91,7 +90,7 @@
      margin-top: 1.8em;
      line-height: 1.0em;
      border-spacing: 0.1em;
-     width:1em
+     width:1em;
 }
  .resultsTable {
     border: 0;
@@ -114,7 +113,6 @@
     padding: 0 .5em;
 }
  .number {
-    text-align: right;
     text-align: center;
 }
  .zero {
@@ -188,19 +186,19 @@
 }
 /* These classes are for information about an individual test result. */
  .result {
-    #font-size: 1.1em;
-    # vertical-align: middle;
+    /* font-size: 1.1em; */
+    /* vertical-align: middle; */
 }
  .dependency {
-    #font-family: Lucida Console, Monaco, Courier New, monospace;
-   #  font-weight: bold;
+    /* font-family: Lucida Console, Monaco, Courier New, monospace; */
+    /* font-weight: bold; */
 }
  .arguments {
-   # font-family: Lucida Console, Monaco, Courier New, monospace;
-    # font-weight: bold;
+    /* font-family: Lucida Console, Monaco, Courier New, monospace; */
+    /* font-weight: bold; */
 }
  .testOutput {
-    #font-family: Lucida Console, Monaco, Courier New, monospace;
+    /* font-family: Lucida Console, Monaco, Courier New, monospace; */
      color: black;
 }
  .stackTrace {
@@ -226,9 +224,9 @@
 }
 /* Reporter log output (individual test ouput is style by "testOutput" above). */
  #log {
-    #font-family: Lucida Console, Monaco, Courier New, monospace;
-    # font-size: 1.3em;
-    # margin-top: 1.8em;
+    /* font-family: Lucida Console, Monaco, Courier New, monospace; */
+    /* font-size: 1.3em; */
+    /* margin-top: 1.8em; */
 }
  .overviewTable {
     width: 100%;
@@ -376,13 +374,13 @@
      background-color: white;
      line-height: 1.0em;
      border-spacing: 0.1em;
-    margin-left: 3.8em
+    margin-left: 3.8em;
 }
  .tablemo {
     border: 2px solid black;
      background-color: white;
      border-spacing: 0.5em;
-     margin-left: 3.8em
+     margin-left: 3.8em;
 }
  .tablemo td {
     vertical-align: top;
@@ -399,7 +397,7 @@
     border: 2px solid black;
      background-color: white;
      border-spacing: 0.5em;
-     margin-left: 3.8em
+     margin-left: 3.8em;
 }
  .tablemt td {
     vertical-align: top;
@@ -585,10 +583,9 @@
  .tablesorterSuites th {
     padding: 0 2em;
 }
-.tablesorterSuites td{ 
-	padding:1px; 
+.tablesorterSuites td{
+	padding:1px;
 	border:white 2px solid;
-}
 }
 th {
     font-weight: normal;

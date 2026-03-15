@@ -20,7 +20,7 @@
 <div class="row">
 	<div class="col-xs-12">
 	<h3 class="normal" style="float: left;">$messages.getString("testResults")</h3><br>
-	<button id="hideResults" type="button" class="btn-danger" onclick="hidePass(this);" style="float: right;" title="$messages.getString("hoverTextHidePassSuites")">$messages.getString("showonlyfailures")</button>
+	<button id="hideResults" type="button" class="btn-danger" onclick="hidePass(this);" style="float: right;" title="$messages.getString("hoverTextHidePassSuites")" data-label-show-all="$messages.getString("showall")" data-label-show-failures="$messages.getString("showonlyfailures")">$messages.getString("showonlyfailures")</button>
     </div>
 </div>
 <br>
@@ -70,8 +70,8 @@
 			#set ($thisResultPass = $utils.getPassed($result.testContext).size())
 			#set ($thisResultFail = $utils.getFailed($result.testContext).size())
 			#set ($thisResultSkip = $utils.getSkip($result.testContext).size())
-			#set ($thisResultKnownDefects = $utils.getFixed($result.testContext).size())
-			#set ($thisResultFixed = $utils.getKnownDefect($result.testContext).size())
+			#set ($thisResultKnownDefects = $utils.getKnownDefect($result.testContext).size())
+			#set ($thisResultFixed = $utils.getFixed($result.testContext).size())
 			#set ($thisResultTotal = $thisResultPass + $thisResultFail + $thisResultSkip + $thisResultKnownDefects + $thisResultFixed)
 			#set ($thisResultFailed =  $thisResultFail + $thisResultSkip)
   			#set ($notPassedTests =  $totalFailed + $totalSkipped)

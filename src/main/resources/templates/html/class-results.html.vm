@@ -8,7 +8,7 @@
 	<tr>
 	<td class="time">$testResult.startMillis</td>
 	<td class="header knownDefects" colspan="4" onClick="toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse" style="cursor: pointer;">
-	<div style="float:left;"><i>$messages.getString("class")&nbsp;:&nbsp;</i>$testResult.InstanceName</div>
+	<div style="float:left;"><i>$messages.getString("class")&nbsp;:&nbsp;</i>$utils.escapeHTMLString($testResult.InstanceName)</div>
 	<div style="float:right;">$utils.getAnnotation($testResult)&nbsp;&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
 	</td>
 	</tr>
@@ -17,7 +17,7 @@
 		<tr>
 		<td class="time">$testResult.startMillis</td>
 		<td class="header fixed" colspan="4" onClick="toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse" style="cursor: pointer;">
-		<div style="float:left;"><i>$messages.getString("class")&nbsp;:&nbsp;</i>$testResult.InstanceName</div>
+		<div style="float:left;"><i>$messages.getString("class")&nbsp;:&nbsp;</i>$utils.escapeHTMLString($testResult.InstanceName)</div>
 		<div style="float:right;">$utils.getAnnotation($testResult)&nbsp&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
 		</td>
 		</tr>
@@ -26,7 +26,7 @@
 			<tr>
 			<td class="time">$testResult.startMillis</td>
 			<td class="header passed" colspan="4" onClick="toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse" style="cursor: pointer;">
-			<div style="float:left;"><i>$messages.getString("class")&nbsp;:&nbsp;</i>$testResult.InstanceName</div>
+			<div style="float:left;"><i>$messages.getString("class")&nbsp;:&nbsp;</i>$utils.escapeHTMLString($testResult.InstanceName)</div>
 			<div style="float:right;">$utils.getAnnotation($testResult)&nbsp;&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
 			</td>
 			</tr>
@@ -38,7 +38,7 @@
 	<tr>
 	<td class="time">$testResult.startMillis</td>
 	<td class="header failed" colspan="4" onClick="toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse" style="cursor: pointer;">
-	<div style="float:left;"><i>$messages.getString("class")&nbsp;:&nbsp;</i>$testResult.InstanceName</div>
+	<div style="float:left;"><i>$messages.getString("class")&nbsp;:&nbsp;</i>$utils.escapeHTMLString($testResult.InstanceName)</div>
 	<div style="float:right;">$utils.getAnnotation($testResult)&nbsp;&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
 	</td>
 	</tr>
@@ -48,7 +48,7 @@
 	<tr>
 	<td class="time">$testResult.startMillis</td>
 	<td class="header skipped" colspan="4" onClick="toggleElement('$generatedID','block');changeSingleIcon('span-$generatedID');" title="Click to expand/collapse" style="cursor: pointer;">
-	<div style="float:left;"><i>$messages.getString("class")&nbsp;:&nbsp;</i>$testResult.InstanceName</div>
+	<div style="float:left;"><i>$messages.getString("class")&nbsp;:&nbsp;</i>$utils.escapeHTMLString($testResult.InstanceName)</div>
 	<div style="float:right;">$utils.getAnnotation($testResult)&nbsp;&nbsp;<span id='span-$generatedID' class="glyphicon glyphicon-menu-down"></span></div>
 	</td>
 	</tr>
@@ -59,9 +59,9 @@
 	#if ($testResult.testName)
 		#set ($testInstanceName = "($testResult.testName)")
 	#end
-	<span class="description"><b>$messages.getString("method"): </b>$testResult.name$testInstanceName</span><br>
+	<span class="description"><b>$messages.getString("method"): </b>$utils.escapeHTMLString($testResult.name)$utils.escapeHTMLString($testInstanceName)</span><br>
 	#if ($utils.hasDescription($testResult))
-		<span class="description"><b>$messages.getString("Description"): </b>$testResult.method.description</span><br>
+		<span class="description"><b>$messages.getString("Description"): </b>$utils.escapeHTMLString($testResult.method.description)</span><br>
 	#end
 	#if ($utils.hasPriority($testResult))
 		<span class="description"><b>$messages.getString("Priority"): </b><font color='blue'>$testResult.method.priority</font></span><br>
