@@ -1,4 +1,4 @@
-package org.uncommons.reportng;
+﻿package org.uncommons.reportng;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -104,20 +104,12 @@ public class ReporterHelper {
 		
 		// Calculate Start Date
 		Date tempStartDate = new Date();
-		try {
-			tempStartDate = startDate.stream().min(Comparator.comparing(Date::toInstant)).get();
-		} catch (Exception ex) {
-			
-		}
+		tempStartDate = startDate.stream().min(Comparator.comparing(Date::toInstant)).orElse(tempStartDate);
 		results.setStartDate(tempStartDate);
 		
 		// Calculate End Date
 		Date tempEndDate = new Date();
-		try {
-			tempEndDate = endDate.stream().max(Comparator.comparing(Date::toInstant)).get();
-		} catch (Exception ex) {
-			
-		}
+		tempEndDate = endDate.stream().max(Comparator.comparing(Date::toInstant)).orElse(tempEndDate);
 		results.setEndDate(tempEndDate);
 		
 		long executionTime = results.getEndDate().toInstant().toEpochMilli() - results.getStartDate().toInstant().toEpochMilli();
@@ -481,10 +473,10 @@ public class ReporterHelper {
 				long startDate = Long.MAX_VALUE;
 				long endDate = 0;
 				for (PackageDetailsDTO temp : entry.getValue()) {
-					if (packageDetailsDTO.getStartMillis() < startDate) {
+					if (temp.getStartMillis() < startDate) {
 						startDate = temp.getStartMillis();
 					}
-					if (packageDetailsDTO.getEndMillis() > endDate) {
+					if (temp.getEndMillis() > endDate) {
 						endDate = temp.getEndMillis();
 					}
 					packageDetailsDTO.setDuration(ReportNGUtils.formatDurationinMinutes(endDate - startDate));
