@@ -311,18 +311,19 @@ public class ReporterHelper {
 				Map<String, ISuiteResult> results = tempISuite.getResults();
 				int testIndex = 1;
 				for (Map.Entry<String, ISuiteResult> entry : results.entrySet()) {
-					for (XmlClass tempClass : entry.getValue().getTestContext().getCurrentXmlTest().getClasses()) {
+					ITestContext ctx = entry.getValue().getTestContext();
+					for (XmlClass tempClass : ctx.getCurrentXmlTest().getClasses()) {
 						if (!Strings.isNullOrEmpty(tempClass.getName())) {
 							PackageDetailsDTO packageResults = new PackageDetailsDTO();
 							packageResults.setPackageName(tempClass.getName().substring(0, tempClass.getName().lastIndexOf(".")).trim());
-							packageResults.setPass(ReportNGUtils.getPassed(entry.getValue().getTestContext()).size());
-							packageResults.setFail(ReportNGUtils.getFailed(entry.getValue().getTestContext()).size());
-							packageResults.setSkip(ReportNGUtils.getSkip(entry.getValue().getTestContext()).size());
-							packageResults.setKnown(ReportNGUtils.getKnownDefect(entry.getValue().getTestContext()).size());
-							packageResults.setFixed(ReportNGUtils.getFixed(entry.getValue().getTestContext()).size());
-							packageResults.setDuration(ReportNGUtils.formatDurationinMinutes(entry.getValue().getTestContext().getEndDate().getTime() - entry.getValue().getTestContext().getStartDate().getTime()));
-							packageResults.setEndMillis(entry.getValue().getTestContext().getEndDate().getTime());
-							packageResults.setStartMillis(entry.getValue().getTestContext().getStartDate().getTime());
+							packageResults.setPass(ReportNGUtils.getPassed(ctx).size());
+							packageResults.setFail(ReportNGUtils.getFailed(ctx).size());
+							packageResults.setSkip(ReportNGUtils.getSkip(ctx).size());
+							packageResults.setKnown(ReportNGUtils.getKnownDefect(ctx).size());
+							packageResults.setFixed(ReportNGUtils.getFixed(ctx).size());
+							packageResults.setDuration(ReportNGUtils.formatDurationinMinutes(ctx.getEndDate().getTime() - ctx.getStartDate().getTime()));
+							packageResults.setEndMillis(ctx.getEndDate().getTime());
+							packageResults.setStartMillis(ctx.getStartDate().getTime());
 							packageResults.setClassName(tempClass.getName().trim());
 							packageResults.setUrl("suite" + suiteIndex + "_test" + testIndex + "_results.html");
 							packages.computeIfAbsent(packageResults.getPackageName(), k -> new ArrayList<>()).add(packageResults);
@@ -375,15 +376,15 @@ public class ReporterHelper {
 								if (!Strings.isNullOrEmpty(tempGroup)) {
 									PackageDetailsDTO packageResults = new PackageDetailsDTO();
 									packageResults.setPackageName(tempGroup.trim());
-									packageResults.setPass(ReportNGUtils.getPassed(entry.getValue().getTestContext()).size());
-									packageResults.setFail(ReportNGUtils.getFailed(entry.getValue().getTestContext()).size());
-									packageResults.setSkip(ReportNGUtils.getSkip(entry.getValue().getTestContext()).size());
-									packageResults.setKnown(ReportNGUtils.getKnownDefect(entry.getValue().getTestContext()).size());
-									packageResults.setFixed(ReportNGUtils.getFixed(entry.getValue().getTestContext()).size());
-									packageResults
-											.setDuration(ReportNGUtils.formatDurationinMinutes(entry.getValue().getTestContext().getEndDate().getTime() - entry.getValue().getTestContext().getStartDate().getTime()));
-									packageResults.setEndMillis(entry.getValue().getTestContext().getEndDate().getTime());
-									packageResults.setStartMillis(entry.getValue().getTestContext().getStartDate().getTime());
+									ITestContext ctx = entry.getValue().getTestContext();
+									packageResults.setPass(ReportNGUtils.getPassed(ctx).size());
+									packageResults.setFail(ReportNGUtils.getFailed(ctx).size());
+									packageResults.setSkip(ReportNGUtils.getSkip(ctx).size());
+									packageResults.setKnown(ReportNGUtils.getKnownDefect(ctx).size());
+									packageResults.setFixed(ReportNGUtils.getFixed(ctx).size());
+									packageResults.setDuration(ReportNGUtils.formatDurationinMinutes(ctx.getEndDate().getTime() - ctx.getStartDate().getTime()));
+									packageResults.setEndMillis(ctx.getEndDate().getTime());
+									packageResults.setStartMillis(ctx.getStartDate().getTime());
 									packageResults.setClassName(tempClass.getTestClass().getName().trim());
 									packageResults.setUrl("suite" + suiteIndex + "_test" + testIndex + "_results.html");
 									if (packages.containsKey(packageResults.getPackageName())) {

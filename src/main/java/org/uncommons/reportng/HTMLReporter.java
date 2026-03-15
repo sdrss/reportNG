@@ -29,6 +29,7 @@ import org.testng.IClass;
 import org.testng.IResultMap;
 import org.testng.ISuite;
 import org.testng.ISuiteResult;
+import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 import org.testng.xml.XmlSuite;
@@ -308,31 +309,32 @@ public class HTMLReporter extends AbstractReporter {
 				VelocityContext contextSuitesBefore = createContext();
 				VelocityContext contextSuitesAfter = createContext();
 				contextTest.put(RESULT_KEY, result);
+				ITestContext ctx = result.getTestContext();
 				if (ReportNGUtils.showSuiteConfigurationMethods()) {
-					contextTest.put(FAILED_CONFIG_KEY, sortByTestClass(ReportNGUtils.getTestContext(result.getTestContext().getFailedConfigurations())));
-					contextTest.put(SKIPPED_CONFIG_KEY, sortByTestClass(ReportNGUtils.getTestContext(result.getTestContext().getSkippedConfigurations())));
-					contextTest.put(PASSED_CONFIG_KEY, sortByTestClass(ReportNGUtils.getTestContext(result.getTestContext().getPassedConfigurations())));
-					contextTest.put(FAILED_TESTS_KEY, sortByTestClass(ReportNGUtils.getTestContext(result.getTestContext().getFailedTests())));
-					contextTest.put(SKIPPED_TESTS_KEY, sortByTestClass(ReportNGUtils.getTestContext(result.getTestContext().getSkippedTests())));
-					contextTest.put(PASSED_TESTS_KEY, sortByTestClass(ReportNGUtils.getTestContext(result.getTestContext().getPassedTests())));
+					contextTest.put(FAILED_CONFIG_KEY, sortByTestClass(ReportNGUtils.getTestContext(ctx.getFailedConfigurations())));
+					contextTest.put(SKIPPED_CONFIG_KEY, sortByTestClass(ReportNGUtils.getTestContext(ctx.getSkippedConfigurations())));
+					contextTest.put(PASSED_CONFIG_KEY, sortByTestClass(ReportNGUtils.getTestContext(ctx.getPassedConfigurations())));
+					contextTest.put(FAILED_TESTS_KEY, sortByTestClass(ReportNGUtils.getTestContext(ctx.getFailedTests())));
+					contextTest.put(SKIPPED_TESTS_KEY, sortByTestClass(ReportNGUtils.getTestContext(ctx.getSkippedTests())));
+					contextTest.put(PASSED_TESTS_KEY, sortByTestClass(ReportNGUtils.getTestContext(ctx.getPassedTests())));
 					
-					contextSuitesBefore.put(RESULT_KEY, result.getTestContext().getSuite());
-					contextSuitesAfter.put(RESULT_KEY, result.getTestContext().getSuite());
+					contextSuitesBefore.put(RESULT_KEY, ctx.getSuite());
+					contextSuitesAfter.put(RESULT_KEY, ctx.getSuite());
 					
-					contextSuitesBefore.put(FAILED_SUITE_CONFIG_KEY, sortByTestClass(ReportNGUtils.getSuiteContextBeforeSuite(result.getTestContext().getFailedConfigurations())));
-					contextSuitesBefore.put(SKIPPED_SUITE_CONFIG_KEY, sortByTestClass(ReportNGUtils.getSuiteContextBeforeSuite(result.getTestContext().getSkippedConfigurations())));
-					contextSuitesBefore.put(PASSED_SUITE_CONFIG_KEY, sortByTestClass(ReportNGUtils.getSuiteContextBeforeSuite(result.getTestContext().getPassedConfigurations())));
+					contextSuitesBefore.put(FAILED_SUITE_CONFIG_KEY, sortByTestClass(ReportNGUtils.getSuiteContextBeforeSuite(ctx.getFailedConfigurations())));
+					contextSuitesBefore.put(SKIPPED_SUITE_CONFIG_KEY, sortByTestClass(ReportNGUtils.getSuiteContextBeforeSuite(ctx.getSkippedConfigurations())));
+					contextSuitesBefore.put(PASSED_SUITE_CONFIG_KEY, sortByTestClass(ReportNGUtils.getSuiteContextBeforeSuite(ctx.getPassedConfigurations())));
 					
-					contextSuitesAfter.put(FAILED_SUITE_CONFIG_KEY, sortByTestClass(ReportNGUtils.getSuiteContextAfterSuite(result.getTestContext().getFailedConfigurations())));
-					contextSuitesAfter.put(SKIPPED_SUITE_CONFIG_KEY, sortByTestClass(ReportNGUtils.getSuiteContextAfterSuite(result.getTestContext().getSkippedConfigurations())));
-					contextSuitesAfter.put(PASSED_SUITE_CONFIG_KEY, sortByTestClass(ReportNGUtils.getSuiteContextAfterSuite(result.getTestContext().getPassedConfigurations())));
+					contextSuitesAfter.put(FAILED_SUITE_CONFIG_KEY, sortByTestClass(ReportNGUtils.getSuiteContextAfterSuite(ctx.getFailedConfigurations())));
+					contextSuitesAfter.put(SKIPPED_SUITE_CONFIG_KEY, sortByTestClass(ReportNGUtils.getSuiteContextAfterSuite(ctx.getSkippedConfigurations())));
+					contextSuitesAfter.put(PASSED_SUITE_CONFIG_KEY, sortByTestClass(ReportNGUtils.getSuiteContextAfterSuite(ctx.getPassedConfigurations())));
 				} else {
-					contextTest.put(FAILED_CONFIG_KEY, sortByTestClass(result.getTestContext().getFailedConfigurations()));
-					contextTest.put(SKIPPED_CONFIG_KEY, sortByTestClass(result.getTestContext().getSkippedConfigurations()));
-					contextTest.put(PASSED_CONFIG_KEY, sortByTestClass(result.getTestContext().getPassedConfigurations()));
-					contextTest.put(FAILED_TESTS_KEY, sortByTestClass(result.getTestContext().getFailedTests()));
-					contextTest.put(SKIPPED_TESTS_KEY, sortByTestClass(result.getTestContext().getSkippedTests()));
-					contextTest.put(PASSED_TESTS_KEY, sortByTestClass(result.getTestContext().getPassedTests()));
+					contextTest.put(FAILED_CONFIG_KEY, sortByTestClass(ctx.getFailedConfigurations()));
+					contextTest.put(SKIPPED_CONFIG_KEY, sortByTestClass(ctx.getSkippedConfigurations()));
+					contextTest.put(PASSED_CONFIG_KEY, sortByTestClass(ctx.getPassedConfigurations()));
+					contextTest.put(FAILED_TESTS_KEY, sortByTestClass(ctx.getFailedTests()));
+					contextTest.put(SKIPPED_TESTS_KEY, sortByTestClass(ctx.getSkippedTests()));
+					contextTest.put(PASSED_TESTS_KEY, sortByTestClass(ctx.getPassedTests()));
 				}
 				String fileNameTest = String.format("suite%d_test%d_%s", index, index2, RESULTS_FILE);
 				generateFile(new File(outputDirectory, fileNameTest), RESULTS_FILE + TEMPLATE_EXTENSION, contextTest);
