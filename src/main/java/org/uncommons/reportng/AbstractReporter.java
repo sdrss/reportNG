@@ -127,6 +127,10 @@ public abstract class AbstractReporter extends TestListenerAdapter implements IR
 	protected void copyStream(String sourceFile, String destinationFile, File outputDirectory) throws IOException {
 		String resourcePath = "/" + classpathPrefix + sourceFile;
 		URL inputUrl = this.getClass().getResource(resourcePath);
+		if (inputUrl == null) {
+			// logger.warn("Resource not found on classpath: {}", resourcePath);
+			return;
+		}
 		File dest = new File(outputDirectory.getAbsolutePath() + "/" + destinationFile);
 		FileUtils.copyURLToFile(inputUrl, dest);
 	}

@@ -392,7 +392,7 @@ public class HTMLReporter extends AbstractReporter {
 				resultsForClass = new ArrayList<>();
 				sortedResults.put(result.getTestClass(), resultsForClass);
 			}
-			resultsForClass.add(0, result);
+			resultsForClass.add(result);
 		}
 		return sortedResults;
 	}

@@ -11,7 +11,7 @@ import org.testng.ITestNGMethod;
 class TestMethodComparator implements Comparator<ITestNGMethod> {
 	@Override
 	public int compare(ITestNGMethod method1, ITestNGMethod method2) {
-		int compare = Long.toString(method1.getDate()).compareTo(Long.toString(method2.getDate()));
+		int compare = Long.compare(method1.getDate(), method2.getDate());
 		if (compare == 0) {
 			compare = method1.getMethodName().compareTo(method2.getMethodName());
 		}

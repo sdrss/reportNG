@@ -274,7 +274,7 @@ public class ReportNGUtils {
 		}
 		StringBuilder listenersToString = new StringBuilder();
 		for (String temp : listeners) {
-			listenersToString.append(temp + "<br>");
+			listenersToString.append(temp).append("<br>");
 		}
 		if (listenersToString != null && !Strings.isNullOrEmpty(listenersToString.toString())) {
 			response.append("<tr>\n");
@@ -292,7 +292,7 @@ public class ReportNGUtils {
 		}
 		StringBuilder includeGroupsToString = new StringBuilder();
 		for (String temp : includeGroups) {
-			includeGroupsToString.append(temp + "<br>");
+			includeGroupsToString.append(temp).append("<br>");
 		}
 		if (includeGroupsToString != null && !Strings.isNullOrEmpty(includeGroupsToString.toString())) {
 			response.append("<tr>\n");
@@ -309,7 +309,7 @@ public class ReportNGUtils {
 		}
 		StringBuilder excludeGroupsToString = new StringBuilder();
 		for (String temp : excludeGroups) {
-			excludeGroupsToString.append(temp + "<br>");
+			excludeGroupsToString.append(temp).append("<br>");
 		}
 		if (excludeGroupsToString != null && !Strings.isNullOrEmpty(excludeGroupsToString.toString())) {
 			response.append("<tr>\n");
@@ -1397,7 +1397,11 @@ public class ReportNGUtils {
 	}
 	
 	public String getSkipExceptionMessage(ITestResult result) {
-		return hasSkipException(result) ? result.getThrowable().getMessage() : "";
+		if (!hasSkipException(result)) {
+			return "";
+		}
+		String msg = result.getThrowable().getMessage();
+		return msg != null ? msg : "";
 	}
 	
 	public boolean hasGroups(ISuite suite) {
@@ -2205,7 +2209,7 @@ public class ReportNGUtils {
 		List<IssueDTO> issues = new ArrayList<>();
 		for (ITestResult tr : results) {
 			issues.add(
-					new IssueDTO(suiteName, tr.getTestContext().getName(), tr.getInstanceName(), tr.getThrowable() != null ? tr.getThrowable().getMessage() : "", linkName, isRegression(tr.getTestContext())));
+					new IssueDTO(suiteName, tr.getTestContext().getName(), tr.getInstanceName(), tr.getThrowable() != null && tr.getThrowable().getMessage() != null ? tr.getThrowable().getMessage() : "", linkName, isRegression(tr.getTestContext())));
 		}
 		return issues;
 	}

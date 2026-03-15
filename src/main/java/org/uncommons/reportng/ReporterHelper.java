@@ -134,11 +134,7 @@ public class ReporterHelper {
 					if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
 						issueDescription = temp.getIssueDescription();
 					}
-					if (issuesDTO.getKnownIssues().containsKey(issueDescription)) {
-						issuesDTO.getKnownIssues().get(issueDescription).add(temp);
-					} else {
-						issuesDTO.getKnownIssues().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
-					}
+					issuesDTO.getKnownIssues().computeIfAbsent(issueDescription, k -> new ArrayList<>()).add(temp);
 				}
 				issuesDTO.setKnownIssuesAmount(issuesDTO.getKnownIssues().size());
 				// Calculate Fixed issues
@@ -148,11 +144,7 @@ public class ReporterHelper {
 					if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
 						issueDescription = temp.getIssueDescription();
 					}
-					if (issuesDTO.getFixedIssues().containsKey(issueDescription)) {
-						issuesDTO.getFixedIssues().get(issueDescription).add(temp);
-					} else {
-						issuesDTO.getFixedIssues().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
-					}
+					issuesDTO.getFixedIssues().computeIfAbsent(issueDescription, k -> new ArrayList<>()).add(temp);
 				}
 				issuesDTO.setFixedIssuesAmount(issuesDTO.getFixedIssues().size());
 				// Calculate skipped issues
@@ -162,11 +154,7 @@ public class ReporterHelper {
 					if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
 						issueDescription = temp.getIssueDescription();
 					}
-					if (issuesDTO.getSkippedIssues().containsKey(issueDescription)) {
-						issuesDTO.getSkippedIssues().get(issueDescription).add(temp);
-					} else {
-						issuesDTO.getSkippedIssues().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
-					}
+					issuesDTO.getSkippedIssues().computeIfAbsent(issueDescription, k -> new ArrayList<>()).add(temp);
 				}
 				issuesDTO.setSkippedIssuesAmount(issuesDTO.getSkippedIssues().size());
 				// Calculate New issues
@@ -176,11 +164,7 @@ public class ReporterHelper {
 					if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
 						issueDescription = temp.getIssueDescription();
 					}
-					if (issuesDTO.getNewIssues().containsKey(issueDescription)) {
-						issuesDTO.getNewIssues().get(issueDescription).add(temp);
-					} else {
-						issuesDTO.getNewIssues().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
-					}
+					issuesDTO.getNewIssues().computeIfAbsent(issueDescription, k -> new ArrayList<>()).add(temp);
 				}
 				issuesDTO.setNewIssuesAmount(issuesDTO.getNewIssues().size());
 				
@@ -192,11 +176,7 @@ public class ReporterHelper {
 						if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
 							issueDescription = temp.getIssueDescription();
 						}
-						if (issuesDTO.getNewFeature().containsKey(issueDescription)) {
-							issuesDTO.getNewFeature().get(issueDescription).add(temp);
-						} else {
-							issuesDTO.getNewFeature().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
-						}
+						issuesDTO.getNewFeature().computeIfAbsent(issueDescription, k -> new ArrayList<>()).add(temp);
 					}
 				}
 				
@@ -207,11 +187,7 @@ public class ReporterHelper {
 						if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
 							issueDescription = temp.getIssueDescription();
 						}
-						if (issuesDTO.getFeature().containsKey(issueDescription)) {
-							issuesDTO.getFeature().get(issueDescription).add(temp);
-						} else {
-							issuesDTO.getFeature().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
-						}
+						issuesDTO.getFeature().computeIfAbsent(issueDescription, k -> new ArrayList<>()).add(temp);
 					}
 				}
 				testIndex++;
@@ -228,17 +204,9 @@ public class ReporterHelper {
 					issueDescription = temp.getIssueDescription();
 				}
 				if (temp.isRegression()) {
-					if (issuesDTO.getNewIssuesRegression().containsKey(issueDescription)) {
-						issuesDTO.getNewIssuesRegression().get(issueDescription).add(temp);
-					} else {
-						issuesDTO.getNewIssuesRegression().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
-					}
+					issuesDTO.getNewIssuesRegression().computeIfAbsent(issueDescription, k -> new ArrayList<>()).add(temp);
 				} else {
-					if (issuesDTO.getNewIssuesNewFeature().containsKey(issueDescription)) {
-						issuesDTO.getNewIssuesNewFeature().get(issueDescription).add(temp);
-					} else {
-						issuesDTO.getNewIssuesNewFeature().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
-					}
+					issuesDTO.getNewIssuesNewFeature().computeIfAbsent(issueDescription, k -> new ArrayList<>()).add(temp);
 				}
 			}
 		}
@@ -252,17 +220,9 @@ public class ReporterHelper {
 					issueDescription = temp.getIssueDescription();
 				}
 				if (temp.isRegression()) {
-					if (issuesDTO.getKnownIssuesRegression().containsKey(issueDescription)) {
-						issuesDTO.getKnownIssuesRegression().get(issueDescription).add(temp);
-					} else {
-						issuesDTO.getKnownIssuesRegression().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
-					}
+					issuesDTO.getKnownIssuesRegression().computeIfAbsent(issueDescription, k -> new ArrayList<>()).add(temp);
 				} else {
-					if (issuesDTO.getKnownIssuesNewFeature().containsKey(issueDescription)) {
-						issuesDTO.getKnownIssuesNewFeature().get(issueDescription).add(temp);
-					} else {
-						issuesDTO.getKnownIssuesNewFeature().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
-					}
+					issuesDTO.getKnownIssuesNewFeature().computeIfAbsent(issueDescription, k -> new ArrayList<>()).add(temp);
 				}
 			}
 		}
@@ -276,17 +236,9 @@ public class ReporterHelper {
 					issueDescription = temp.getIssueDescription();
 				}
 				if (temp.isRegression()) {
-					if (issuesDTO.getFixedIssuesRegression().containsKey(issueDescription)) {
-						issuesDTO.getFixedIssuesRegression().get(issueDescription).add(temp);
-					} else {
-						issuesDTO.getFixedIssuesRegression().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
-					}
+					issuesDTO.getFixedIssuesRegression().computeIfAbsent(issueDescription, k -> new ArrayList<>()).add(temp);
 				} else {
-					if (issuesDTO.getFixedIssuesNewFeature().containsKey(issueDescription)) {
-						issuesDTO.getFixedIssuesNewFeature().get(issueDescription).add(temp);
-					} else {
-						issuesDTO.getFixedIssuesNewFeature().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
-					}
+					issuesDTO.getFixedIssuesNewFeature().computeIfAbsent(issueDescription, k -> new ArrayList<>()).add(temp);
 				}
 			}
 		}
@@ -300,17 +252,9 @@ public class ReporterHelper {
 					issueDescription = temp.getIssueDescription();
 				}
 				if (temp.isRegression()) {
-					if (issuesDTO.getSkippedIssuesRegression().containsKey(issueDescription)) {
-						issuesDTO.getSkippedIssuesRegression().get(issueDescription).add(temp);
-					} else {
-						issuesDTO.getSkippedIssuesRegression().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
-					}
+					issuesDTO.getSkippedIssuesRegression().computeIfAbsent(issueDescription, k -> new ArrayList<>()).add(temp);
 				} else {
-					if (issuesDTO.getSkippedIssuesNewFeature().containsKey(issueDescription)) {
-						issuesDTO.getSkippedIssuesNewFeature().get(issueDescription).add(temp);
-					} else {
-						issuesDTO.getSkippedIssuesNewFeature().put(issueDescription, new ArrayList<>(Collections.singletonList(temp)));
-					}
+					issuesDTO.getSkippedIssuesNewFeature().computeIfAbsent(issueDescription, k -> new ArrayList<>()).add(temp);
 				}
 			}
 		}
@@ -381,11 +325,7 @@ public class ReporterHelper {
 							packageResults.setStartMillis(entry.getValue().getTestContext().getStartDate().getTime());
 							packageResults.setClassName(tempClass.getName().trim());
 							packageResults.setUrl("suite" + suiteIndex + "_test" + testIndex + "_results.html");
-							if (packages.containsKey(packageResults.getPackageName())) {
-								packages.get(packageResults.getPackageName()).add(packageResults);
-							} else {
-								packages.put(packageResults.getPackageName(), new ArrayList<>(Collections.singletonList(packageResults)));
-							}
+							packages.computeIfAbsent(packageResults.getPackageName(), k -> new ArrayList<>()).add(packageResults);
 							
 						}
 						testIndex++;
