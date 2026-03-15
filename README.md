@@ -1,6 +1,11 @@
 ##  ReportNG  ##
 
-ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framework. It is intended as a replacement for the default TestNG HTML report.
+An enhanced HTML/XML reporting plugin for the [TestNG](https://testng.org/) testing framework. ReportNG replaces TestNG's default reporting with a modern, feature-rich interface built on Bootstrap, with support for issue tracking, test categorization, interactive graphs, and multiple locales.
+
+**Version:** 2.7.1-SNAPSHOT
+**License:** Apache Software License, Version 2.0
+**Author:** Socrates Sidereas
+**Repository:** https://github.com/sdrss/reportNG
 
 ![](https://github.com/sdrss/test/blob/master/SampleOverview.png)
 
@@ -10,15 +15,54 @@ ReportNG is a simple HTML reporting plug-in for the TestNG unit-testing framewor
 
 [Sample report](https://sdrss.github.io/test/) / [Releases](https://github.com/sdrss/reportNG/releases) / [Wiki](https://github.com/sdrss/reportNG/wiki/) / [Maven Repository](https://mvnrepository.com/artifact/com.github.sdrss/reportng)
 
-## Based on ReportNG v1.1.4 this is a ReportNG with : ##
- - new HTML layout
- - new semantics for Known and Fixed issues
- - summary report for Regression and New Features tests
- - graphs of Test Execution
- - and various fixes
+---
 
- ## Supported System Properties ##
- * org.uncommons.reportng.escape-output : Used to turn off escaping for log output in the reports (not recommended). The default is for output to be escaped, since this prevents characters such as '<' and '&' from causing mark-up problems. If escaping is turned off, then log text is included as raw HTML/XML, which allows for the insertion of hyperlinks and other nasty hacks.
+## Features
+
+- Modern HTML reports styled with Bootstrap
+- Interactive charts for test execution results (pass/fail/skip trends)
+- Test categorization: **Regression** vs **New Feature** tests
+- Issue tracking: **Known Defects**, **Fixed Issues**, **New Issues**, **Skipped Issues**
+- JUnit-compatible XML output
+- Fail-fast listener (stops on first non-known failure)
+- Configurable test retry support
+- Configurable timeouts per test
+- Multi-locale support: English, French, Portuguese
+- Package-level test summary view
+- Detailed per-test log output pages
+
+---
+
+## Requirements
+
+- Java 11+
+- Maven 3.x
+- TestNG 7.x
+
+---
+ 
+
+### Configure via System Properties
+
+Pass these as JVM arguments (e.g., `-Dproperty=value`) or in your Maven Surefire plugin configuration:
+
+| Property | Default | Description |
+|---|---|---|
+| `org.uncommons.reportng.title` | `Test Results` | Report title |
+| `org.uncommons.reportng.knownDefectsMode` | `false` | Enable known defects tracking |
+| `org.uncommons.reportng.escape-output` | `true` | Escape HTML in log output |
+| `org.uncommons.reportng.logOutputReport` | `false` | Generate separate log output pages |
+| `org.uncommons.reportng.locale` | system default | Report locale (e.g. `en_US`, `fr_FR`, `pt_PT`) |
+| `org.uncommons.reportng.timeout` | none | Global test timeout in milliseconds |
+| `org.uncommons.reportng.maxRetryCount` | `0` | Number of retries for failed tests |
+| `org.uncommons.reportng.skip.execution` | `false` | Skip remaining tests on suite failure |
+| `org.uncommons.reportng.show-passed-configuration-methods` | `false` | Show passed `@Before`/`@After` methods |
+| `org.uncommons.reportng.show-suite-configuration-methods` | `false` | Show suite-level configuration methods |
+| `org.uncommons.reportng.show-regression-column` | `false` | Show regression column in results table |
+| `org.uncommons.reportng.debug.mode` | `false` | Enable debug logging |
+| `org.uncommons.reportng.externalLinks` | none | JSON map of label → URL for external links |
+
+* org.uncommons.reportng.escape-output : Used to turn off escaping for log output in the reports (not recommended). The default is for output to be escaped, since this prevents characters such as '<' and '&' from causing mark-up problems. If escaping is turned off, then log text is included as raw HTML/XML, which allows for the insertion of hyperlinks and other nasty hacks.
  * org.uncommons.reportng.title : Used to over-ride the report title.
  * org.uncommons.reportng.show-passed-configuration-methods : Set to "true" or "false" to specify whether the pass Configuration methods (@BeforeClass,@AfterClass etc.) should be included in test output. Failures are reported by default always.
  * org.uncommons.reportng.knownDefectsMode : Set to "true" to specify if failed tests with @KnownDefect are marked as Known and pass tests with @KnownDefect are marked as Fixed. Otherwise if "false" then failed tests with @KnownDefect are marked as normally failed.
@@ -28,6 +72,46 @@ Over-rides the default locale for localised messages in generated reports. If no
  * org.uncommons.reportng.skip.execution : Set to "true" whenever you need to skip the rest testNG execution.See for more [Wiki/Tips](https://github.com/sdrss/reportNG/wiki/Tips)
  * org.uncommons.reportng.show-suite-configuration-methods : Set to "true" to display @Before & @After suite methods into overview page. Otherwise, if false then suite configuration methods are displayed by default in the first/last test. Default value is false
  * org.uncommons.reportng.show-regression-column : Set to "true"/"false" in order to show/hide accordingly the column Regression into Overview page. The default value is false
+ 
+---
+
+## Report Output
+
+After test execution, reports are written to `test-output/`:
+
+```
+test-output/
+├── html/
+│   ├── index.html          # Main report entry point
+│   ├── overview.html       # Summary dashboard
+│   ├── results.html        # Detailed test results
+│   ├── groups.html         # Results by group
+│   ├── packages.html       # Results by package
+│   ├── regression.html     # Regression test summary
+│   ├── newFeatures.html    # New feature test summary
+│   ├── newIssues.html      # Newly failing tests
+│   ├── knownIssues.html    # Tests with known defects
+│   ├── fixedIssues.html    # Previously failing tests now passing
+│   └── ...                 # Charts, logs, suite pages
+└── xml/
+    └── *.xml               # JUnit-compatible XML per test class
+```
+
+Open `test-output/html/index.html` in a browser to view the report.
+
+---
+
+## Result Statuses
+
+| Status | Description |
+|---|---|
+| `PASS` | Test passed |
+| `FAIL` | Test failed |
+| `SKIP` | Test was skipped |
+| `PASS_WITH_KNOWN_ISSUES` | Test passed but is marked `@KnownDefect` |
+| `PASS_WITH_FIXED_ISSUES` | Test marked `@KnownDefect` now passes cleanly |
+
+---
  
  ## How to use ReportNG ##
  
