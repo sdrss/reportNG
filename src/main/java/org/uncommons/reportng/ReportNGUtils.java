@@ -86,9 +86,7 @@ public class ReportNGUtils {
 				response.append("<a href=\"#pageSubmenuExtLinks\" class=\"list-group-item\" data-toggle=\"collapse\" aria-expanded=\"false\">\n");
 				response.append("<span class=\"glyphicon glyphicon-paperclip\"></span>&nbsp;&nbsp;External Links</a>\n");
 				response.append("<ul class=\"collapse list-unstyled\" id=\"pageSubmenuExtLinks\">\n");
-				Iterator<Map.Entry<String, String>> itr = resultMap.entrySet().iterator();
-				while (itr.hasNext()) {
-					Map.Entry<String, String> entry = itr.next();
+				for (Map.Entry<String, String> entry : resultMap.entrySet()) {
 					response.append("<a href=\"" + entry.getValue() +
 							"\" class=\"list-group-item\" target=\"overview\">&nbsp;&nbsp;&nbsp;" + entry.getKey() + "</a>" + "\n");
 				}
@@ -100,9 +98,7 @@ public class ReportNGUtils {
 	
 	private static int getNumberofRegressionIssues(IssuesDTO issuesDTO) {
 		int regressionCounter = 0;
-		Iterator<Entry<String, List<IssueDTO>>> it = issuesDTO.getNewIssues().entrySet().iterator();
-		while (it.hasNext()) {
-			Entry<String, List<IssueDTO>> pair = it.next();
+		for (Entry<String, List<IssueDTO>> pair : issuesDTO.getNewIssues().entrySet()) {
 			for (IssueDTO temp : pair.getValue()) {
 				if (temp.isRegression()) {
 					regressionCounter++;
@@ -115,9 +111,7 @@ public class ReportNGUtils {
 	
 	private static int getNumberofNewFeatureIssues(IssuesDTO issuesDTO) {
 		int regressionCounter = 0;
-		Iterator<Entry<String, List<IssueDTO>>> it = issuesDTO.getNewIssues().entrySet().iterator();
-		while (it.hasNext()) {
-			Entry<String, List<IssueDTO>> pair = it.next();
+		for (Entry<String, List<IssueDTO>> pair : issuesDTO.getNewIssues().entrySet()) {
 			for (IssueDTO temp : pair.getValue()) {
 				if (!temp.isRegression()) {
 					regressionCounter++;
@@ -191,9 +185,7 @@ public class ReportNGUtils {
 						}
 					} else if (resultsDTO.getNewFeaturesFail() == 0 && resultsDTO.getNewFeaturesPass() > 0) {
 					}
-					Iterator<Entry<String, List<IssueDTO>>> it = issuesDTO.getNewFeature().entrySet().iterator();
-					while (it.hasNext()) {
-						Entry<String, List<IssueDTO>> pair = it.next();
+					for (Entry<String, List<IssueDTO>> pair : issuesDTO.getNewFeature().entrySet()) {
 						ResultStatus overAllStatus = ResultStatus.PASS;
 						for (IssueDTO temp : pair.getValue()) {
 							if (ResultStatus.FAIL.equals(temp.getStatus())) {
@@ -324,10 +316,8 @@ public class ReportNGUtils {
 		StringBuilder response = new StringBuilder("");
 		if (issues != null && !issues.isEmpty()) {
 			Map<String, List<IssueDTO>> map = new TreeMap<>(issues);
-			Iterator<Entry<String, List<IssueDTO>>> it = map.entrySet().iterator();
 			int indexCounter = 0;
-			while (it.hasNext()) {
-				Entry<String, List<IssueDTO>> pair = it.next();
+			for (Entry<String, List<IssueDTO>> pair : map.entrySet()) {
 				
 				UUID id = UUID.randomUUID();
 				response.append("<tr class=\"parent\" id=\"row" + indexCounter
@@ -392,14 +382,12 @@ public class ReportNGUtils {
 				if (tempISuite.getParallel() != null && !tempISuite.getParallel().equalsIgnoreCase("none")) {
 					parallel += tempISuite.getParallel() + ":" + tempISuite.getXmlSuite().getThreadCount();
 				}
-				Iterator<Entry<String, ISuiteResult>> item = tempISuite.getResults().entrySet().iterator();
 				int pass = 0;
 				int fail = 0;
 				int skip = 0;
 				int known = 0;
 				int fixed = 0;
-				while (item.hasNext()) {
-					Entry<String, ISuiteResult> pair = item.next();
+				for (Entry<String, ISuiteResult> pair : tempISuite.getResults().entrySet()) {
 					ISuiteResult result = pair.getValue();
 					pass += getPassed(result.getTestContext()).size();
 					fail += getFailed(result.getTestContext()).size();
@@ -1715,9 +1703,7 @@ public class ReportNGUtils {
 		StringBuilder response = new StringBuilder("");
 		int indexCounter = 1;
 		if (features != null && !features.isEmpty()) {
-			Iterator<Entry<String, List<IssueDTO>>> it = features.entrySet().iterator();
-			while (it.hasNext()) {
-				Entry<String, List<IssueDTO>> pair = it.next();
+			for (Entry<String, List<IssueDTO>> pair : features.entrySet()) {
 				// Calculate overall status
 				ResultStatus overAllStatus = ResultStatus.PASS;
 				for (IssueDTO temp : pair.getValue()) {
@@ -1790,9 +1776,7 @@ public class ReportNGUtils {
 		StringBuilder text = generateGraph("title: \"Time \", valueFormatString: \"DD MMM hh:mm TT\"", "title: \"Number of Tests\"",
 				"\"area\",showInLegend: true,name: \"Pass\",markerType: \"square\",xValueFormatString: \"DD MMM hh:mm TT\",color: \"green\",dataPoints: [");
 		for (ISuite tempISuite : suites) {
-			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry<String, ISuiteResult> pair = (it.next());
+			for (Map.Entry<String, ISuiteResult> pair : tempISuite.getResults().entrySet()) {
 				ISuiteResult iSuiteResult = pair.getValue();
 				Date date = iSuiteResult.getTestContext().getStartDate();
 				text.append("{ x: new Date(" +
@@ -1809,9 +1793,7 @@ public class ReportNGUtils {
 		text.append("{type: \"area\",showInLegend: true,name: \"Fixed\",markerType: \"square\",xValueFormatString: \"DD MMM hh:mm TT\",color: \"blue\",dataPoints: ["
 				+ "\n");
 		for (ISuite tempISuite : suites) {
-			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry<String, ISuiteResult> pair = (it.next());
+			for (Map.Entry<String, ISuiteResult> pair : tempISuite.getResults().entrySet()) {
 				ISuiteResult iSuiteResult = pair.getValue();
 				Date date = iSuiteResult.getTestContext().getStartDate();
 				text.append("{ x: new Date(" +
@@ -1828,9 +1810,7 @@ public class ReportNGUtils {
 		text.append("{type: \"area\",showInLegend: true,name: \"Known Defects\",markerType: \"square\",xValueFormatString: \"DD MMM hh:mm TT\",color: \"orange\",dataPoints: ["
 				+ "\n");
 		for (ISuite tempISuite : suites) {
-			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry<String, ISuiteResult> pair = (it.next());
+			for (Map.Entry<String, ISuiteResult> pair : tempISuite.getResults().entrySet()) {
 				ISuiteResult iSuiteResult = pair.getValue();
 				Date date = iSuiteResult.getTestContext().getStartDate();
 				text.append("{ x: new Date(" +
@@ -1846,9 +1826,7 @@ public class ReportNGUtils {
 		
 		text.append("{type: \"area\",showInLegend: true,name: \"Fail\",markerType: \"square\",xValueFormatString: \"DD MMM hh:mm TT\",color: \"red\",dataPoints: [" + "\n");
 		for (ISuite tempISuite : suites) {
-			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry<String, ISuiteResult> pair = (it.next());
+			for (Map.Entry<String, ISuiteResult> pair : tempISuite.getResults().entrySet()) {
 				ISuiteResult iSuiteResult = pair.getValue();
 				Date date = iSuiteResult.getTestContext().getStartDate();
 				text.append("{ x: new Date(" +
@@ -1864,9 +1842,7 @@ public class ReportNGUtils {
 		
 		text.append("{type: \"area\",showInLegend: true,name: \"Skip\",markerType: \"square\",xValueFormatString: \"DD MMM hh:mm TT\",color: \"yellow\",dataPoints: [" + "\n");
 		for (ISuite tempISuite : suites) {
-			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry<String, ISuiteResult> pair = (it.next());
+			for (Map.Entry<String, ISuiteResult> pair : tempISuite.getResults().entrySet()) {
 				ISuiteResult iSuiteResult = pair.getValue();
 				Date date = iSuiteResult.getTestContext().getStartDate();
 				text.append("{ x: new Date(" +
@@ -1886,9 +1862,7 @@ public class ReportNGUtils {
 	public String graphClass(List<ISuite> suites) {
 		StringBuilder text = generateGraph("", "title: \"Class\"", "\"stackedBar\",showInLegend: true,name: \"Pass\",color: \"green\",dataPoints: [");
 		for (ISuite tempISuite : suites) {
-			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry<String, ISuiteResult> pair = (it.next());
+			for (Map.Entry<String, ISuiteResult> pair : tempISuite.getResults().entrySet()) {
 				ISuiteResult iSuiteResult = pair.getValue();
 				text.append("{ label: \"" + iSuiteResult.getTestContext().getName() + "\"," + " y: " + getPassed(iSuiteResult.getTestContext()).size() + " }," + "\n");
 			}
@@ -1897,9 +1871,7 @@ public class ReportNGUtils {
 		
 		text.append("{type: \"stackedBar\",showInLegend: true,name: \"Fixed\",color: \"blue\",dataPoints: [" + "\n");
 		for (ISuite tempISuite : suites) {
-			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry<String, ISuiteResult> pair = (it.next());
+			for (Map.Entry<String, ISuiteResult> pair : tempISuite.getResults().entrySet()) {
 				ISuiteResult iSuiteResult = pair.getValue();
 				text.append("{ label: \"" + iSuiteResult.getTestContext().getName() + "\"," + " y: " + getFixed(iSuiteResult.getTestContext()).size() + " }," + "\n");
 			}
@@ -1908,9 +1880,7 @@ public class ReportNGUtils {
 		
 		text.append("{type: \"stackedBar\",showInLegend: true,name: \"Known Defects\",color: \"orange\",dataPoints: [" + "\n");
 		for (ISuite tempISuite : suites) {
-			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry<String, ISuiteResult> pair = (it.next());
+			for (Map.Entry<String, ISuiteResult> pair : tempISuite.getResults().entrySet()) {
 				ISuiteResult iSuiteResult = pair.getValue();
 				text.append("{ label: \"" + iSuiteResult.getTestContext().getName() + "\"," + " y: " + getKnownDefect(iSuiteResult.getTestContext()).size() + " }," + "\n");
 			}
@@ -1919,9 +1889,7 @@ public class ReportNGUtils {
 		
 		text.append("{type: \"stackedBar\",showInLegend: true,name: \"Fail\",color: \"red\",dataPoints: [" + "\n");
 		for (ISuite tempISuite : suites) {
-			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry<String, ISuiteResult> pair = (it.next());
+			for (Map.Entry<String, ISuiteResult> pair : tempISuite.getResults().entrySet()) {
 				ISuiteResult iSuiteResult = pair.getValue();
 				text.append("{ label: \"" + iSuiteResult.getTestContext().getName() + "\"," + " y: " + getFailed(iSuiteResult.getTestContext()).size() + " }," + "\n");
 			}
@@ -1930,9 +1898,7 @@ public class ReportNGUtils {
 		
 		text.append("{type: \"stackedBar\",showInLegend: true,name: \"Skip\",color: \"yellow\",dataPoints: [" + "\n");
 		for (ISuite tempISuite : suites) {
-			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry<String, ISuiteResult> pair = (it.next());
+			for (Map.Entry<String, ISuiteResult> pair : tempISuite.getResults().entrySet()) {
 				ISuiteResult iSuiteResult = pair.getValue();
 				text.append("{ label: \"" + iSuiteResult.getTestContext().getName() + "\"," + " y: " + getSkip(iSuiteResult.getTestContext()).size() + " }," + "\n");
 			}
@@ -1947,10 +1913,8 @@ public class ReportNGUtils {
 		for (ISuite tempISuite : suites) {
 			int counter = 0;
 			String suiteName = null;
-			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
 			suiteName = tempISuite.getName();
-			while (it.hasNext()) {
-				Map.Entry<String, ISuiteResult> pair = (it.next());
+			for (Map.Entry<String, ISuiteResult> pair : tempISuite.getResults().entrySet()) {
 				ISuiteResult iSuiteResult = pair.getValue();
 				counter += getPassed(iSuiteResult.getTestContext()).size();
 			}
@@ -1962,10 +1926,8 @@ public class ReportNGUtils {
 		for (ISuite tempISuite : suites) {
 			int counter = 0;
 			String suiteName = null;
-			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
 			suiteName = tempISuite.getName();
-			while (it.hasNext()) {
-				Map.Entry<String, ISuiteResult> pair = (it.next());
+			for (Map.Entry<String, ISuiteResult> pair : tempISuite.getResults().entrySet()) {
 				ISuiteResult iSuiteResult = pair.getValue();
 				counter += getFixed(iSuiteResult.getTestContext()).size();
 			}
@@ -1977,10 +1939,8 @@ public class ReportNGUtils {
 		for (ISuite tempISuite : suites) {
 			int counter = 0;
 			String suiteName = null;
-			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
 			suiteName = tempISuite.getName();
-			while (it.hasNext()) {
-				Map.Entry<String, ISuiteResult> pair = (it.next());
+			for (Map.Entry<String, ISuiteResult> pair : tempISuite.getResults().entrySet()) {
 				ISuiteResult iSuiteResult = pair.getValue();
 				counter += getKnownDefect(iSuiteResult.getTestContext()).size();
 			}
@@ -1992,10 +1952,8 @@ public class ReportNGUtils {
 		for (ISuite tempISuite : suites) {
 			int counter = 0;
 			String suiteName = null;
-			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
 			suiteName = tempISuite.getName();
-			while (it.hasNext()) {
-				Map.Entry<String, ISuiteResult> pair = (it.next());
+			for (Map.Entry<String, ISuiteResult> pair : tempISuite.getResults().entrySet()) {
 				ISuiteResult iSuiteResult = pair.getValue();
 				counter += getFailed(iSuiteResult.getTestContext()).size();
 			}
@@ -2007,10 +1965,8 @@ public class ReportNGUtils {
 		for (ISuite tempISuite : suites) {
 			int counter = 0;
 			String suiteName = null;
-			Iterator<Entry<String, ISuiteResult>> it = tempISuite.getResults().entrySet().iterator();
 			suiteName = tempISuite.getName();
-			while (it.hasNext()) {
-				Map.Entry<String, ISuiteResult> pair = (it.next());
+			for (Map.Entry<String, ISuiteResult> pair : tempISuite.getResults().entrySet()) {
 				ISuiteResult iSuiteResult = pair.getValue();
 				counter += getSkip(iSuiteResult.getTestContext()).size();
 			}
@@ -2437,12 +2393,10 @@ public class ReportNGUtils {
 			int totalSkip = 0;
 			long totalDuration = 0;
 			String startDateTime = "";
-			Iterator<?> it = suite.getResults().entrySet().iterator();
 			Set<ITestResult> suiteSetBefore = new HashSet<>();
 			Set<ITestResult> suiteSetAfter = new HashSet<>();
-			while (it.hasNext()) {
-				Map.Entry pair = ((Map.Entry) it.next());
-				ISuiteResult suiteResult = (ISuiteResult) pair.getValue();
+			for (Map.Entry<String, ISuiteResult> pair : suite.getResults().entrySet()) {
+				ISuiteResult suiteResult = pair.getValue();
 				SuiteConfigurationDTO suiteConfigurationDTO = getSuiteConfiguration(suiteResult.getTestContext());
 				if (SuiteConfigurationType.BEFORESUITE.toString().equalsIgnoreCase(conf)) {
 					suiteSetBefore.addAll(suiteConfigurationDTO.getBefore());

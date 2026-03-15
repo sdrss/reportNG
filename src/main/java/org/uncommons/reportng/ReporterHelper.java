@@ -1,7 +1,6 @@
 ﻿package org.uncommons.reportng;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -33,9 +32,7 @@ public class ReporterHelper {
 		ArrayList<Date> endDate = new ArrayList<>();
 		ResultsDTO results = new ResultsDTO();
 		for (ISuite tempISuite : suites) {
-			Iterator<Entry<String, ISuiteResult>> item = tempISuite.getResults().entrySet().iterator();
-			while (item.hasNext()) {
-				Entry<String, ISuiteResult> pair = item.next();
+			for (Entry<String, ISuiteResult> pair : tempISuite.getResults().entrySet()) {
 				ISuiteResult result = pair.getValue();
 				startDate.add(result.getTestContext().getStartDate());
 				endDate.add(result.getTestContext().getEndDate());
@@ -121,10 +118,8 @@ public class ReporterHelper {
 		IssuesDTO issuesDTO = new IssuesDTO();
 		int suiteIndex = 1;
 		for (ISuite tempISuite : suites) {
-			Iterator<Entry<String, ISuiteResult>> item = tempISuite.getResults().entrySet().iterator();
 			int testIndex = 1;
-			while (item.hasNext()) {
-				Entry<String, ISuiteResult> pair = item.next();
+			for (Entry<String, ISuiteResult> pair : tempISuite.getResults().entrySet()) {
 				ISuiteResult result = pair.getValue();
 				String link = "suite" + suiteIndex + "_test" + testIndex + "_results.html";
 				// Calculate Known issues
@@ -195,9 +190,7 @@ public class ReporterHelper {
 			suiteIndex++;
 		}
 		// Calculate newIssuesFeatures vs newIssuesRegression
-		Iterator<Entry<String, List<IssueDTO>>> item = issuesDTO.getNewIssues().entrySet().iterator();
-		while (item.hasNext()) {
-			Entry<String, List<IssueDTO>> pair = item.next();
+		for (Entry<String, List<IssueDTO>> pair : issuesDTO.getNewIssues().entrySet()) {
 			for (IssueDTO temp : pair.getValue()) {
 				String issueDescription = "null";
 				if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
@@ -211,9 +204,7 @@ public class ReporterHelper {
 			}
 		}
 		// Calculate KnownissuesFeatures vs knownIssuesRegression
-		item = issuesDTO.getKnownIssues().entrySet().iterator();
-		while (item.hasNext()) {
-			Entry<String, List<IssueDTO>> pair = item.next();
+		for (Entry<String, List<IssueDTO>> pair : issuesDTO.getKnownIssues().entrySet()) {
 			for (IssueDTO temp : pair.getValue()) {
 				String issueDescription = "null";
 				if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
@@ -227,9 +218,7 @@ public class ReporterHelper {
 			}
 		}
 		// Calculate fixedissuesFeatures vs fixedIssuesRegression
-		item = issuesDTO.getFixedIssues().entrySet().iterator();
-		while (item.hasNext()) {
-			Entry<String, List<IssueDTO>> pair = item.next();
+		for (Entry<String, List<IssueDTO>> pair : issuesDTO.getFixedIssues().entrySet()) {
 			for (IssueDTO temp : pair.getValue()) {
 				String issueDescription = "null";
 				if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
@@ -243,9 +232,7 @@ public class ReporterHelper {
 			}
 		}
 		// Calculate newSkippedFeatures vs newSkippedRegression
-		item = issuesDTO.getSkippedIssues().entrySet().iterator();
-		while (item.hasNext()) {
-			Entry<String, List<IssueDTO>> pair = item.next();
+		for (Entry<String, List<IssueDTO>> pair : issuesDTO.getSkippedIssues().entrySet()) {
 			for (IssueDTO temp : pair.getValue()) {
 				String issueDescription = "null";
 				if (temp.getIssueDescription() != null && !temp.getIssueDescription().isEmpty()) {
@@ -387,15 +374,9 @@ public class ReporterHelper {
 									packageResults.setStartMillis(ctx.getStartDate().getTime());
 									packageResults.setClassName(tempClass.getTestClass().getName().trim());
 									packageResults.setUrl("suite" + suiteIndex + "_test" + testIndex + "_results.html");
-									if (packages.containsKey(packageResults.getPackageName())) {
-										boolean found = packages.get(packageResults.getPackageName()).stream().anyMatch(t -> t.getClassName().equals(packageResults.getClassName()));
-										if (!found) {
-											packages.get(packageResults.getPackageName()).add(packageResults);
-										}
-									} else {
-										List<PackageDetailsDTO> newList = new ArrayList<>();
-										newList.add(packageResults);
-										packages.put(packageResults.getPackageName(), newList);
+									List<PackageDetailsDTO> existing = packages.computeIfAbsent(packageResults.getPackageName(), k -> new ArrayList<>());
+									if (existing.stream().noneMatch(t -> t.getClassName().equals(packageResults.getClassName()))) {
+										existing.add(packageResults);
 									}
 								}
 							}
