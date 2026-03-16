@@ -2,10 +2,6 @@
 
 An enhanced HTML/XML reporting plugin for the [TestNG](https://testng.org/) testing framework. ReportNG replaces TestNG's default reporting with a modern, feature-rich interface built on Bootstrap, with support for issue tracking, test categorization, interactive graphs, and multiple locales.
 
-**Version:** 2.7.1-SNAPSHOT
-**License:** Apache Software License, Version 2.0
-**Author:** Socrates Sidereas
-**Repository:** https://github.com/sdrss/reportNG
 
 ![](https://github.com/sdrss/test/blob/master/SampleOverview.png)
 
