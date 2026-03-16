@@ -75,7 +75,7 @@ public class JUnitXMLReporter extends AbstractReporter {
 	 * class.
 	 */
 	private Collection<TestClassResults> flattenResults(List<ISuite> suites) {
-		Map<IClass, TestClassResults> flattenedResults = new HashMap<IClass, TestClassResults>();
+		Map<IClass, TestClassResults> flattenedResults = new HashMap<>();
 		for (ISuite suite : suites) {
 			for (ISuiteResult suiteResult : suite.getResults().values()) {
 				// Failed and skipped configuration methods are treated as test
@@ -114,9 +114,9 @@ public class JUnitXMLReporter extends AbstractReporter {
 	 */
 	public static final class TestClassResults {
 		private final IClass testClass;
-		private final Collection<ITestResult> failedTests = new LinkedList<ITestResult>();
-		private final Collection<ITestResult> skippedTests = new LinkedList<ITestResult>();
-		private final Collection<ITestResult> passedTests = new LinkedList<ITestResult>();
+		private final Collection<ITestResult> failedTests = new LinkedList<>();
+		private final Collection<ITestResult> skippedTests = new LinkedList<>();
+		private final Collection<ITestResult> passedTests = new LinkedList<>();
 		
 		private long duration = 0;
 		
@@ -136,9 +136,12 @@ public class JUnitXMLReporter extends AbstractReporter {
 				case ITestResult.SKIP:
 					if (META.allowSkippedTestsInXML()) {
 						skippedTests.add(result);
-						break;
+					} else {
+						failedTests.add(result);
 					}
+					break;
 				case ITestResult.FAILURE:
+					failedTests.add(result);
 					break;
 				case ITestResult.SUCCESS_PERCENTAGE_FAILURE:
 					failedTests.add(result);

@@ -2,8 +2,8 @@ package org.uncommons.reportng;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 
@@ -23,8 +23,8 @@ public final class ReportMetadata {
 	static final String LOCALE_KEY = PROPERTY_KEY_PREFIX + "locale";
 	static final String VELOCITY_LOG_KEY = PROPERTY_KEY_PREFIX + "velocity-log";
 	static final String LOGOUTPUTREPORT = PROPERTY_KEY_PREFIX + "logOutputReport";
-	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("EEEE dd MMMM yyyy");
-	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm z");
+	private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("EEEE dd MMMM yyyy").withZone(ZoneId.systemDefault());
+	private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm z").withZone(ZoneId.systemDefault());
 
 	/**
 	 * The date/time at which this report is being generated.
@@ -36,7 +36,7 @@ public final class ReportMetadata {
 	 * @see #getReportTime()
 	 */
 	public String getReportDate() {
-		return DATE_FORMAT.format(reportTime);
+		return DATE_FORMAT.format(reportTime.toInstant());
 	}
 
 	/**
@@ -44,7 +44,7 @@ public final class ReportMetadata {
 	 * @see #getReportDate()
 	 */
 	public String getReportTime() {
-		return TIME_FORMAT.format(reportTime);
+		return TIME_FORMAT.format(reportTime.toInstant());
 	}
 
 	public String getReportTitle() {

@@ -12,11 +12,14 @@ public class Retry implements IRetryAnalyzer {
 	
 	@Override
 	public boolean retry(ITestResult result) {
-		int maxRetryCount = 2;
-		try {
-			maxRetryCount = Integer.parseInt(System.getProperty(HTMLReporter.TEST_MAX_RETRY_COUNT));
-		} catch (Exception ex) {
-			// logger.debug("", ex);
+		int maxRetryCount = 0;
+		String prop = System.getProperty(HTMLReporter.TEST_MAX_RETRY_COUNT);
+		if (prop != null && !prop.isEmpty()) {
+			try {
+				maxRetryCount = Integer.parseInt(prop);
+			} catch (NumberFormatException ex) {
+				// keep default 0
+			}
 		}
 		if (result.getMethod().getConstructorOrMethod().getMethod().getAnnotation(KnownDefect.class) == null && retryCount < maxRetryCount && maxRetryCount > 0) {
 			retryCount++;

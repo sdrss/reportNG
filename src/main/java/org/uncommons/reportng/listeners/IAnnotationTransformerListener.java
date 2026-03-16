@@ -10,8 +10,21 @@ import org.uncommons.reportng.HTMLReporter;
 
 public class IAnnotationTransformerListener implements IAnnotationTransformer {
 	
-	public long defaultTestTimeout = 600000;
-	
+	private final long defaultTestTimeout;
+
+	public IAnnotationTransformerListener() {
+		long timeout = 600000;
+		String prop = System.getProperty(HTMLReporter.TEST_TIMEOUT);
+		if (prop != null && !prop.isEmpty()) {
+			try {
+				timeout = Long.parseLong(prop);
+			} catch (NumberFormatException ex) {
+				// keep default
+			}
+		}
+		this.defaultTestTimeout = timeout;
+	}
+
 	@Override
 	public void transform(ITestAnnotation annotation, @SuppressWarnings("rawtypes") Class testClass, @SuppressWarnings("rawtypes") Constructor testConstructor, Method testMethod) {
 		// Retry
@@ -20,12 +33,6 @@ public class IAnnotationTransformerListener implements IAnnotationTransformer {
 			annotation.setRetryAnalyzer(Retry.class);
 		}
 		// Test Time Out
-		try {
-			String timeout = System.getProperty(HTMLReporter.TEST_TIMEOUT);
-			defaultTestTimeout = Long.parseLong(timeout);
-		} catch (Exception ex) {
-			
-		}
 		if (defaultTestTimeout > 0) {
 			annotation.setTimeOut(defaultTestTimeout);
 		}

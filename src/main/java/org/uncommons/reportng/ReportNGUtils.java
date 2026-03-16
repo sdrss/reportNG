@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +19,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.testng.IClass;
 import org.testng.IInvokedMethod;
@@ -1414,16 +1414,7 @@ public class ReportNGUtils {
 	 * @return The combined, comma-separated, String.
 	 */
 	private String commaSeparate(Collection<String> strings) {
-		StringBuilder buffer = new StringBuilder();
-		Iterator<String> iterator = strings.iterator();
-		while (iterator.hasNext()) {
-			String string = iterator.next();
-			buffer.append(string);
-			if (iterator.hasNext()) {
-				buffer.append(", ");
-			}
-		}
-		return buffer.toString();
+		return String.join(", ", strings);
 	}
 	
 	/**
@@ -1438,35 +1429,11 @@ public class ReportNGUtils {
 		if (s == null) {
 			return null;
 		}
-		StringBuilder buffer = new StringBuilder();
-		for (int i = 0; i < s.length(); i++) {
-			buffer.append(escapeChar(s.charAt(i)));
-		}
-		return buffer.toString();
-	}
-	
-	/**
-	 * Converts a char into a String that can be inserted into an XML document, replacing special characters with XML entities as required.
-	 * 
-	 * @param character
-	 *            The character to convert.
-	 * @return An XML entity representing the character (or a String containing just the character if it does not need to be escaped).
-	 */
-	private static String escapeChar(char character) {
-		switch (character) {
-			case '<':
-				return "&lt;";
-			case '>':
-				return "&gt;";
-			case '"':
-				return "&quot;";
-			case '\'':
-				return "&apos;";
-			case '&':
-				return "&amp;";
-			default:
-				return String.valueOf(character);
-		}
+		return s.replace("&", "&amp;")
+				.replace("<", "&lt;")
+				.replace(">", "&gt;")
+				.replace("\"", "&quot;")
+				.replace("'", "&apos;");
 	}
 	
 	/**
@@ -1497,7 +1464,7 @@ public class ReportNGUtils {
 					buffer.append("<br/>\n");
 					break;
 				default:
-					buffer.append(escapeChar(ch));
+					buffer.append(escapeString(String.valueOf(ch)));
 			}
 		}
 		return buffer.toString();
@@ -1528,11 +1495,10 @@ public class ReportNGUtils {
 	 * @return The earliest start time.
 	 */
 	public long getStartTime(List<IInvokedMethod> methods) {
-		long startTime = System.currentTimeMillis();
-		for (IInvokedMethod method : methods) {
-			startTime = Math.min(startTime, method.getDate());
-		}
-		return startTime;
+		return methods.stream()
+				.mapToLong(IInvokedMethod::getDate)
+				.min()
+				.orElse(System.currentTimeMillis());
 	}
 	
 	public long getEndTime(ISuite suite, IInvokedMethod method, List<IInvokedMethod> methods) {

@@ -79,12 +79,9 @@ public abstract class AbstractReporter extends TestListenerAdapter implements IR
 	 * Generate the specified output file by merging the specified Velocity template with the supplied context.
 	 */
 	protected void generateFile(File file, String templateName, VelocityContext context) throws Exception {
-		Writer writer = new BufferedWriter(new FileWriter(file));
-		try {
+		try (Writer writer = new BufferedWriter(new FileWriter(file))) {
 			Velocity.mergeTemplate(classpathPrefix + templateName, ENCODING, context, writer);
 			writer.flush();
-		} finally {
-			writer.close();
 		}
 	}
 	
@@ -140,7 +137,7 @@ public abstract class AbstractReporter extends TestListenerAdapter implements IR
 			try {
 				FileUtils.deleteDirectory(outputDirectory);
 			} catch (IOException e) {
-				e.printStackTrace();
+				throw new ReportNGException("Failed to delete output directory: " + outputDirectory, e);
 			}
 		}
 	}
