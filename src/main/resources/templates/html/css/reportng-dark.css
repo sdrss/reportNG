@@ -528,27 +528,27 @@
 }
 
 .passTitle {
-    color: #44cc44;
+    color: green;
     font-weight: bold;
 }
 
 .failTitle {
-    color: #ff6666;
+    color: red;
     font-weight: bold;
 }
 
 .skipTitle {
-    color: #ffaa00;
+    color: #848406;
     font-weight: bold;
 }
 
 .KnownDefectTitle {
-    color: #ff8c00;
+    color: orange;
     font-weight: bold;
 }
 
 .fixedTitle {
-    color: #6699ff;
+    color: blue;
     font-weight: bold;
 }
 

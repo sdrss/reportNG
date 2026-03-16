@@ -90,6 +90,7 @@ public class ReportNGUtils {
 					response.append("<a href=\"" + entry.getValue() +
 							"\" class=\"list-group-item\" target=\"overview\">&nbsp;&nbsp;&nbsp;" + entry.getKey() + "</a>" + "\n");
 				}
+				response.append("</ul>\n");
 			} catch (Exception e) {
 			}
 		}
