@@ -1,0 +1,611 @@
+a {
+     color: #6ab0f5;
+}
+ a:visited {
+     color: #8ab8f5;
+}
+ body {
+     margin: 1.0em 1em;
+     background-color: #1e1e1e;
+     color: #e0e0e0;
+}
+ h1 {
+     font-weight: bold;
+     color: #e0e0e0;
+}
+ h2 {
+     font-weight: bold;
+     color: #e0e0e0;
+}
+
+ h3{
+     margin: 4px;
+     font-size:2px;
+}
+
+.titled{
+	font-size: 0px;
+	white-space: nowrap;
+    overflow: hidden;
+	#color: transparent;
+}
+ .header {
+     font-weight: bold;
+     text-align: left;
+     color: #e0e0e0;
+}
+ .passed {
+     background-color: #1a6b1a;
+     color: #e0e0e0;
+}
+ .skipped {
+     background-color: #7a5500;
+     color: #e0e0e0;
+}
+ .failed {
+     background-color: #8b0000;
+     color: #e0e0e0;
+}
+ .passedConfig {
+     background-color: #1e5c1e;
+     color: #e0e0e0;
+}
+ .failedConfig {
+     background-color: #5c0000;
+     color: #ffffff;
+}
+ .skippedConfig {
+     background-color: #5c3000;
+     color: #ffffff;
+}
+ td{
+     word-wrap:break-word;
+     font-weight: normal;
+}
+ .totalLabel {
+     font-weight: bold;
+     background-color: #2a2a2a;
+     color: #e0e0e0;
+}
+ .suite {
+     background-color: #2e2e2e;
+     font-weight: bold;
+     color: #e0e0e0;
+}
+ .test {
+     background-color: #252525;
+     padding-left: 2em;
+     color: #e0e0e0;
+}
+ .test .passed {
+     background-color: #1a4a1a;
+     text-align: center;
+     width:1em;
+}
+ .test .skipped {
+     background-color: #5a4000;
+     text-align: center;
+     width:1em;
+}
+ .test .failed {
+     background-color: #6b0000;
+     text-align: center;
+     width:1em;
+}
+ .group {
+     background-color: #3a3a3a;
+     color: #e0e0e0;
+     font-weight: bold;
+}
+ .suiteLinks {
+     float: right;
+     font-weight: normal;
+     vertical-align: middle;
+}
+ .suiteLinks a {
+     color: #6ab0f5;
+     margin-left: .5em;
+}
+ .passRate {
+     font-weight: bold;
+     text-align: center;
+     width:1em;
+}
+ .duration {
+     text-align: right;
+     text-align: center;
+     width:1em;
+}
+ .thread {
+     white-space: nowrap;
+}
+ .wrap {
+     border: 0;
+     margin-top: 1.8em;
+     line-height: 1.0em;
+     border-spacing: 0.1em;
+     width:1em;
+}
+ .resultsTable {
+     border: 0;
+     width: 100%;
+     margin-top: 1.8em;
+     line-height: 1.7em;
+     border-spacing: 0.1em;
+}
+ .resultsTable .method {
+     width: 18em;
+}
+ .resultsTable .duration {
+     width: 6em;
+}
+ .resultsTable td {
+     vertical-align: top;
+     padding: 0 1em;
+}
+ .resultsTable th {
+     padding: 0 .5em;
+}
+ .number {
+     text-align: right;
+     text-align: center;
+}
+ .zero {
+     font-weight: normal;
+     text-align: center;
+     width:1em;
+}
+ .columnHeadings {
+     font-size: 1em;
+}
+ .columnHeadings th {
+     font-weight: normal;
+     text-align: center;
+}
+ .configTable {
+     border: 1px solid #800000;
+     color: #ff8888;
+     margin-bottom: 1.5em;
+}
+ #sidebarHeader {
+     padding: 1.8em 1em;
+     margin: 0 -1em 1.8em -1em;
+}
+ #suites {
+     line-height: 1.7em;
+     border-spacing: 0.1em;
+     width: 100%;
+}
+ .tests {
+     display: table-row-group;
+}
+ .header.suite {
+     cursor: pointer;
+     clear: right;
+     height: 1.214em;
+     margin-top: 1px;
+}
+ div.test {
+     margin-top: 0.1em;
+     clear: right;
+     font-size: 1.3em;
+}
+/* The +/- toggle used in the navigation frame. */
+ .toggle {
+     font-family: monospace;
+     font-weight: bold;
+     padding-left: 2px;
+     padding-right: 5px;
+     color: #aaaaaa;
+}
+ .successIndicator {
+     float: right;
+     font-family: monospace;
+     font-weight: bold;
+     padding-right: 2px;
+     color: #44cc44;
+}
+ .skipIndicator {
+     float: right;
+     font-family: monospace;
+     font-weight: bold;
+     padding-right: 2px;
+     color: #ffaa00;
+}
+ .failureIndicator {
+     float: right;
+     font-family: monospace;
+     font-weight: bold;
+     padding-right: 2px;
+     color: #ff6666;
+}
+/* These classes are for information about an individual test result. */
+ .result {
+ 	font-size: 12px;
+}
+
+ .resultConfiguration {
+ 	font-size: 12px;
+}
+ .dependency {
+     #font-family: Lucida Console, Monaco, Courier New, monospace;
+     # font-weight: bold;
+}
+ .arguments {
+     # font-family: Lucida Console, Monaco, Courier New, monospace;
+     # font-weight: bold;
+}
+ .testOutput {
+     #font-family: Lucida Console, Monaco, Courier New, monospace;
+     color: #e0e0e0;
+}
+ .stackTrace {
+     font-size: 0.9em;
+     line-height: 1.2em;
+     margin-left: 1em;
+}
+ .stackTrace .stackTrace {
+     font-size: inherit;
+}
+ #meta {
+     font-size: 1em;
+     text-align: right;
+     float: right;
+}
+ #metaTitle {
+     font-size: 1em;
+     text-align: left;
+     float: left;
+}
+ #systemInfo {
+     color: #aaaaaa;
+}
+/* Reporter log output (individual test output is styled by "testOutput" above). */
+ #log {
+     #font-family: Lucida Console, Monaco, Courier New, monospace;
+     # font-size: 1.3em;
+     # margin-top: 1.8em;
+}
+ .overviewTable {
+     width: 100%;
+     margin-top: 1.8em;
+     line-height: 1.7em;
+     border-spacing: 0.1em;
+}
+ .overviewTable td {
+     padding: 0 1em;
+}
+ .overviewTable th {
+     padding: 0 .5em;
+}
+ .overviewTable .duration {
+     width: 6em;
+}
+ .overviewTable .passRate {
+     width: 6em;
+}
+ .overviewTable .number {
+     width: 5em;
+}
+ .overviewTable tr {
+     height: 1.6em;
+}
+ .tablesorter {
+     width: 100%;
+     margin-top: 0em;
+     table-layout:fixed;
+}
+ .tablesorter td {
+     padding: 0 0em;
+     vertical-align: text-top;
+}
+ .tablesorter th {
+     padding: 0 1em;
+}
+ .time {
+     visibility:hidden;
+     font-size: 0em;
+}
+td.header:hover  {
+      background-color: #3a3a3a;
+}
+ .headerTime {
+     visibility:hidden;
+     font-size: 0em;
+}
+ td.hover, tr.hover{
+     background-color: #3a3a3a;
+}
+ th.hover, tfoot td.hover{
+     background-color: #2e2e2e;
+}
+ td.hovercell, th.hovercell{
+     background-color: #334455;
+}
+ td.hoverrow, th.hoverrow{
+     background-color: #1a3a4a;
+}
+ .knownDefects {
+     background-color: #7a4000;
+     color: #e0e0e0;
+}
+ .test .knownDefects {
+     background-color: #5a3000;
+     text-align: center;
+     width:1em;
+}
+ .fixed {
+     background-color: #00008b;
+     color: #e0e0e0;
+}
+ .test .fixed {
+     background-color: #00005a;
+     text-align: center;
+     width:1em;
+}
+ .output {
+     margin-top: 0em;
+     margin-bottom: 0em;
+     margin-left: 3.8em;
+     width: 95%;
+}
+ .objecttable {
+     background-color: #2a2a2a;
+}
+ .arraytable {
+     background-color: #252520;
+}
+ .output .string {
+     color: #e0e0e0;
+}
+ .output .number {
+     color: #6ab0f5;
+}
+ .output .boolean {
+     color: #ffaa55;
+}
+ .void {
+     color: #6ab0f5;
+}
+ .output table td, .outputtable th {
+     padding: 0.1em 0.1em;
+     border: 1px solid #555555;
+     vertical-align: top;
+}
+ .tableURL {
+     border: 2px solid #555555;
+     margin-bottom: 1.5em;
+     background-color: #2a2a2a;
+     line-height: 1.0em;
+     border-spacing: 0.1em;
+     margin-left: 3.8em;
+}
+ .tableURLHttp {
+     border: 2px solid #555555;
+     margin-bottom: 1.5em;
+     background-color: #2a2a2a;
+     line-height: 1.0em;
+     border-spacing: 0.1em;
+     margin-left: 3.8em;
+}
+ .tableURLSMS {
+     border: 2px solid #555555;
+     margin-bottom: 1.5em;
+     background-color: #2a2a2a;
+     line-height: 1.0em;
+     border-spacing: 0.1em;
+     margin-left: 3.8em;
+     table-layout:fixed;
+}
+ #td{
+     word-wrap:break-word;
+}
+ .tableURLDB {
+     border: 2px solid #555555;
+     margin-bottom: 1.5em;
+     background-color: #2a2a2a;
+     line-height: 1.0em;
+     border-spacing: 0.1em;
+     margin-left: 3.8em;
+     table-layout:fixed;
+}
+ .wrapNo {
+     border-spacing: 0.1em;
+}
+ .widgets {
+     margin-bottom: 0em;
+     background-color: #2a2a2a;
+     line-height: 0em;
+     border-spacing: 0.1em;
+     margin-left: 3.8em;
+     width: 75%;
+}
+ .tableURL td {
+     vertical-align: top;
+     padding: 0 1em;
+}
+ .tableURL th {
+     padding: 0.2em;
+}
+ .smshistorytable {
+     border: 2px solid #555555;
+     margin-bottom: 1.5em;
+     background-color: #2a2a2a;
+     line-height: 1.0em;
+     border-spacing: 0.1em;
+     margin-left: 3.8em;
+}
+ .tablemo {
+     border: 2px solid #555555;
+     background-color: #2a2a2a;
+     border-spacing: 0.5em;
+     margin-left: 3.8em;
+}
+ .tablemo td {
+     vertical-align: top;
+     padding: 0 1em;
+     border: 1em;
+}
+ .tablemo tr {
+     border: 1px solid #555555;
+}
+ .tablemo th {
+     padding: 0.2em;
+}
+ .tablemt {
+     border: 2px solid #555555;
+     background-color: #2a2a2a;
+     border-spacing: 0.5em;
+     margin-left: 3.8em;
+}
+ .tablemt td {
+     vertical-align: top;
+     padding: 0 1em;
+     border: 1em;
+}
+ .tablemt tr {
+     border: 1px solid #555555;
+}
+ .tablemt th {
+     padding: 0.2em;
+}
+ .tabledlr {
+     border: 2px solid #555555;
+     background-color: #2a2a2a;
+     border-spacing: 0.5em;
+     margin-left: 3.8em;
+}
+ .tabledlr td {
+     vertical-align: top;
+     padding: 0 1em;
+     border: 1em;
+}
+ .tabledlr tr {
+     border: 1px solid #555555;
+}
+ .tabledlr th {
+     padding: 0.2em;
+}
+ .tablemaster {
+     background-color: #2a2a2a;
+     border-spacing: 0.5em;
+     margin-left: 3.8em;
+     width: 95%;
+}
+ .tablemaster td {
+     vertical-align: top;
+     padding: 0 1em;
+     border: 1em;
+}
+ .tablemaster tr {
+     border: 1px solid #555555;
+}
+ .tablemaster th {
+     padding: 0.2em;
+}
+ .tablemo td {
+     border-spacing: 0.5em;
+     border-collapse: collapse;
+}
+ .tablemo tr {
+     border-spacing: 0.5em;
+     border-collapse: collapse;
+}
+ .string {
+     color: #e0e0e0;
+}
+ .number {
+     color: #e0e0e0;
+}
+ .boolean {
+     color: #e0e0e0;
+}
+ .button {
+     background-color: #2a6b2a;
+     border: none;
+     color: #e0e0e0;
+     padding: 10px 20px;
+     text-align: center;
+     text-decoration: none;
+     display: inline-block;
+     font-size: 16px;
+     margin: 4px 2px;
+     cursor: pointer;
+}
+ .tablesorter thead tr .header{
+     background-repeat:no-repeat;
+     background-position: right;
+}
+ .tablesorter thead tr .headerSortUp {
+     background-repeat:no-repeat;
+     background-position: right;
+}
+ .tablesorter thead tr .headerSortDown {
+     background-repeat:no-repeat;
+     background-position: right;
+}
+ .tooltip {
+     position: relative;
+     display: inline-block;
+     border-bottom: 1px dotted #aaaaaa;
+}
+ .tooltip .tooltiptext {
+     visibility: hidden;
+	 width: 120px;
+     background-color: #333333;
+     color: #e0e0e0;
+     text-align: center;
+     border-radius: 6px;
+     padding: 5px 0;
+     position: absolute;
+     z-index: 1;
+}
+ .tooltip:hover .tooltiptext {
+     visibility: visible;
+}
+
+.tooltipCustom {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltipCustom .tooltiptextCustom {
+  visibility: hidden;
+  width: 120px;
+  background-color: #333333;
+  color: #e0e0e0;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltipCustom:hover .tooltiptextCustom {
+  visibility: visible;
+}
+
+ .passTitle{
+     color: #44cc44;
+}
+ .failTitle{
+     color: #ff6666;
+}
+ .skipTitle{
+     color: #ffaa00;
+}
+ .KnownDefectTitle{
+     color: #ffaa55;
+}
+ .fixedTitle{
+     color: #6699ff;
+}
+
+.break-word {
+  overflow-wrap: break-word;
+  word-break: break-all;
+}
+
+.test:hover {
+    background-color: #3a3a3a;
+}

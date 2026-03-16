@@ -48,6 +48,7 @@ public class HTMLReporter extends AbstractReporter {
 	public static final String REPORTNG_TITLE = "org.uncommons.reportng.title";
 	public static final String ARGUMENTS_TITLE = "org.uncommons.reportng.arguments";
 	public static final String ESCAPE_OUTPUT = "org.uncommons.reportng.escape-output";
+	public static final String REPORT_THEME = "org.uncommons.reportng.theme";
 	public static final String LOG_OUTPUT_REPORT_PATH = "org.uncommons.reportng.logOutputReport.path";
 	// System Variables and modes
 	public static final String REPORTNG_DEBUG_MODE = "org.uncommons.reportng.debug.mode";
@@ -411,8 +412,10 @@ public class HTMLReporter extends AbstractReporter {
 	}
 	
 	private void copyResources(File outputDirectory) throws IOException {
-		copyStream("css/reportng.css", "css/reportng.css", outputDirectory);
-		copyStream("css/reportngClass.css", "css/reportngClass.css", outputDirectory);
+		String theme = System.getProperty(REPORT_THEME, "white").trim().toLowerCase();
+		boolean isDark = "dark".equals(theme);
+		copyStream(isDark ? "css/reportng-dark.css" : "css/reportng.css", "css/reportng.css", outputDirectory);
+		copyStream(isDark ? "css/reportngClass-dark.css" : "css/reportngClass.css", "css/reportngClass.css", outputDirectory);
 		copyStream("css/bootstrap.min.css", "css/bootstrap.min.css", outputDirectory);
 		copyStream("js/reportng.js", "js/reportng.js", outputDirectory);
 		copyStream("js/reportngClass.js", "js/reportngClass.js", outputDirectory);

@@ -26,6 +26,7 @@ An enhanced HTML/XML reporting plugin for the [TestNG](https://testng.org/) test
 - Multi-locale support: English, French, Portuguese
 - Package-level test summary view
 - Detailed per-test log output pages
+- Dark and white report themes (switchable via system property)
 
 ---
 
@@ -57,6 +58,7 @@ Pass these as JVM arguments (e.g., `-Dproperty=value`) or in your Maven Surefire
 | `org.uncommons.reportng.show-regression-column` | `false` | Show regression column in results table |
 | `org.uncommons.reportng.debug.mode` | `false` | Enable debug logging |
 | `org.uncommons.reportng.externalLinks` | none | JSON map of label → URL for external links |
+| `org.uncommons.reportng.theme` | `white` | Report color theme: `white` or `dark` |
 
 * org.uncommons.reportng.escape-output : Used to turn off escaping for log output in the reports (not recommended). The default is for output to be escaped, since this prevents characters such as '<' and '&' from causing mark-up problems. If escaping is turned off, then log text is included as raw HTML/XML, which allows for the insertion of hyperlinks and other nasty hacks.
  * org.uncommons.reportng.title : Used to over-ride the report title.
@@ -68,7 +70,8 @@ Over-rides the default locale for localised messages in generated reports. If no
  * org.uncommons.reportng.skip.execution : Set to "true" whenever you need to skip the rest testNG execution.See for more [Wiki/Tips](https://github.com/sdrss/reportNG/wiki/Tips)
  * org.uncommons.reportng.show-suite-configuration-methods : Set to "true" to display @Before & @After suite methods into overview page. Otherwise, if false then suite configuration methods are displayed by default in the first/last test. Default value is false
  * org.uncommons.reportng.show-regression-column : Set to "true"/"false" in order to show/hide accordingly the column Regression into Overview page. The default value is false
- 
+ * org.uncommons.reportng.theme : Set to `"dark"` or `"white"` to control the report color theme. The default value is `white`. When set to `dark`, the report uses a dark background with adjusted colors for all status indicators, tables, and navigation.
+
 ---
 
 ## Report Output
