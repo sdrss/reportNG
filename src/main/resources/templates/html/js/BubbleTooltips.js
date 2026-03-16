@@ -3,12 +3,11 @@
 //Modified by Brenton Fletcher
 
 function enableTooltips(id){
-var links,i,h;
+var h;
 if(!document.getElementById || !document.getElementsByTagName) return;
 AddCss();
 h=document.createElement("span");
 h.id="btc";
-h.setAttribute("id","btc");
 h.style.position="absolute";
 document.getElementsByTagName("body")[0].appendChild(h);
 doTooltips(id);
@@ -16,13 +15,14 @@ doTooltips(id);
 
 function doTooltips(id)
 {
+   var links;
    if(id==null) links=document.getElementsByTagName("span");
    else links=document.getElementById(id).getElementsByTagName("span");
-   for(i=0;i<links.length;i++) Prepare(links[i]);
+   for(var i=0;i<links.length;i++) Prepare(links[i]);
 }
 
 function Prepare(el){
-var tooltip,t,b,s,l;
+var tooltip,t,s;
 t=el.getAttribute("title");
 if(t==null || t.length==0) return;
 el.removeAttribute("title");
@@ -48,9 +48,6 @@ if(d.childNodes.length>0) d.removeChild(d.firstChild);
 }
 
 function setOpacity(el){
-el.style.filter="alpha(opacity:95)";
-el.style.KHTMLOpacity="0.95";
-el.style.MozOpacity="0.95";
 el.style.opacity="0.95";
 }
 
@@ -71,21 +68,16 @@ document.getElementsByTagName("head")[0].appendChild(l);
 }
 
 function Locate(e){
+var btc=document.getElementById("btc");
 var posx=0,posy=0;
 if(e==null) e=window.event;
 if(e.pageX || e.pageY){
     posx=e.pageX; posy=e.pageY;
     }
 else if(e.clientX || e.clientY){
-    if(document.documentElement.scrollTop){
-        posx=e.clientX+document.documentElement.scrollLeft;
-        posy=e.clientY+document.documentElement.scrollTop;
-        }
-    else{
-        posx=e.clientX+document.body.scrollLeft;
-        posy=e.clientY+document.body.scrollTop;
-        }
+    posx=e.clientX+(document.documentElement.scrollLeft||document.body.scrollLeft);
+    posy=e.clientY+(document.documentElement.scrollTop||document.body.scrollTop);
     }
-document.getElementById("btc").style.top=(posy+10)+"px";
-document.getElementById("btc").style.left=(posx-20)+"px";
+btc.style.top=(posy+10)+"px";
+btc.style.left=(posx-20)+"px";
 }
