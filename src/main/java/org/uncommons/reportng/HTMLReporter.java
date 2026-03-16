@@ -46,6 +46,7 @@ public class HTMLReporter extends AbstractReporter {
 	
 	// System Variables
 	public static final String REPORTNG_TITLE = "org.uncommons.reportng.title";
+	public static final String ARGUMENTS_TITLE = "org.uncommons.reportng.arguments";
 	public static final String ESCAPE_OUTPUT = "org.uncommons.reportng.escape-output";
 	public static final String LOG_OUTPUT_REPORT_PATH = "org.uncommons.reportng.logOutputReport.path";
 	// System Variables and modes
