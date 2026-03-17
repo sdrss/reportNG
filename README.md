@@ -2,12 +2,13 @@
 
 An enhanced HTML/XML reporting plugin for the [TestNG](https://testng.org/) testing framework. ReportNG replaces TestNG's default reporting with a modern, feature-rich interface built on Bootstrap, with support for issue tracking, test categorization, interactive graphs, and multiple locales.
 
-
-![](https://github.com/sdrss/test/blob/master/SampleOverview.png)
-
 ![GitHub Release Date](https://img.shields.io/github/release-date/sdrss/reportNG) ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/sdrss/reportNG)
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.sdrss/reportng?style=blue)](https://img.shields.io/maven-central/v/com.github.sdrss/reportng) 
 [![Build](https://github.com/sdrss/reportNG/workflows/Java_CI/badge.svg)](https://github.com/sdrss/reportNG/workflows/Java_CI/badge.svg)
+
+| White | Dark |
+|---|---|
+| ![](https://github.com/sdrss/test/blob/master/screenshots/SampleOverviewWhite.png) | ![](https://github.com/sdrss/test/blob/master/screenshots/SampleOverviewDark.png) |
 
 [Sample report](https://sdrss.github.io/test/) / [Releases](https://github.com/sdrss/reportNG/releases) / [Wiki](https://github.com/sdrss/reportNG/wiki/) / [Maven Repository](https://mvnrepository.com/artifact/com.github.sdrss/reportng)
 
