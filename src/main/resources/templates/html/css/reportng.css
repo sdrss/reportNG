@@ -555,9 +555,9 @@
  .tablesorter th {
     padding: 0 1em;
 }
-.tablesorter td{ 
-	padding:1px; 
-	border: white 2px solid;
+.tablesorter td{
+	padding:1px;
+	border: #d0d0d0 2px solid;
 }
 .tablesorterSuites thead tr .header{
 	background-repeat:no-repeat;
