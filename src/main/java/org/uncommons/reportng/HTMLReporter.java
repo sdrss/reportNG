@@ -425,7 +425,7 @@ public class HTMLReporter extends AbstractReporter {
 		copyStream("js/jquery.tablesorter.min.js", "js/jquery.tablesorter.min.js", outputDirectory);
 		copyStream("js/canvasjs.min.js", "js/canvasjs.min.js", outputDirectory);
 		copyStream("js/bootstrap.min.js", "js/bootstrap.min.js", outputDirectory);
-		copyStream("images/testng.png", "images/testng.png", outputDirectory);
+		copyStream(isDark ? "images/testngWhite.png" : "images/testng.png", "images/testng.png", outputDirectory);
 		
 		copyStream("images/asc.gif", "images/asc.gif", outputDirectory);
 		copyStream("images/bg.gif", "images/bg.gif", outputDirectory);
