@@ -205,6 +205,6 @@ Open `test-output/html/index.html` in a browser to view the report.
       <dependency>
 	   <groupId>com.github.sdrss</groupId>
 	   <artifactId>reportng</artifactId>
-	   <version>2.7.0</version>
+	   <version>2.8.1</version>
       </dependency>
 
