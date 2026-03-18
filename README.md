@@ -6,9 +6,11 @@ An enhanced HTML/XML reporting plugin for the [TestNG](https://testng.org/) test
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.sdrss/reportng?style=blue)](https://img.shields.io/maven-central/v/com.github.sdrss/reportng) 
 [![Build](https://github.com/sdrss/reportNG/workflows/Java_CI/badge.svg)](https://github.com/sdrss/reportNG/workflows/Java_CI/badge.svg)
 
-| White | Dark |
-|---|---|
-| ![](https://github.com/sdrss/test/blob/master/screenshots/SampleOverviewWhite.png) | ![](https://github.com/sdrss/test/blob/master/screenshots/SampleOverviewDark.png) |
+<div style="display:flex; gap:16px;">
+  <div style="text-align:center; width:30%"><img src=".images/white.png" alt="White" width="100%"/><br/><b>White</b></div>
+  <div style="text-align:center; width:30%"><img src=".images/dark.png" alt="Dark" width="100%"/><br/><b>Dark</b></div>
+  <div style="text-align:center; width:30%"><img src=".images/blue.png" alt="Blue" width="100%"/><br/><b>Blue</b></div>
+</div>
 
 [Sample report](https://sdrss.github.io/test/) / [Releases](https://github.com/sdrss/reportNG/releases) / [Wiki](https://github.com/sdrss/reportNG/wiki/) / [Maven Repository](https://mvnrepository.com/artifact/com.github.sdrss/reportng)
 
@@ -27,7 +29,7 @@ An enhanced HTML/XML reporting plugin for the [TestNG](https://testng.org/) test
 - Multi-locale support: English, French, Portuguese
 - Package-level test summary view
 - Detailed per-test log output pages
-- Dark and white report themes (switchable via system property)
+- Dark, white, and blue report themes (switchable via system property)
 
 ---
 
@@ -42,7 +44,7 @@ An enhanced HTML/XML reporting plugin for the [TestNG](https://testng.org/) test
 
 ### Configure via System Properties
 
-Pass these as JVM arguments (e.g., `-Dproperty=value`) or in your Maven Surefire plugin configuration:
+Pass these as JVM arguments (e.g., `-Dproperty=value`) or in your Maven plugin configuration:
 
 | Property | Default | Description |
 |---|---|---|
@@ -59,7 +61,7 @@ Pass these as JVM arguments (e.g., `-Dproperty=value`) or in your Maven Surefire
 | `org.uncommons.reportng.show-regression-column` | `false` | Show regression column in results table |
 | `org.uncommons.reportng.debug.mode` | `false` | Enable debug logging |
 | `org.uncommons.reportng.externalLinks` | none | JSON map of label → URL for external links |
-| `org.uncommons.reportng.theme` | `white` | Report color theme: `white` or `dark` |
+| `org.uncommons.reportng.theme` | `white` | Report color theme: `white`, `dark`, or `blue` |
 
 * org.uncommons.reportng.escape-output : Used to turn off escaping for log output in the reports (not recommended). The default is for output to be escaped, since this prevents characters such as '<' and '&' from causing mark-up problems. If escaping is turned off, then log text is included as raw HTML/XML, which allows for the insertion of hyperlinks and other nasty hacks.
  * org.uncommons.reportng.title : Used to over-ride the report title.
@@ -71,7 +73,7 @@ Over-rides the default locale for localised messages in generated reports. If no
  * org.uncommons.reportng.skip.execution : Set to "true" whenever you need to skip the rest testNG execution.See for more [Wiki/Tips](https://github.com/sdrss/reportNG/wiki/Tips)
  * org.uncommons.reportng.show-suite-configuration-methods : Set to "true" to display @Before & @After suite methods into overview page. Otherwise, if false then suite configuration methods are displayed by default in the first/last test. Default value is false
  * org.uncommons.reportng.show-regression-column : Set to "true"/"false" in order to show/hide accordingly the column Regression into Overview page. The default value is false
- * org.uncommons.reportng.theme : Set to `"dark"` or `"white"` to control the report color theme. The default value is `white`. When set to `dark`, the report uses a dark background with adjusted colors for all status indicators, tables, and navigation.
+ * org.uncommons.reportng.theme : Set to `"dark"`, `"white"`, or `"blue"` to control the report color theme. The default value is `white`. When set to `dark`, the report uses a dark background; when set to `blue`, the report uses a deep navy background with adjusted colors for all status indicators, tables, and navigation.
 
 ---
 
@@ -206,6 +208,6 @@ Open `test-output/html/index.html` in a browser to view the report.
       <dependency>
 	   <groupId>com.github.sdrss</groupId>
 	   <artifactId>reportng</artifactId>
-	   <version>2.8.1</version>
+	   <version>3.0.0</version>
       </dependency>
 
