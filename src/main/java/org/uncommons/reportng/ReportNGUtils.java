@@ -1437,11 +1437,10 @@ public class ReportNGUtils {
 	}
 	
 	/**
-	 * Works like {@link #escapeString(String)} but also replaces line breaks with &lt;br /&gt; tags and preserves significant whitespace.
-	 * 
-	 * @param s
-	 *            The String to escape.
-	 * @return The escaped String.
+	 * Sorts a collection of test results by start time in ascending order.
+	 *
+	 * @param results the collection of test results to sort.
+	 * @return a new sorted list of test results ordered by start time.
 	 */
 	public List<ITestResult> sortResultsByTime(Collection<ITestResult> results) {
 		List<ITestResult> sorted = new ArrayList<>(results);
