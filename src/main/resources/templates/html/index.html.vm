@@ -5,17 +5,249 @@
   <meta charset="utf-8" />
   <meta name="description" content="TestNG unit test results." />
   <link rel="icon" type="image/png" href="images/fav.png">
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/reportng.css" />
+  <script src="js/jquery-1.12.0.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
   <style>
-    html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
-    #layout { display: flex; height: 100vh; }
-    #menu-frame { width: 250px; flex-shrink: 0; border: none; height: 100%; }
-    #content-frame { flex: 1; border: none; height: 100%; }
+    html, body {
+      margin: 0; padding: 0; height: 100%; overflow: hidden;
+    }
+    #layout {
+      display: flex; height: 100vh; overflow: hidden;
+    }
+
+    /* ── Sidebar ── */
+    #sidebar {
+      width: 250px;
+      flex-shrink: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: width 0.25s ease;
+      background: #f8f8f8;
+      border-right: 1px solid #ddd;
+    }
+    #sidebar.collapsed { width: 50px; }
+
+    /* Header row: logo + toggle */
+    #sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      border-bottom: 1px solid #ddd;
+      flex-shrink: 0;
+    }
+    #sidebar-logo {
+      overflow: hidden;
+      white-space: nowrap;
+      transition: opacity 0.2s, width 0.25s;
+      width: 140px;
+    }
+    #sidebar-logo img { width: 130px; height: 60px; }
+    #sidebar.collapsed #sidebar-logo { width: 0; opacity: 0; }
+
+    #toggle-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+      color: #555;
+      padding: 2px 4px;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    #toggle-btn:hover { color: #000; }
+
+    /* Nav */
+    #sidebar-nav {
+      overflow-y: auto;
+      overflow-x: hidden;
+      flex: 1;
+    }
+    #sidebar-nav .list-group { margin-bottom: 0; }
+    #sidebar-nav .list-group-item {
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      overflow: hidden;
+      padding: 9px 14px;
+      border-radius: 0;
+    }
+    #sidebar-nav .list-group-item .glyphicon {
+      flex-shrink: 0;
+      width: 18px;
+      text-align: center;
+    }
+    .nav-label {
+      margin-left: 8px;
+      overflow: hidden;
+      transition: opacity 0.2s, max-width 0.25s;
+      max-width: 200px;
+    }
+    #sidebar.collapsed .nav-label       { max-width: 0; opacity: 0; }
+    #sidebar.collapsed .collapse        { display: none !important; }
+    #sidebar.collapsed .list-unstyled   { display: none !important; }
+
+    /* ── Content iframe ── */
+    #content-frame {
+      flex: 1;
+      border: none;
+      height: 100%;
+    }
   </style>
 </head>
 <body>
   <div id="layout">
-    <iframe id="menu-frame" src="menu.html" title="Navigation menu"></iframe>
+
+    <!-- ══ Sidebar ══ -->
+    <div id="sidebar" class="collapsed">
+      <div id="sidebar-header">
+        <div id="sidebar-logo">
+          <img src="images/testng.png" alt="TestNG" />
+        </div>
+        <button id="toggle-btn" onclick="toggleSidebar()" title="Toggle navigation">&#9776;</button>
+      </div>
+
+      <div id="sidebar-nav">
+        <div class="list-group" style="font-weight:bold">
+
+          <a href="overview.html" target="overview" class="list-group-item">
+            <span class="glyphicon glyphicon-home"></span>
+            <span class="nav-label">$messages.getString("overview")</span>
+          </a>
+
+          <a href="#pageSubmenuResults" class="list-group-item" data-toggle="collapse" aria-expanded="false">
+            <span class="glyphicon glyphicon-list"></span>
+            <span class="nav-label">$messages.getString("results")</span>
+          </a>
+          <ul class="collapse list-unstyled" id="pageSubmenuResults">
+            <a href="suites.html" class="list-group-item" target="overview">
+              <span class="glyphicon glyphicon-th-list"></span>
+              <span class="nav-label">&nbsp;$messages.getString("suiteResults")</span>
+            </a>
+            <a href="suites_overview.html" class="list-group-item" target="overview">
+              <span class="glyphicon glyphicon-list-alt"></span>
+              <span class="nav-label">&nbsp;$messages.getString("testResults")</span>
+            </a>
+            <a href="packages.html" class="list-group-item" target="overview">
+              <span class="glyphicon glyphicon-folder-open"></span>
+              <span class="nav-label">&nbsp;$messages.getString("packages")</span>
+            </a>
+            <a href="groupsresults.html" class="list-group-item" target="overview">
+              <span class="glyphicon glyphicon-tags"></span>
+              <span class="nav-label">&nbsp;$messages.getString("groupsResults")</span>
+            </a>
+          </ul>
+
+          <a href="#pageSubmenuIssues" class="list-group-item" data-toggle="collapse" aria-expanded="false">
+            <span class="glyphicon glyphicon-list-alt"></span>
+            <span class="nav-label">$messages.getString("issues")</span>
+          </a>
+          <ul class="collapse list-unstyled" id="pageSubmenuIssues">
+            <a href="newIssues.html" class="list-group-item" target="overview">
+              <span class="glyphicon glyphicon-exclamation-sign"></span>
+              <span class="nav-label">&nbsp;$messages.getString("newIssues") ($utils.issues($suites).getNewIssuesAmount())</span>
+            </a>
+            #if ($utils.knownDefectMode())
+            <a href="knownIssues.html" class="list-group-item" target="overview">
+              <span class="glyphicon glyphicon-warning-sign"></span>
+              <span class="nav-label">&nbsp;$messages.getString("knownIssues") ($utils.issues($suites).getKnownIssuesAmount())</span>
+            </a>
+            <a href="fixedIssues.html" class="list-group-item" target="overview">
+              <span class="glyphicon glyphicon-ok-sign"></span>
+              <span class="nav-label">&nbsp;$messages.getString("fixedIssues") ($utils.issues($suites).getFixedIssuesAmount())</span>
+            </a>
+            #end
+            <a href="skippedIssues.html" class="list-group-item" target="overview">
+              <span class="glyphicon glyphicon-forward"></span>
+              <span class="nav-label">&nbsp;$messages.getString("skippedIssues") ($utils.issues($suites).getSkippedIssuesAmount())</span>
+            </a>
+          </ul>
+
+          <a href="#pageSubmenuFeatures" class="list-group-item" data-toggle="collapse" aria-expanded="false">
+            <span class="glyphicon glyphicon-th-large"></span>
+            <span class="nav-label">$messages.getString("features")</span>
+          </a>
+          <ul class="collapse list-unstyled" id="pageSubmenuFeatures">
+            <a href="regression.html" class="list-group-item" target="overview">
+              <span class="glyphicon glyphicon-refresh"></span>
+              <span class="nav-label">&nbsp;$messages.getString("regression") ($utils.issues($suites).getFeature().size())</span>
+            </a>
+            #if ($utils.hasNewFeatures($suites))
+            <a href="newFeatures.html" class="list-group-item" target="overview">
+              <span class="glyphicon glyphicon-star"></span>
+              <span class="nav-label">&nbsp;$messages.getString("newFeatures") ($utils.issues($suites).getNewFeature().size())</span>
+            </a>
+            #end
+          </ul>
+
+          <a href="runArguments.html" target="overview" class="list-group-item">
+            <span class="glyphicon glyphicon-random"></span>
+            <span class="nav-label">$messages.getString("runArguments")</span>
+          </a>
+
+          <a href="#pageSubmenuGraphs" class="list-group-item" data-toggle="collapse" aria-expanded="false">
+            <span class="glyphicon glyphicon-equalizer"></span>
+            <span class="nav-label">$messages.getString("graphs")</span>
+          </a>
+          <ul class="collapse list-unstyled" id="pageSubmenuGraphs">
+            <a href="graphsTime.html" class="list-group-item" target="overview">
+              <span class="glyphicon glyphicon-time"></span>
+              <span class="nav-label">&nbsp;$messages.getString("testResults")</span>
+            </a>
+            <a href="graphsRClass.html" class="list-group-item" target="overview">
+              <span class="glyphicon glyphicon-stats"></span>
+              <span class="nav-label">&nbsp;$messages.getString("classResults")</span>
+            </a>
+            <a href="graphsRSuite.html" class="list-group-item" target="overview">
+              <span class="glyphicon glyphicon-signal"></span>
+              <span class="nav-label">&nbsp;$messages.getString("suiteResults")</span>
+            </a>
+          </ul>
+
+          <a href="output.html" target="overview" class="list-group-item">
+            <span class="glyphicon glyphicon-file"></span>
+            <span class="nav-label">$messages.getString("reportOutputMenu")</span>
+          </a>
+
+          $utils.getExternalLinks()
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ Content ══ -->
     <iframe id="content-frame" name="overview" src="overview.html" title="Test results"></iframe>
+
   </div>
+
+  <script>
+    document.getElementById('sidebar-nav').addEventListener('click', function(e) {
+      var item = e.target.closest('.list-group-item');
+      if (item) {
+        var s = document.getElementById('sidebar');
+        if (s.classList.contains('collapsed')) {
+          s.classList.remove('collapsed');
+          try { localStorage.setItem('sidebarCollapsed', 'false'); } catch(e) {}
+        }
+      }
+    });
+
+    function toggleSidebar() {
+      var s = document.getElementById('sidebar');
+      s.classList.toggle('collapsed');
+      try { localStorage.setItem('sidebarCollapsed', String(s.classList.contains('collapsed'))); } catch(e) {}
+    }
+    (function() {
+      try {
+        if (localStorage.getItem('sidebarCollapsed') === 'false') {
+          document.getElementById('sidebar').classList.remove('collapsed');
+        }
+      } catch(e) {}
+    })();
+  </script>
 </body>
 </html>

@@ -68,7 +68,6 @@ public class HTMLReporter extends AbstractReporter {
 	// HTML pages
 	public static final String INDEX_FILE = "index.html";
 	public static final String SUITES_FILE = "suites.html";
-	public static final String MENU_FILE = "menu.html";
 	public static final String SUITES_OVERVIEW_FILE = "suites_overview.html";
 	public static final String OVERVIEW_FILE = "overview.html";
 	public static final String GROUPS_FILE = "groups.html";
@@ -170,9 +169,7 @@ public class HTMLReporter extends AbstractReporter {
 			}
 			Instant start3 = Instant.now();
 			// Create Frames
-			createFrameset(outputDirectory);
-			// Create Menu
-			createMenu(sortedSuites, outputDirectory);
+			createFrameset(sortedSuites, outputDirectory);
 			// Create Overview
 			createOverview(sortedSuites, outputDirectory);
 			// Overview
@@ -279,14 +276,9 @@ public class HTMLReporter extends AbstractReporter {
 		generateFile(new File(outputDirectory, OVERVIEW_FILE), OVERVIEW_FILE + TEMPLATE_EXTENSION, context);
 	}
 	
-	private void createMenu(List<ISuite> suites, File outputDirectory) throws Exception {
+	private void createFrameset(List<ISuite> suites, File outputDirectory) throws Exception {
 		VelocityContext context = createContext();
 		context.put(SUITES_KEY, suites);
-		generateFile(new File(outputDirectory, MENU_FILE), MENU_FILE + TEMPLATE_EXTENSION, context);
-	}
-	
-	private void createFrameset(File outputDirectory) throws Exception {
-		VelocityContext context = createContext();
 		generateFile(new File(outputDirectory, INDEX_FILE), INDEX_FILE + TEMPLATE_EXTENSION, context);
 	}
 	
