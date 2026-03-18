@@ -26,8 +26,6 @@
       flex-direction: column;
       overflow: hidden;
       transition: width 0.25s ease;
-      background: #f8f8f8;
-      border-right: 1px solid #ddd;
     }
     #sidebar.collapsed { width: 50px; }
 
@@ -37,7 +35,6 @@
       align-items: center;
       justify-content: space-between;
       padding: 8px 10px;
-      border-bottom: 1px solid #ddd;
       flex-shrink: 0;
     }
     #sidebar-logo {
@@ -54,12 +51,10 @@
       border: none;
       cursor: pointer;
       font-size: 20px;
-      color: #555;
       padding: 2px 4px;
       flex-shrink: 0;
       line-height: 1;
     }
-    #toggle-btn:hover { color: #000; }
 
     /* Nav */
     #sidebar-nav {
