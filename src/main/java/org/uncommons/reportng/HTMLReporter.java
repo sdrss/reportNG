@@ -406,8 +406,9 @@ public class HTMLReporter extends AbstractReporter {
 	private void copyResources(File outputDirectory) throws IOException {
 		String theme = System.getProperty(REPORT_THEME, "white").trim().toLowerCase();
 		boolean isDark = "dark".equals(theme);
-		copyStream(isDark ? "css/reportng-dark.css" : "css/reportng.css", "css/reportng.css", outputDirectory);
-		copyStream(isDark ? "css/reportngClass-dark.css" : "css/reportngClass.css", "css/reportngClass.css", outputDirectory);
+		boolean isBlue = "blue".equals(theme);
+		copyStream(isDark ? "css/reportng-dark.css" : isBlue ? "css/reportng-blue.css" : "css/reportng.css", "css/reportng.css", outputDirectory);
+		copyStream(isDark ? "css/reportngClass-dark.css" : isBlue ? "css/reportngClass-blue.css" : "css/reportngClass.css", "css/reportngClass.css", outputDirectory);
 		copyStream("css/bootstrap.min.css", "css/bootstrap.min.css", outputDirectory);
 		copyStream("js/reportng.js", "js/reportng.js", outputDirectory);
 		copyStream("js/reportngClass.js", "js/reportngClass.js", outputDirectory);

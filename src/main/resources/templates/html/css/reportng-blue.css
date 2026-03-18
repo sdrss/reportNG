@@ -1,0 +1,855 @@
+body {
+   margin: 1.0em 1em;
+   background-color: #0a1628;
+   color: #cfd8f0;
+}
+ h1 {
+   font-weight: bold;
+   color: #82aaff;
+}
+ h2 {
+   font-weight: bold;
+   color: #82aaff;
+}
+ .header {
+   font-weight: bold;
+   text-align: left;
+   color: #82aaff;
+}
+ .passed {
+   background-color: #2e7d32;
+   color: white;
+}
+ .skipped {
+   background-color: #e65100;
+   color: white;
+}
+ .failed {
+   background-color: #c62828;
+   color: white;
+}
+ .passedConfig {
+   background-color: #388e3c;
+   color: white;
+}
+ .failedConfig {
+   background-color: #b71c1c;
+   color: white;
+}
+ .skippedConfig {
+   background-color: #bf360c;
+   color: white;
+}
+ .totalLabel {
+   font-weight: bold;
+   color: #82aaff;
+}
+ .suite {
+   font-weight: bold;
+   background-color: #1a3a7a;
+   color: white;
+}
+ .test {
+   background-color: #0f2040;
+   padding-left: 2em;
+   color: #cfd8f0;
+}
+ .test:hover {
+   background-color: #1a3560;
+}
+ .test .passed {
+   background-color: #388e3c;
+   text-align: center;
+   width:1em;
+}
+ .test .skipped {
+   background-color: #e65100;
+   text-align: center;
+   width:1em;
+}
+ .test .failed {
+   background-color: #c62828;
+   text-align: center;
+   width:1em;
+}
+ .group {
+   background-color: #2251aa;
+   color: white;
+   font-weight: bold;
+}
+ .suiteLinks {
+   float: right;
+   font-weight: normal;
+   vertical-align: middle;
+}
+ .suiteLinks a {
+   color: #5b8fff;
+   margin-left: .5em;
+}
+ .passRate {
+   font-weight: bold;
+   text-align: center;
+   width:1em;
+   color: #cfd8f0;
+}
+ .duration {
+   text-align: center;
+   width:1em;
+   color: #cfd8f0;
+}
+ .thread {
+   white-space: nowrap;
+}
+ .wrap {
+   border: 0;
+   margin-top: 1.8em;
+   line-height: 1.0em;
+   border-spacing: 0.1em;
+   width:1em;
+}
+ .resultsTable {
+   border: 0;
+   width: 100%;
+   margin-top: 1.8em;
+   line-height: 1.7em;
+   border-spacing: 0.1em;
+}
+ .resultsTable .method {
+   width: 18em;
+}
+ .resultsTable .duration {
+   width: 6em;
+}
+ .resultsTable td {
+   vertical-align: top;
+   padding: 0 1em;
+   color: #cfd8f0;
+}
+ .resultsTable th {
+   padding: 0 .5em;
+   color: #82aaff;
+}
+ .number {
+   text-align: center;
+   color: #cfd8f0;
+}
+ .zero {
+   font-weight: normal;
+   text-align: center;
+   width:1em;
+   color: #7a9acc;
+}
+ .columnHeadings {
+   font-size: 1em;
+}
+ .columnHeadings th {
+   font-weight: normal;
+   text-align: center;
+   color: #82aaff;
+}
+ .configTable {
+   border: 1px solid #800000;
+   color: #c62828;
+   margin-bottom: 1.5em;
+}
+ #sidebarHeader {
+   padding: 1.8em 1em;
+   margin: 0 -1em 1.8em -1em;
+}
+ #suites {
+   line-height: 1.7em;
+   border-spacing: 0.1em;
+   width: 100%;
+}
+ .tests {
+   display: table-row-group;
+}
+ .header.suite {
+   cursor: pointer;
+   clear: right;
+   height: 1.214em;
+   margin-top: 1px;
+}
+ div.test {
+   margin-top: 0.1em;
+   clear: right;
+   font-size: 1.3em;
+}
+ .toggle {
+   font-family: monospace;
+   font-weight: bold;
+   padding-left: 2px;
+   padding-right: 5px;
+   color: #7a9acc;
+}
+ .successIndicator {
+   float: right;
+   font-family: monospace;
+   font-weight: bold;
+   padding-right: 2px;
+   color: #2e7d32;
+}
+ .skipIndicator {
+   float: right;
+   font-family: monospace;
+   font-weight: bold;
+   padding-right: 2px;
+   color: #e65100;
+}
+ .failureIndicator {
+   float: right;
+   font-family: monospace;
+   font-weight: bold;
+   padding-right: 2px;
+   color: #c62828;
+}
+ .result {
+   /* font-size: 1.1em; */
+   /* vertical-align: middle; */
+}
+ .dependency {
+   /* font-family: Lucida Console, Monaco, Courier New, monospace; */
+   /* font-weight: bold; */
+}
+ .arguments {
+   /* font-family: Lucida Console, Monaco, Courier New, monospace; */
+   /* font-weight: bold; */
+}
+ .testOutput {
+   /* font-family: Lucida Console, Monaco, Courier New, monospace; */
+   color: #cfd8f0;
+}
+ .class-timelines {
+   margin-bottom: 12px;
+}
+ .class-timelines-label {
+   font-weight: bold;
+   font-size: 0.9em;
+   margin-bottom: 6px;
+   color: #7a9acc;
+}
+ .class-timeline-entry {
+   display: flex;
+   align-items: center;
+   margin-bottom: 4px;
+   gap: 8px;
+}
+ .class-timeline-name {
+   font-size: 0.78em;
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   min-width: 160px;
+   max-width: 260px;
+   color: #cfd8f0;
+}
+ .ctb-row {
+   padding: 4px 8px !important;
+   border: none !important;
+   background: transparent !important;
+}
+ .class-timeline-bar {
+   display: flex;
+   width: 100%;
+   height: 14px;
+   border-radius: 4px;
+   overflow: hidden;
+   background: #1c2d5a;
+}
+ .ctb-segment {
+   min-width: 4px;
+   cursor: pointer;
+   transition: opacity 0.15s;
+   border-right: 1px solid rgba(0,0,0,0.3);
+}
+ .ctb-segment:last-child {
+   border-right: none;
+}
+ .ctb-segment:hover {
+   opacity: 0.7;
+}
+ .ctb-passed     { background-color: #43a047; }
+ .ctb-failed     { background-color: #e53935; }
+ .ctb-skipped    { background-color: #fb8c00; }
+ .ctb-knowndefect{ background-color: #8e24aa; }
+ .ctb-fixed      { background-color: #1e88e5; }
+ .log-info {
+   font-weight: bold;
+   color: #cfd8f0;
+}
+ .log-error {
+   font-weight: bold;
+   color: #c62828;
+}
+ .log-warn {
+   font-weight: bold;
+   color: #e65100;
+}
+ .log-pass {
+   font-weight: bold;
+   color: #2e7d32;
+}
+ .stackTrace {
+   font-size: 0.9em;
+   line-height: 1.2em;
+   margin-left: 1em;
+   color: #8aa0c0;
+}
+ .stackTrace .stackTrace {
+   font-size: inherit;
+}
+ #meta {
+   font-size: 1em;
+   text-align: right;
+   float: right;
+   color: #7a9acc;
+}
+ #metaTitle {
+   font-size: 1em;
+   text-align: left;
+   float: left;
+   color: #7a9acc;
+}
+ #systemInfo {
+   color: #7a9acc;
+}
+ #log {
+   /* font-family: Lucida Console, Monaco, Courier New, monospace; */
+   /* font-size: 1.3em; */
+   /* margin-top: 1.8em; */
+}
+ .overviewTable {
+   width: 100%;
+   margin-top: 1.8em;
+   line-height: 1.7em;
+   border-spacing: 0.1em;
+}
+ .overviewTable td {
+   padding: 0 1em;
+   color: #cfd8f0;
+}
+ .overviewTable th {
+   padding: 0 .5em;
+   color: #82aaff;
+}
+ .overviewTable .duration {
+   width: 6em;
+}
+ .overviewTable .passRate {
+   width: 6em;
+}
+ .overviewTable .number {
+   width: 5em;
+}
+ .overviewTable tr {
+   height: 1.6em;
+}
+ .time {
+   visibility:hidden;
+   font-size: 0em;
+}
+ .headerTime {
+   visibility:hidden;
+   font-size: 0em;
+}
+ td.hover, tr.hover {
+   background-color: #1a3560;
+}
+ th.hover, tfoot td.hover {
+   background-color: #2a4a8a;
+}
+ td.hovercell, th.hovercell {
+   background-color: #1c2d5a;
+}
+ td.hoverrow, th.hoverrow {
+   background-color: #1a3060;
+}
+ .knownDefects {
+   background-color: #e65100;
+   color: white;
+}
+ .test .knownDefects {
+   background-color: #bf360c;
+   text-align: center;
+   width:1em;
+}
+ .fixed {
+   background-color: #1a3a7a;
+   color: white;
+}
+ .test .fixed {
+   background-color: #5b8fff;
+   text-align: center;
+   width:1em;
+}
+ .output {
+   margin-top: 0em;
+   margin-bottom: 0em;
+   margin-left: 3.8em;
+   width: 95%;
+}
+ .objecttable {
+   background-color: #0d1f40;
+}
+ .arraytable {
+   background-color: #e8f4ff;
+}
+ .output .string {
+   color: #cfd8f0;
+}
+ .output .number {
+   color: #5b8fff;
+}
+ .output .boolean {
+   color: #e65100;
+}
+ .void {
+   color: #5b8fff;
+}
+ .output table td, .outputtable th {
+   padding: 0.1em 0.1em;
+   border: 1px solid #2a4a8a;
+   vertical-align: top;
+}
+ .tableURL {
+   border: 2px solid #3a5aaa;
+   margin-bottom: 1.5em;
+   background-color: #0d1f40;
+   line-height: 1.0em;
+   border-spacing: 0.1em;
+   margin-left: 3.8em;
+}
+ .tableURLHttp {
+   border: 2px solid #3a5aaa;
+   margin-bottom: 1.5em;
+   background-color: #0d1f40;
+   line-height: 1.0em;
+   border-spacing: 0.1em;
+   margin-left: 3.8em;
+}
+ .tableURLSMS {
+   border: 2px solid #3a5aaa;
+   margin-bottom: 1.5em;
+   background-color: #0d1f40;
+   line-height: 1.0em;
+   border-spacing: 0.1em;
+   margin-left: 3.8em;
+}
+ .tableURLDB {
+   border: 2px solid #3a5aaa;
+   margin-bottom: 1.5em;
+   background-color: #0d1f40;
+   line-height: 1.0em;
+   border-spacing: 0.1em;
+   margin-left: 3.8em;
+}
+ .wrapNo {
+   border-spacing: 0.1em;
+}
+ .widgets {
+   margin-bottom: 0em;
+   background-color: #0d1f40;
+   line-height: 0em;
+   border-spacing: 0.1em;
+   margin-left: 3.8em;
+   width: 75%;
+}
+ .tableURL td {
+   vertical-align: top;
+   padding: 0 1em;
+   color: #cfd8f0;
+}
+ .tableURL th {
+   padding: 0.2em;
+   color: #82aaff;
+}
+ .smshistorytable {
+   border: 2px solid #3a5aaa;
+   margin-bottom: 1.5em;
+   background-color: #0d1f40;
+   line-height: 1.0em;
+   border-spacing: 0.1em;
+   margin-left: 3.8em;
+}
+ .tablemo {
+   border: 2px solid #3a5aaa;
+   background-color: #0d1f40;
+   border-spacing: 0.5em;
+   margin-left: 3.8em;
+}
+ .tablemo td {
+   vertical-align: top;
+   padding: 0 1em;
+   border: 1em;
+   color: #cfd8f0;
+}
+ .tablemo tr {
+   border: 1px solid #2a4a8a;
+}
+ .tablemo th {
+   padding: 0.2em;
+   color: #82aaff;
+}
+ .tablemt {
+   border: 2px solid #3a5aaa;
+   background-color: #0d1f40;
+   border-spacing: 0.5em;
+   margin-left: 3.8em;
+}
+ .tablemt td {
+   vertical-align: top;
+   padding: 0 1em;
+   border: 1em;
+   color: #cfd8f0;
+}
+ .tablemt tr {
+   border: 1px solid #2a4a8a;
+}
+ .tablemt th {
+   padding: 0.2em;
+   color: #82aaff;
+}
+ .tabledlr {
+   border: 2px solid #3a5aaa;
+   background-color: #0d1f40;
+   border-spacing: 0.5em;
+   margin-left: 3.8em;
+}
+ .tabledlr td {
+   vertical-align: top;
+   padding: 0 1em;
+   border: 1em;
+   color: #cfd8f0;
+}
+ .tabledlr tr {
+   border: 1px solid #2a4a8a;
+}
+ .tabledlr th {
+   padding: 0.2em;
+   color: #82aaff;
+}
+ .tablemaster {
+   background-color: #0d1f40;
+   border-spacing: 0.5em;
+   margin-left: 3.8em;
+   width: 95%;
+}
+ .tablemaster td {
+   vertical-align: top;
+   padding: 0 1em;
+   border: 1em;
+   color: #cfd8f0;
+}
+ .tablemaster tr {
+   border: 1px solid #2a4a8a;
+}
+ .tablemaster th {
+   padding: 0.2em;
+   color: #82aaff;
+}
+ .tablemo td {
+   border-spacing: 0.5em;
+   border-collapse: collapse;
+}
+ .tablemo tr {
+   border-spacing: 0.5em;
+   border-collapse: collapse;
+}
+ .string {
+   color: #cfd8f0;
+}
+ .number {
+   color: #cfd8f0;
+}
+ .boolean {
+   color: #cfd8f0;
+}
+ .button {
+   background-color: #1a3a7a;
+   border: none;
+   color: white;
+   padding: 10px 20px;
+   text-align: center;
+   text-decoration: none;
+   display: inline-block;
+   font-size: 16px;
+   margin: 4px 2px;
+   cursor: pointer;
+}
+
+.tooltip {
+   position: relative;
+   display: inline-block;
+   border-bottom: 1px dotted #7a9acc;
+}
+
+.tooltip .tooltiptext {
+   visibility: hidden;
+   background-color: #1a3a7a;
+   color: #ffffff;
+   text-align: center;
+   border-radius: 6px;
+   padding: 5px 0;
+   position: absolute;
+   z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+   visibility: visible;
+}
+
+.passTitle {
+   color: #2e7d32 !important;
+   font-weight: bold;
+}
+
+.failTitle {
+   color: #c62828 !important;
+   font-weight: bold;
+}
+
+.skipTitle {
+   color: #e65100 !important;
+   font-weight: bold;
+}
+
+.KnownDefectTitle {
+   color: #e65100 !important;
+   font-weight: bold;
+}
+
+.fixedTitle {
+   color: #1a3a7a !important;
+   font-weight: bold;
+}
+
+.normal {
+   color: #cfd8f0;
+   font-weight: bold;
+}
+
+.summary {
+   color: #cfd8f0;
+   font-weight: bold;
+}
+
+.tablesorter thead tr .header {
+   background-repeat:no-repeat;
+   background-position: right;
+}
+.tablesorter thead tr .headerSortUp {
+   background-repeat:no-repeat;
+   background-position: right;
+}
+.tablesorter thead tr .headerSortDown {
+   background-repeat:no-repeat;
+   background-position: right;
+}
+ .tablesorter {
+   width: 100%;
+   margin-top: 0em;
+   border: 0;
+}
+ .tablesorter td {
+   padding: 0 0em;
+   vertical-align: text-top;
+   color: #cfd8f0;
+}
+ .tablesorter th {
+   padding: 0 1em;
+   color: #82aaff;
+}
+.tablesorter td {
+   padding:1px;
+   border: #2a4a8a 2px solid;
+}
+.tablesorterSuites thead tr .header {
+   background-repeat:no-repeat;
+   background-position: right;
+}
+.tablesorterSuites thead tr .headerSortUp {
+   background-repeat:no-repeat;
+   background-position: right;
+}
+.tablesorterSuites thead tr .headerSortDown {
+   background-repeat:no-repeat;
+   background-position: right;
+}
+ .tablesorterSuites {
+   width: 100%;
+   margin-top: 0em;
+   border: 0;
+}
+ .tablesorterSuites td {
+   padding: 0 0em;
+   vertical-align: text-top;
+   color: #cfd8f0;
+}
+ .tablesorterSuites th {
+   padding: 0 2em;
+   color: #82aaff;
+}
+.tablesorterSuites td {
+   padding:1px;
+   border: #2a4a8a 2px solid;
+}
+th {
+   font-weight: normal;
+   color: #82aaff;
+}
+.break-word {
+   overflow-wrap: break-word;
+   word-break: break-all;
+}
+
+table#suiteResults thead tr .header {
+   background-image: url(../images/bg.gif);
+   background-repeat: no-repeat;
+   background-position: 100% 50%;
+   cursor: pointer;
+}
+
+table#suiteResults thead tr .headerSortUp {
+   background-image: url(../images/asc.gif);
+}
+
+table#suiteResults thead tr .headerSortDown {
+   background-image: url(../images/desc.gif);
+}
+
+table thead tr .header {
+   background-image: url(../images/bg.gif);
+   background-repeat: no-repeat;
+   background-position: 100% 50%;
+   cursor: pointer;
+}
+
+table thead tr .headerSortUp {
+   background-image: url(../images/asc.gif);
+}
+
+table thead tr .headerSortDown {
+   background-image: url(../images/desc.gif);
+}
+
+#features tr:hover {
+   background-color: #1a3560;
+}
+
+.passedCell {
+   background-color: #388e3c;
+   text-align: center;
+   width:1em;
+}
+ .skippedCell {
+   background-color: #e65100;
+   text-align: center;
+   width:1em;
+}
+ .failedCell {
+   background-color: #c62828;
+   text-align: center;
+   width:1em;
+}
+ .fixedCell {
+   background-color: #5b8fff;
+   text-align: center;
+   width:1em;
+}
+.knownDefectsCell {
+   background-color: #bf360c;
+   text-align: center;
+   width:1em;
+}
+.tipFrame {
+   display:none;
+   position:absolute;
+   resize: both;
+   overflow: auto;
+   width:60%;
+   height:60%;
+}
+
+/* Bootstrap overrides for blue theme */
+body, .well, .well-large, .panel, .panel-default {
+   background-color: #0a1628;
+   color: #cfd8f0;
+}
+.well, .well-sm, .well-lg {
+   background-color: #0d1f40;
+   border-color: #2a4a8a;
+   color: #cfd8f0;
+}
+.table {
+   color: #cfd8f0;
+}
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+   border-color: #2a4a8a;
+   color: #cfd8f0;
+}
+.table-bordered,
+.table-bordered > thead > tr > th,
+.table-bordered > tbody > tr > td,
+.table-bordered > tfoot > tr > td {
+   border-color: #2a4a8a;
+}
+.table-striped > tbody > tr:nth-of-type(odd) {
+   background-color: #0f2040;
+}
+.table-hover > tbody > tr:hover {
+   background-color: #1a3560;
+}
+.list-group-item {
+   background-color: #0d1f40;
+   border-color: #2a4a8a;
+   color: #cfd8f0;
+}
+a.list-group-item:hover,
+a.list-group-item:focus {
+   background-color: #1a3560;
+   color: #cfd8f0;
+}
+a {
+   color: #5b8fff;
+}
+a:hover {
+   color: #1a3a7a;
+}
+.btn-default {
+   background-color: #1a3560;
+   border-color: #3a5aaa;
+   color: #cfd8f0;
+}
+.btn-default:hover {
+   background-color: #2a4a8a;
+   color: #cfd8f0;
+}
+.collapse.in {
+   background-color: #0f2040;
+}
+
+/* ── Sidebar (blue theme) ── */
+#sidebar {
+    background: #081020;
+    border-right: 1px solid #2a4a8a;
+}
+#sidebar-header {
+    border-bottom: 1px solid #2a4a8a;
+}
+#toggle-btn { color: #82aaff; }
+#toggle-btn:hover { color: #5b8fff; }
+#sidebar-nav .list-group-item {
+    background-color: #0d1f40;
+    border-color: #2a4a8a;
+    color: #cfd8f0;
+}
+#sidebar-nav a.list-group-item:hover,
+#sidebar-nav a.list-group-item:focus {
+    background-color: #1a3560;
+    color: #82aaff;
+}

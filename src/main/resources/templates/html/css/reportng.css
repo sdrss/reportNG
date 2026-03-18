@@ -1,5 +1,7 @@
  body {
      margin: 1.0em 1em;
+     background-color: #ffffff;
+     color: #000000;
 }
  h1 {
      font-weight: bold;
@@ -731,4 +733,24 @@ table thead tr .headerSortDown {
     overflow: auto;
     width:60%;
     height:60%;
+}
+/* ── Sidebar (white theme) ── */
+#sidebar {
+    background: #f8f8f8;
+    border-right: 1px solid #ddd;
+}
+#sidebar-header {
+    border-bottom: 1px solid #ddd;
+}
+#toggle-btn { color: #555; }
+#toggle-btn:hover { color: #000; }
+#sidebar-nav .list-group-item {
+    background-color: #f8f8f8;
+    border-color: #ddd;
+    color: #333;
+}
+#sidebar-nav a.list-group-item:hover,
+#sidebar-nav a.list-group-item:focus {
+    background-color: #e8e8e8;
+    color: #000;
 }

@@ -831,3 +831,24 @@ a:hover {
 .collapse.in {
     background-color: #252525;
 }
+
+/* ── Sidebar (dark theme) ── */
+#sidebar {
+    background: #252525;
+    border-right: 1px solid #444;
+}
+#sidebar-header {
+    border-bottom: 1px solid #444;
+}
+#toggle-btn { color: #aaa; }
+#toggle-btn:hover { color: #fff; }
+#sidebar-nav .list-group-item {
+    background-color: #252525;
+    border-color: #444;
+    color: #e0e0e0;
+}
+#sidebar-nav a.list-group-item:hover,
+#sidebar-nav a.list-group-item:focus {
+    background-color: #3a3a3a;
+    color: #fff;
+}
