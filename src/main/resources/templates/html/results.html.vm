@@ -96,8 +96,47 @@
 	  <tr>
 	    <th>$messages.getString("status") : </th>
 	    <th></th>
-	    <th>$utils.getTestStatus($result)</th> 
+	    <th>$utils.getTestStatus($result)</th>
 	  </tr>
+	  #set ($combinedClassResults = $utils.getCombinedClassResults($failedTests, $skippedTests, $passedTests))
+	  #if ($combinedClassResults.size() > 0)
+	  <tr>
+	    <th>Class Timeline</th>
+	    <th></th>
+	    <th>
+	      #foreach ($entry in $combinedClassResults.entrySet())
+	      <div class="class-timeline-entry">
+	        <div class="class-timeline-bar">
+	          #foreach ($tr in $entry.value)
+	            #set ($segDur = $tr.endMillis - $tr.startMillis)
+	            #if ($segDur < 1)#set ($segDur = 1)#end
+	            #if ($tr.getStatus()==1 && $utils.hasKnownDefect($tr))
+	              #set ($segClass = "ctb-knowndefect")
+	              #set ($segLabel = "Known Defect")
+	            #elseif ($tr.getStatus()==1 && $utils.hasFixed($tr))
+	              #set ($segClass = "ctb-fixed")
+	              #set ($segLabel = "Fixed")
+	            #elseif ($tr.getStatus()==1)
+	              #set ($segClass = "ctb-passed")
+	              #set ($segLabel = "PASSED")
+	            #elseif ($tr.getStatus()==2)
+	              #set ($segClass = "ctb-failed")
+	              #set ($segLabel = "FAILED")
+	            #else
+	              #set ($segClass = "ctb-skipped")
+	              #set ($segLabel = "SKIPPED")
+	            #end
+	            <div class="ctb-segment $segClass"
+	                 style="flex-grow: $segDur;"
+	                 title="$utils.escapeString($tr.name) | $segLabel | $utils.formatDuration($tr.startMillis, $tr.endMillis)s"
+	                 onclick="document.getElementById('$utils.getTestResultId($tr)').scrollIntoView({behavior:'smooth',block:'center'});"></div>
+	          #end
+	        </div>
+	      </div>
+	      #end
+	    </th>
+	  </tr>
+	  #end
 	</table>
 </div>
 <div class="well well-large">

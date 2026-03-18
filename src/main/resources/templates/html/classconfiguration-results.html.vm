@@ -63,24 +63,41 @@
 		#set ($output = $utils.getTestOutput($testResult))
 		<div class="stackTrace" id="$generatedID">
 			#foreach( $line in $output )
+				#set ($logClass = $utils.getLogLevelClass($line))
 		    	#if ($meta.shouldEscapeOutput())
-		        	$utils.escapeHTMLString($line)<br>
+		        	<span class="$logClass">$utils.escapeHTMLString($line)</span><br>
 		        #else
-		        	$line
+		        	<span class="$logClass">$line</span>
 		        #end
 		   	#end
 		#if ($testResult.throwable && ( $testResult.status == 2 || $meta.shouldShowExpectedExceptions()))
-			<a href="javascript:toggleElement('exception-$generatedID','block')" title="$messages.getString("clickToExpandCollapse")"><b>$utils.escapeHTMLString($testResult.throwable.toString())</b></a><br>
+			#if ($meta.shouldEscapeOutput())
+				<a href="javascript:toggleElement('exception-$generatedID','block')" title="$messages.getString("clickToExpandCollapse")"><b>$utils.escapeHTMLString($testResult.throwable.toString())</b></a><br>
+			#else
+				<a href="javascript:toggleElement('exception-$generatedID','block')" title="$messages.getString("clickToExpandCollapse")"><b>$testResult.throwable.toString()</b></a><br>
+			#end
 		    <div class="stackTrace" id="exception-$generatedID">
 			#foreach ($element in $testResult.throwable.stackTrace)
-				$utils.escapeHTMLString( $element.toString() )<br>
+				#if ($meta.shouldEscapeOutput())
+					$utils.escapeHTMLString( $element.toString() )<br>
+				#else
+					$element.toString()<br>
+				#end
 			#end
 			#set ($causes = $utils.getCauses($testResult.throwable))
 			#foreach ($throwable in $causes)
-			    <b>$messages.getString("causedBy"): </b> <a href="javascript:toggleElement('causedBy-$generatedID','block')" title="Click to expand/collapse">$utils.escapeHTMLString($throwable.toString())</a><br>
+				#if ($meta.shouldEscapeOutput())
+				    <b>$messages.getString("causedBy"): </b> <a href="javascript:toggleElement('causedBy-$generatedID','block')" title="Click to expand/collapse">$utils.escapeHTMLString($throwable.toString())</a><br>
+				#else
+				    <b>$messages.getString("causedBy"): </b> <a href="javascript:toggleElement('causedBy-$generatedID','block')" title="Click to expand/collapse">$throwable.toString()</a><br>
+				#end
 			    <div class="stackTrace" id="causedBy-$generatedID">
 				#foreach ($element in $throwable.stackTrace)
-					$utils.escapeHTMLString($element.toString())<br>
+					#if ($meta.shouldEscapeOutput())
+						$utils.escapeHTMLString($element.toString())<br>
+					#else
+						$element.toString()<br>
+					#end
 				#end
 				</div>
 			#end

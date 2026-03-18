@@ -201,6 +201,76 @@
     /* font-family: Lucida Console, Monaco, Courier New, monospace; */
      color: black;
 }
+ .class-timelines {
+    margin-bottom: 12px;
+}
+ .class-timelines-label {
+    font-weight: bold;
+    font-size: 0.9em;
+    margin-bottom: 6px;
+    color: #555;
+}
+ .class-timeline-entry {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+    gap: 8px;
+}
+ .class-timeline-name {
+    font-size: 0.78em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 160px;
+    max-width: 260px;
+    color: #333;
+}
+ .ctb-row {
+    padding: 4px 8px !important;
+    border: none !important;
+    background: transparent !important;
+}
+ .class-timeline-bar {
+    display: flex;
+    width: 100%;
+    height: 14px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #e0e0e0;
+}
+ .ctb-segment {
+    min-width: 4px;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    border-right: 1px solid rgba(255,255,255,0.35);
+}
+ .ctb-segment:last-child {
+    border-right: none;
+}
+ .ctb-segment:hover {
+    opacity: 0.7;
+}
+ .ctb-passed     { background-color: #5cb85c; }
+ .ctb-failed     { background-color: #d9534f; }
+ .ctb-skipped    { background-color: #f0ad4e; }
+ .ctb-knowndefect{ background-color: #9b59b6; }
+ .ctb-fixed      { background-color: #5bc0de; }
+ .log-info {
+    font-weight: bold;
+    color: black;
+}
+ .log-error {
+    font-weight: bold;
+    color: red;
+}
+ .log-warn {
+    font-weight: bold;
+    color: #e6a800;
+}
+ .log-pass {
+    font-weight: bold;
+    color: green;
+}
  .stackTrace {
    font-size: 0.9em;
    line-height: 1.2em;

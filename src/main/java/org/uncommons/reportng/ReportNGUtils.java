@@ -1443,6 +1443,52 @@ public class ReportNGUtils {
 	 *            The String to escape.
 	 * @return The escaped String.
 	 */
+	public List<ITestResult> sortResultsByTime(Collection<ITestResult> results) {
+		List<ITestResult> sorted = new ArrayList<>(results);
+		sorted.sort((a, b) -> Long.compare(a.getStartMillis(), b.getStartMillis()));
+		return sorted;
+	}
+
+	public String getTestResultId(ITestResult result) {
+		String key = result.getTestClass().getName() + "_" + result.getName() + "_" + result.getStartMillis();
+		int hash = key.hashCode();
+		return "ctbrow_" + (hash == Integer.MIN_VALUE ? 0 : Math.abs(hash));
+	}
+
+	public Map<String, List<ITestResult>> getCombinedClassResults(
+			Map<IClass, List<ITestResult>> failedTests,
+			Map<IClass, List<ITestResult>> skippedTests,
+			Map<IClass, List<ITestResult>> passedTests) {
+		Map<String, List<ITestResult>> combined = new java.util.LinkedHashMap<>();
+		for (Map<IClass, List<ITestResult>> map : Arrays.asList(failedTests, skippedTests, passedTests)) {
+			if (map == null) continue;
+			for (Map.Entry<IClass, List<ITestResult>> entry : map.entrySet()) {
+				combined.computeIfAbsent(entry.getKey().getName(), k -> new ArrayList<>()).addAll(entry.getValue());
+			}
+		}
+		for (List<ITestResult> list : combined.values()) {
+			list.sort((a, b) -> Long.compare(a.getStartMillis(), b.getStartMillis()));
+		}
+		return combined;
+	}
+
+	public String getLogLevelClass(String line) {
+		if (line == null) {
+			return "";
+		}
+		String trimmed = line.trim();
+		if (trimmed.startsWith("ERROR")) {
+			return "log-error";
+		} else if (trimmed.startsWith("WARN")) {
+			return "log-warn";
+		} else if (trimmed.startsWith("INFO")) {
+			return "log-info";
+		} else if (trimmed.startsWith("PASS")) {
+			return "log-pass";
+		}
+		return "";
+	}
+
 	public String escapeHTMLString(String s) {
 		if (s == null) {
 			return null;
